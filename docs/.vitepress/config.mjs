@@ -7,8 +7,8 @@ export default defineConfig({
   //   include:[/\.vue$/,/\.md$/],
   // }),
   // Markdown(),
-  head: [["link", { rel: "icon", href: "文档.png" }]],
-  base: "/demo",
+  head: [["link", { rel: "icon", href: "/docs/文档.png" }]],
+  base: "/docs/",
   title: "鱼梦江湖的技术栈",
   description: "知识文档",
   themeConfig: {
