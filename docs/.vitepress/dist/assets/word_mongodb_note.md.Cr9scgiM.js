@@ -1,0 +1,1 @@
+import{_ as e,c as o,o as t}from"./chunks/framework.BPhjecvb.js";const i=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"word/mongodb/note.md","filePath":"word/mongodb/note.md"}'),n={name:"word/mongodb/note.md"};function r(a,d,s,c,m,p){return t(),o("div")}const f=e(n,[["render",r]]);export{i as __pageData,f as default};

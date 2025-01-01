@@ -1,1 +1,0 @@
-import{_ as e,c as t,o}from"./chunks/framework.Bq-xwRV_.js";const m=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"word/TS/note.md","filePath":"word/TS/note.md"}'),r={name:"word/TS/note.md"};function a(n,s,c,d,p,_){return o(),t("div")}const f=e(r,[["render",a]]);export{m as __pageData,f as default};

@@ -1,0 +1,1 @@
+import{_ as e,c as t,o}from"./chunks/framework.BPhjecvb.js";const m=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"word/VitePress博客搭建/note.md","filePath":"word/VitePress博客搭建/note.md"}'),r={name:"word/VitePress博客搭建/note.md"};function s(a,n,c,d,i,p){return o(),t("div")}const f=e(r,[["render",s]]);export{m as __pageData,f as default};
