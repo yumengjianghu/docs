@@ -73,7 +73,7 @@ export default defineConfig({
         text: '教程', items: [
           { text: 'VitePress博客搭建', link: '/word/VitePress博客搭建/note' },
           { text: 'Github Action部署', link: '/word/Github Action部署/note' },
-          { text: 'VitePress插入个人网页', link: '/word/工作流/note' },
+          { text: 'VitePress插入个人网页', link: '/word/MyWebsiteTutorial/note' },
 
         ]
       },
