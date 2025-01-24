@@ -1,0 +1,1 @@
+import{_ as e,c as t,o}from"./chunks/framework.CLOUWu74.js";const m=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"word/TS/note（空）.md","filePath":"word/TS/note（空）.md"}'),r={name:"word/TS/note（空）.md"};function a(n,s,c,_,d,p){return o(),t("div")}const f=e(r,[["render",a]]);export{m as __pageData,f as default};

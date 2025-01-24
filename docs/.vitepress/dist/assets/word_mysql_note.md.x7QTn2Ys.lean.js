@@ -1,1 +1,0 @@
-import{_ as e,c as t,o}from"./chunks/framework.BPhjecvb.js";const i=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"word/mysql/note.md","filePath":"word/mysql/note.md"}'),r={name:"word/mysql/note.md"};function a(n,s,c,d,m,p){return o(),t("div")}const l=e(r,[["render",a]]);export{i as __pageData,l as default};

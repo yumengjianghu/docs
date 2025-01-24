@@ -1,0 +1,1 @@
+import{_ as e,c as t,o as r}from"./chunks/framework.CLOUWu74.js";const l=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"word/sqlserver/note.md","filePath":"word/sqlserver/note.md"}'),o={name:"word/sqlserver/note.md"};function s(a,n,c,d,p,_){return r(),t("div")}const m=e(o,[["render",s]]);export{l as __pageData,m as default};
