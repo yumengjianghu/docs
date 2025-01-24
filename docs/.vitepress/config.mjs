@@ -42,7 +42,7 @@ export default defineConfig({
       {
         text: '前端', items: [
           { text: 'HTML5', link: '/word/h5/note/h5' },
-          { text: '布局技巧', link: '/word/CSS3/note' }, 
+          { text: '布局技巧', link: '/word/CSS3/note' },
           { text: 'JavaScript', link: '/word/JS/Notes' },
           { text: 'TypeScript', link: '/word/TS/note' },
           { text: 'uniapp', link: '/word/ES/note' },
@@ -73,7 +73,7 @@ export default defineConfig({
         text: '教程', items: [
           { text: 'VitePress博客搭建', link: '/word/VitePress博客搭建/note' },
           { text: 'Github Action部署', link: '/word/Github Action部署/note' },
-          { text: '工作流', link: '/word/工作流/note' },
+          { text: 'VitePress插入个人网页', link: '/word/工作流/note' },
 
         ]
       },
@@ -86,7 +86,15 @@ export default defineConfig({
 
         ]
       },
-      { text: '其他', link: '/word/other/note' }
+      {
+        text: '其他', items: [
+          { text: '我的简历', link: '/word/简历/docs.md' },
+          { text: '...', link: '/word/other/note' },
+          // { text: 'Git', link: '/word/git/Git' },
+          // { text: '...', link: '/word' },
+
+        ]
+      }
     ],
 
     // sidebar: [
