@@ -3,8 +3,8 @@
         <h1 class="name">张三</h1>
         <div class="title">高级前端开发工程师</div>
         <div class="contact-info">
-            <p>📧 zhangsan@email.com | 📱 138-xxxx-xxxx</p>
-            <p>🌐 github.com/zhangsan | 📍 北京市</p>
+            <p>📧 zyyypx@qq.com | 📱 138-xxxx-21254</p>
+            <p>🌐 https://yumengjianghu.github.io/docs/ | 📍 广东市</p>
         </div>
     </header>
 
@@ -62,11 +62,17 @@
         <div class="experience-item">
             <div class="experience-header">
                 <span class="company">某某大学</span>
-                <span class="date">2014.09 - 2018.06</span>
+                <span class="date">2014.09 - 2026.06</span>
             </div>
             <div class="position">计算机科学与技术 学士学位</div>
         </div>
     </section>
+    <div class="footer">
+        <span id="busuanzi_container_page_pv">
+            本页访问量：<span id="busuanzi_value_page_pv"></span> 次
+        </span>
+    </div>
+
 </template>
 
 <script>
@@ -91,6 +97,10 @@ body {
     padding: 20px;
     background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
     animation: fadeIn 1s ease-out;
+}
+
+.footer {
+    text-align: center;
 }
 
 header {

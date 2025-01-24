@@ -3,12 +3,16 @@ import { defineConfig } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  // vue({
-  //   include:[/\.vue$/,/\.md$/],
-  // }),
-  // Markdown(),
+
+
   base: "/docs/",
-  head: [["link", { rel: "icon", href: "/docs/文档.png" }]],
+  head: [[
+    "script",
+    {
+      async: true,
+      src: "//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js",
+    },
+  ], ["link", { rel: "icon", href: "/docs/文档.png" }]],
   title: "鱼梦江湖的技术栈",
   description: "知识文档",
   themeConfig: {
@@ -124,7 +128,8 @@ export default defineConfig({
       },
     ],
     footer: {
-      copyright: 'yumemgjianghu ©2025 vitepress '
+      copyright: 'yumemgjianghu ©2025 vitepress <br/> ',
+      message: '<span id="busuanzi_container_page_pv" data-page-id="age-01">本页访问量：<span id="busuanzi_value_page_pv"></span> 次</span>',
     }
   }
 })

@@ -3,6 +3,7 @@ import { h } from 'vue'
 import DefaultTheme from 'vitepress/theme'
 
 import MyWebsite from './components/MyWebsite.vue'
+import animation from './components/animation.vue'
 
 import './style.css'
 
@@ -17,5 +18,6 @@ export default {
   enhanceApp({ app, router, siteData }) {
     // ...
     app.component('MyWebsite', MyWebsite);
+    app.component('animation', animation);
   }
 }
