@@ -79,6 +79,7 @@ export default defineConfig({
           { text: 'VitePress博客搭建', link: '/word/VitePress博客搭建/note' },
           { text: 'Github Action部署', link: '/word/Github Action部署/note' },
           { text: 'VitePress插入个人网页', link: '/word/MyWebsiteTutorial/note' },
+          { text: 'VitePress插入评论功能', link: '/word/CommentFunction/note' },
           { text: '局域网服务器部署', link: '/word/局域网服务器部署/note' },
           { text: 'Git基本使用', link: '/word/git/Git' },
         ]
