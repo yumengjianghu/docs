@@ -62,6 +62,7 @@
         <button @click="toggleFullscreen">全屏</button>
       </div>
     </div>
+    <!-- <a href="/docs/video.mp4" download="video.mp4">下载PDF文件</a> -->
   </template>
   
   <script>

@@ -49,11 +49,12 @@ export default defineConfig({
           { text: '布局技巧', link: '/word/CSS3/note' },
           { text: 'JavaScript', link: '/word/JS/Notes' },
           { text: 'TypeScript', link: '/word/TS/note' },
-          { text: 'uniapp', link: '/word/ES/note' },
+          { text: 'uniapp', link: '/word/uniapp/note' },
           {
             text: '框架', items: [
               { text: 'Vue3', link: '/word/vue/vue3/vue' },
-              { text: 'React', link: '/word/vue/vue2/note' }
+              { text: 'Vue2', link: '/word/vue/vue2/note' },
+              { text: 'React', link: '/word/react/note' },
             ]
           },
         ]
@@ -78,14 +79,15 @@ export default defineConfig({
           { text: 'VitePress博客搭建', link: '/word/VitePress博客搭建/note' },
           { text: 'Github Action部署', link: '/word/Github Action部署/note' },
           { text: 'VitePress插入个人网页', link: '/word/MyWebsiteTutorial/note' },
-
+          { text: '局域网服务器部署', link: '/word/局域网服务器部署/note' },
+          { text: 'Git基本使用', link: '/word/git/Git' },
         ]
       },
       {
-        text: '小技巧', items: [
-          { text: 'npm', link: '/word/npm/note' },
-          { text: 'nvm', link: '/word/nvm/note' },
-          { text: 'Git', link: '/word/git/Git' },
+        text: '资源', items: [
+          { text: 'download1', link: '/word/download1/note' },
+          { text: 'download2', link: '/word/download2/note' },
+
           // { text: '...', link: '/word' },
 
         ]
@@ -93,6 +95,7 @@ export default defineConfig({
       {
         text: '其他', items: [
           { text: '我的简历', link: '/word/简历/docs.md' },
+          { text: '视频模块', link: '/word/video/note.md' },
           { text: '...', link: '/word/other/note' },
           // { text: 'Git', link: '/word/git/Git' },
           // { text: '...', link: '/word' },
