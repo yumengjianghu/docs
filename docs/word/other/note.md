@@ -2,7 +2,7 @@
 <!-- 支持多语言字幕，可以通过 subtitles 属性传递字幕文件列表 -->
 
 <animation
-      videoSrc="../../public/video.mp4" 
+      videoSrc="/docs/video.mp4" 
       :subtitles="subtitles"
     />
 
