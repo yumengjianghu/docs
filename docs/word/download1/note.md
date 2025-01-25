@@ -6,7 +6,10 @@
 <a href="https://github.com/yumengjianghu/downloads/releases/download/download/Snipaste.2.zip" download="typora-setup-x64.rar">Snipaste截图工具.zip</a><br/>
 <a href="https://github.com/yumengjianghu/downloads/releases/download/download/ZoomIt.rar" download="typora-setup-x64.rar">ZoomIt画笔工具.rar</a><br/>
 
+### 备用地址
 
+<a href="https://wwyk.lanzoue.com/b00y9v4jhg">点击跳转</a><br/>
+<CopyBlock text="akvs" prompt='密码 : ' DisplayStatus="true" />
 
 ## 评论
 <Giscus />

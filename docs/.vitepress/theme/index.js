@@ -5,6 +5,8 @@ import DefaultTheme from 'vitepress/theme'
 import MyWebsite from './components/MyWebsite.vue'  // 简历组件
 import animation from './components/animation.vue' // 视频组件
 import Giscus from './components/Giscus.vue'       // 评论组件
+import CopyBlock from './components/CopyBlock.vue' // 可复制模块
+import GlobalToast from './components/GlobalToast.vue' // 全局提示组件
 
 import './style.css'
 
@@ -21,5 +23,7 @@ export default {
     app.component('MyWebsite', MyWebsite);
     app.component('animation', animation);
     app.component('Giscus', Giscus);
+    app.component('CopyBlock', CopyBlock);
+    app.component('GlobalToast', GlobalToast);
   }
 }
