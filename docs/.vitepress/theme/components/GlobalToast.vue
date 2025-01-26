@@ -1,7 +1,7 @@
 <template>
     <div v-if="isVisible" class="toast-container">
         <div class="toast-message" :class="{ GreenBgColor: GColorstatus, OrangeBgColor: RColorstatus }">
-            {{ message }}
+            <span class="text">{{ message }}</span>
         </div>
     </div>
 </template>
@@ -74,25 +74,38 @@ export default {
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
+    min-width: 300px;
 }
 
 .toast-message {
     padding: 12px 24px;
-    background-color: #c23c3c;
-    color: #fff;
+    color: #000000;
     border-radius: 4px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     font-size: 14px;
     animation: slideDown 0.3s ease-out;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: right;
+    flex-wrap: wrap;
+    background: aliceblue url('/docs/status/error.png') no-repeat 10px center;
+    
+}
+
+.toast-message .text {
+    vertical-align: baseline;
+    margin-left: 30px;
 }
 
 .GreenBgColor {
-    background-color: green;
+  
+    background: aliceblue url('/docs/status/right.png') no-repeat 10px center;
 
 }
 
 .OrangeBgColor {
-    background-color: rgb(218, 133, 37);
+    background: aliceblue url('/docs/status/warn.png') no-repeat 10px center;
+
 }
 
 @keyframes slideDown {
