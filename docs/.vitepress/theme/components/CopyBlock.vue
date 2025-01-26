@@ -1,7 +1,7 @@
 <template>
     <div class="copy-block">
         <!-- 复制按钮 -->
-        <button class="copy-button" @click="copyText">Copy</button>
+        <button class="copy-button" @click="copyText">复制</button>
         <!-- 文字内容 -->
         <div class="content">
             {{ prompt }}
@@ -9,7 +9,7 @@
 
         </div>
     </div>
-    <GlobalToast ref="toast" />
+    <GlobalToast ref="toast" :duration="500" />
 </template>
 
 <script>

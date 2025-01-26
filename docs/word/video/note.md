@@ -3,7 +3,9 @@
 
 <animation
       videoSrc="/docs/video.mp4" 
-      :subtitles="subtitles"
+      :subtitles="[
+        {subtitle:{lang:'zh',label:'1',src:'1'},index:1}
+      ]"
     />
 
 <!-- # Bilibili 视频演示

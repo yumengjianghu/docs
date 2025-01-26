@@ -7,7 +7,8 @@ import animation from './components/animation.vue' // 视频组件
 import Giscus from './components/Giscus.vue'       // 评论组件
 import CopyBlock from './components/CopyBlock.vue' // 可复制模块
 import GlobalToast from './components/GlobalToast.vue' // 全局提示组件
-import card from './components/card.vue'
+import card from './components/card.vue' // 名片
+import prompt from './components/prompt.vue'
 
 import './style.css'
 
@@ -27,5 +28,6 @@ export default {
     app.component('CopyBlock', CopyBlock);
     app.component('GlobalToast', GlobalToast);
     app.component('card', card);
+    app.component('prompt', prompt);
   }
 }

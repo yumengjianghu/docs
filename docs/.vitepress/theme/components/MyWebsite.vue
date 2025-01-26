@@ -72,13 +72,18 @@
             本页访问量：<span id="busuanzi_value_page_pv"></span> 次
         </span>
     </div>
-
+    <GlobalToast ref="toast" :duration="2000" />
 </template>
 
-<script>
-export default {
-    name: 'MyWebsite',
+<script setup>
+import { ref, onMounted, warn } from 'vue';
+const toast = ref(null);
+const showToast = (message, status) => {
+    toast.value.show(message, status); // 调用子组件的 show 方法
 };
+onMounted(() => {
+    showToast("推荐PC浏览器打开", "warn", false, false)
+})
 </script>
 
 <style scoped>
