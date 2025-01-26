@@ -86,8 +86,8 @@ export default defineConfig({
       },
       {
         text: '资源', items: [
-          { text: 'download1', link: '/word/download1/note' },
-          { text: 'download2', link: '/word/download2/note' },
+          { text: 'Download 1', link: '/word/download1/note' },
+          { text: 'Download 2', link: '/word/download2/note' },
 
           // { text: '...', link: '/word' },
 
@@ -97,6 +97,7 @@ export default defineConfig({
         text: '其他', items: [
           { text: '我的简历', link: '/word/简历/docs.md' },
           { text: '视频模块', link: '/word/video/note.md' },
+          { text: '实验功能', link: '/word/Experimental/note.md' },
           { text: '...', link: '/word/other/note' },
           // { text: 'Git', link: '/word/git/Git' },
           // { text: '...', link: '/word' },

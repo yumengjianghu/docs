@@ -135,7 +135,7 @@ export default {
     display: flex;
     justify-content: right;
     flex-wrap: wrap;
-    background: aliceblue url('/docs/status/error.png') no-repeat 10px center;
+    background: aliceblue url('/docs/status/error.svg') no-repeat 10px center;
     transition: all 1s ease;
 }
 
@@ -146,12 +146,12 @@ export default {
 
 .GreenBgColor {
 
-    background: aliceblue url('/docs/status/right.png') no-repeat 10px center;
+    background: aliceblue url('/docs/status/right.svg') no-repeat 10px center;
 
 }
 
 .OrangeBgColor {
-    background: aliceblue url('/docs/status/warn.png') no-repeat 10px center;
+    background: aliceblue url('/docs/status/warn.svg') no-repeat 10px center;
 
 }
 
@@ -165,23 +165,29 @@ export default {
     background-position: 10px, 920px;
     background-repeat: no-repeat, no-repeat;
     background-size: contain contain;
-    font-size: 20px;
-    font-weight: 500;
+    font-size: 25px;
+    /* font-weight: 600; */
     width: 1000px;
     display: flex;
     justify-content: center;
     align-items: center;
+    letter-spacing: 10px;
+    color: #247ef8
 }
 
 @media (max-width:1800px) {
     .WelcomeToHome {
         background-position: 1px 1px, 60px;
         width: auto;
+        color: transparent;
 
     }
 
+}
+
+@media (min-width:1800px) {
     .toast-message {
-        color: transparent;
+        /* color: #000000 */
     }
 }
 
@@ -190,8 +196,6 @@ export default {
         opacity: 0;
         transform: translateY(-20px);
     }
-
-
 
     to {
         opacity: 1;
@@ -203,8 +207,8 @@ export default {
 
 .hiddenUp {
     opacity: 0;
-    /* transform: translateY(-20px) translateX(-50%); */
-    transform: translateX(50px);
+    transform: translateY(-20px) translateX(-50%);
+    /* transform: translateX(50px); */
 
 }
 </style>

@@ -40,18 +40,7 @@
       <button @click="toggleFullscreen">全屏</button>
     </div>
   </div>
-  <div class="testBlock">
-    <button @click="showToast(`通过提示，提示时间:${GlobalToastDurationTime / 1000}秒`, 'true')">模拟通过提示</button>
-    <button @click="showToast('警告提示', 'warn')">模拟警告提示</button>
-    <button @click="showToast('错误提示', 'false')">模拟报错提示</button>
-    <button @click="UpdateData()">修改弹窗持续时间</button>
-
-  </div>
-  <GlobalToast :duration="GlobalToastDurationTime" ref="toast">
-    <div class="slotContent">
-      <input type="text" class="textInput" v-model="testValue"><button class="textInputBtn"
-        @click="submit()">提交</button>
-    </div>
+  <GlobalToast ref="toast">
   </GlobalToast>
 </template>
 
@@ -79,7 +68,7 @@ export default {
 
     let testValue = ref()
 
-    const GlobalToastDurationTime = ref(1000) // 弹窗组件持续时间
+
     const videoElement = ref(null); // 视频元素引用
     const isPlaying = ref(true); // 是否正在播放
     const isMuted = ref(true) // 是否静音
@@ -93,30 +82,7 @@ export default {
       // togglePlay()
 
     })
-    function submit() {
-      toast.value.stopShow()
-      const newData = Number(testValue.value)
-      setTimeout(() => {
-        if (newData) {
-          GlobalToastDurationTime.value = newData
-          setTimeout(() => {
-            showToast(`更改成功,新值:${newData / 1000}秒`, 'true')
-          }, 500);
-        }
-        else {
-          setTimeout(() => {
-            showToast('更改失败', 'false')
-          }, 500);
-        }
-      }, 100);
-
-    }
-    function UpdateData() {
-      showToast(`当前弹窗持续时间:${GlobalToastDurationTime.value / 1000}秒，请输入修改的值`, 'warn', true, true)
-
-      // const newData = Number(prompt("请输入更改的值"))
-
-    }
+  
 
     // 播放/暂停
     const togglePlay = () => {
@@ -220,23 +186,13 @@ export default {
       toggleFullscreen,
       showToast,  // 弹窗组件
       toast,
-      GlobalToastDurationTime,
-      UpdateData,// 自定义修改数据函数
-      testValue, // input输入数据
-      submit, // button 回调函数
+
     };
   },
 };
 </script>
 
 <style scoped>
-.testBlock {
-  margin-top: 50px;
-  display: flex;
-  justify-content: space-around;
-  background-color: #f6f6f7;
-  padding: 50px;
-}
 
 .speed {
   color: black;
@@ -298,25 +254,9 @@ select {
   cursor: pointer;
 }
 
-.slotContent {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
 
-}
 
-.textInput {
-  border: 1px #e0e1e2 solid;
-  border-radius: 5px;
-  padding-left: 5px;
-  flex-grow: 1;
-}
 
-@media (max-width:648px) {
-  .textInputBtn {
-    width: 100%;
-    /* height: 30px; */
-    margin-top: 5px;
-  }
-}
+
+
 </style>
