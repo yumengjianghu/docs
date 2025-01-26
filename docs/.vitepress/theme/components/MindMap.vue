@@ -1,12 +1,3 @@
-<!-- <template>
-    <h1>待挖掘</h1>
-</template>
-
-<script setup>
-
-</script>
-
-<style scoped></style> -->
 <template>
     <div ref="mindMapContainer" class="mind-map-container"></div>
   </template>
