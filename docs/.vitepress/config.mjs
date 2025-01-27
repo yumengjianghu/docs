@@ -82,6 +82,7 @@ export default defineConfig({
           { text: 'VitePress插入评论功能', link: '/word/CommentFunction/note' },
           { text: '局域网服务器部署', link: '/word/局域网服务器部署/note' },
           { text: 'Git基本使用', link: '/word/git/Git' },
+          { text: 'Git/Github详解', link: '/word/Github/note' },
         ]
       },
       {
