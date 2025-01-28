@@ -1,5 +1,6 @@
 <template>
-    <div v-if="isVisible" class="toast-container" :class="{ hiddenUp: ishidden }">
+    <!-- v-if / v-show -->
+    <div v-show="isVisible" class="toast-container" :class="{ hiddenUp: ishidden }">    
         <div class="toast-message"
             :class="{ GreenBgColor: GColorstatus, OrangeBgColor: RColorstatus, WelcomeToHome: isHome }">
             <span class="text">
