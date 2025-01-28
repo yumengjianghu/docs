@@ -2,6 +2,8 @@ name: Optimize Page Resources
 
 on:
   push:
+    paths:
+      - 'docs/'
     branches:
       - main  # 触发工作流的分支
 
