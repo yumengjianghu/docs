@@ -64,3 +64,56 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+  optimize:
+    runs-on: ubuntu-latest  # 使用最新的Ubuntu环境
+    steps:
+      # 1. 检出代码
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PAT }}  # 使用PAT
+      # 2. 设置Node.js环境
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18  # 使用Node.js 18
+
+      # 3. 安装依赖
+      - name: Install dependencies
+        run: |
+          npm install -g imagemin-cli imagemin-pngquant imagemin-mozjpeg imagemin-gifsicle imagemin-svgo
+          npm install -g cssnano uglify-js
+          npm install -g vue
+
+      # 4. 压缩图片
+      - name: Optimize images
+        run: |
+          imagemin "public/*.{jpg,jpeg,png,gif,svg}" --plugin=pngquant --plugin=mozjpeg --plugin=gifsicle --plugin=svgo --out-dir=docs/assets/images
+
+      # 5. 最小化CSS文件
+      - name: Minify CSS
+        run: |
+          find -type f -name "*.css" -exec cssnano {} -o {} \;
+
+      # 6. 最小化JS文件
+      - name: Minify JS
+        run: |
+          find -type f -name "*.js" ! -name "*.min.js" -exec uglifyjs {} -o {} \;
+
+      # 7. 最小化Vue文件
+      - name: Minify Vue files
+        run: |
+          find -type f -name "*.vue" -exec sh -c 'uglifyjs --toplevel -c -m -o "\$1" "\$1"' _ {} \;
+      # 打印文件前后大小
+      - name: Check file sizes before optimization
+        run: find docs -type f \( -name "*.css" -o -name "*.js" -o -name "*.vue" -o -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.svg" \) -exec du -h {} \;
+      - name: Check file sizes after optimization
+        run: find docs -type f \( -name "*.css" -o -name "*.js" -o -name "*.vue" -o -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.svg" \) -exec du -h {} \;
+      # 8. 提交优化后的文件
+      - name: Commit optimized files
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add docs
+          git commit -m "Optimized resources via GitHub Actions" || echo "No changes to commit"
+          git push
