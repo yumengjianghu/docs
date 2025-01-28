@@ -2115,8 +2115,7 @@ app.listen(8888, function () {
 ```
 
 # 实战
+...
 
-大事件项目文档：http://www.escook.cn:8088/
-
-见 **ev_api_server** md文档
-
+## 评论
+<Giscus />

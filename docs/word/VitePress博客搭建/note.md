@@ -141,3 +141,6 @@ GitHub 提供了 Releases API，开发者可以通过 API 自动化发布流程�
 ------
 
 通过 GitHub Releases，开发者可以更专业地管理软件版本，并方便地分发二进制文件和更新日志。
+
+## 评论
+<Giscus />

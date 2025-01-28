@@ -1,7 +1,7 @@
 <template>
   <div class="video-player">
     <!-- 视频元素 -->
-    <video autoplay playsinline muted ref="videoElement" :src="videoSrc" @timeupdate="updateProgress"
+    <video autoplay playsinline loading="lazy" muted ref="videoElement" :src="videoSrc" @timeupdate="updateProgress"
       @loadedmetadata="updateDuration">
       <!-- 字幕轨道 -->
       <track v-for="(subtitle, index) in subtitles" :key="index" kind="subtitles" :src="subtitle.src"

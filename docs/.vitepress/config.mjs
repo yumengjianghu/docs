@@ -134,7 +134,7 @@ export default defineConfig({
       },
     ],
     footer: {
-      copyright: 'yumemgjianghu ©2025 vitepress <br/> ',
+      copyright: 'Website Based on Vitepress create <br/>鱼梦江湖 © 2025 本站内容采用 署名 4.0 国际 (CC BY 4.0) 许可 , 转载请注明出处 .',
       message: '<span id="busuanzi_container_page_pv" data-page-id="age-01">本页访问量：<span id="busuanzi_value_page_pv"></span> 次</span>',
     }
   }

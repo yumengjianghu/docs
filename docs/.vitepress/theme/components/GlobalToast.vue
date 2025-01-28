@@ -147,6 +147,7 @@ export default {
 .GreenBgColor {
 
     background: aliceblue url('/docs/status/right.svg') no-repeat 10px center;
+    
 
 }
 
@@ -185,11 +186,11 @@ export default {
 
 }
 
-@media (min-width:1800px) {
+/* @media (min-width:1800px) {
     .toast-message {
-        /* color: #000000 */
+        
     }
-}
+} */
 
 @keyframes slideDown {
     from {

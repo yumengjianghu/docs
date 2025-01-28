@@ -67,11 +67,6 @@
             <div class="position">计算机科学与技术 学士学位</div>
         </div>
     </section>
-    <div class="footer">
-        <span id="busuanzi_container_page_pv">
-            本页访问量：<span id="busuanzi_value_page_pv"></span> 次
-        </span>
-    </div>
     <GlobalToast ref="toast" :duration="2000" />
 </template>
 
@@ -103,11 +98,6 @@ body {
     background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
     animation: fadeIn 1s ease-out;
 }
-
-.footer {
-    text-align: center;
-}
-
 header {
     text-align: center;
     padding: 40px 0;

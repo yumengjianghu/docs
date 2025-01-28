@@ -17,14 +17,17 @@ hero:
     - theme: alt
       text: 回顾
       link: /ed
+    - theme: alt
+      text: 记录  
+      link: /memories
 
 
 features:
-  - title: 🌟贴士
-    details: 成功不是一蹴而就的，需要时间和耐心。相信过程，享受每一个努力的瞬间
-  - title: 💡思考
-    details: 梦想还是要有的，万一实现了呢？勇敢追梦，不负青春，不负自己
-  - title: 💪建议 
-    details: 对生活保持热情，对工作保持激情。只有热爱，才能让你在漫长的路上不感到疲惫
+  - title: 🌟介绍 
+    details: 一个专注于分享技术的小天地，在这里，我会记录自己的学习心得、实践经验以及生活中的点滴感悟。
+  - title: 💡思考 
+    details: 希望你能找到一些有价值的内容。感谢你的到访，愿我们在这里共同成长与探索！
+  - title: 💪建议
+    details: 如果你在文档中发现问题，希望你及时评论反馈
 ---
 
