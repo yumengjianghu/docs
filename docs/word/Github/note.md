@@ -525,7 +525,361 @@ git commit --amend
 
 **操作**：右键历史版本选择`create tag`，写一个tag名称，比如`v1.3.5`，表示这一次提交就是项目的v1.3.5版本，之后可以使用版本号进行版本发布，**记得push**
 
-## 分支合并
+### 分支合并
+
+之前使用**Github网站**进行`pull request`进行合并
+
+使用**GIthub Desktop**进行`merge`分支合并
+
+```bash
+git merge
+```
+
+首先切换到接受合并的分支
+
+![image-20250128183003800](./assets/image-20250128183003800.png)
+
+点击`Choose a branch to merge into feature`，选择一个分支合并进feature分支
+
+![image-20250128183226281](./assets/image-20250128183226281.png)
+
+#### `Create a merge commit`
+
+```bash
+git merge main
+```
+
+![image-20250128183725133](./assets/image-20250128183725133.png)
+**Create a merge commit**：创建一个新的commit，合并到一起
+
+#### `Squash and merge`
+
+```bash
+git merge --squash main
+```
+
+![image-20250128184249563](./assets/image-20250128184249563.png)
+**Squash and merge**：把commit3,4,5压缩成一个提交合并进feature分支
+
+#### `Rebase`
+
+```bash
+git rebase main
+```
+
+![image-20250128184803711](./assets/image-20250128184803711.png)
+
+**Rebase**（变基 - 更改地基）：把main分支合并进了feature分支，把feature分支变基到了main分支
+
+变基：我自己的根基不存在了，把自己的分支变更到了main分支上，并且生成一个新的提交
+
+> [!IMPORTANT]
+>
+> 在Desktop使用**变基**，**提示**必须强制推送到GIthub网站`Git push -f`
+
+| 操作     | rebase                     | merge                                          | squash merge                   |
+| -------- | -------------------------- | ---------------------------------------------- | ------------------------------ |
+| 特点     | 只有线性提交记录           | 会出现所有提交记录，包括merge                  | 只出现一条merge记录            |
+| 优点     | 减少一次merge记录          | 保证分支可溯源                                 | 历史记录更加清爽干净           |
+| 缺点     | 必须使用强送               | 多一次merge记录                                | 历史记录被合并到一起了         |
+| 应用场景 | 在私有分支上可以使用rebase | 多人协作分支必须merge，向主干分支合并必须merge | 多人协作分支，需要保持记录清爽 |
+
+ 网页中`pull request`又有一样选项
+
+Github网页有相关**图形化界面**功能
+
+![image-20250128214104650](./assets/image-20250128214104650.png)
+
+### 优选提交
+
+**cherry pick**指的是优选提交或者拣选调教
+
+> 比如说只想把commit3，commit3合并到main分支，保留commit5分支在feature分支
+
+> [!IMPORTANT]
+>
+> **使用命令行操作**
+>
+> 切换到接受合并的分支
+>
+> ```bash
+> git switch main
+> ```
+>
+> 选择c3，c4两个commit
+>
+> ```bash
+> git cherry-pick c3 c4
+> ```
+>
+> ![image-20250128214954084](./assets/image-20250128214954084.png)
+>
+> **使用Desktop操作**
+>
+> 按住`shift`键同时选择多个commit，右键选择`Cherry-pick...`，指的是拣选选中的提交
+>
+> 选择要合并的分支，最后点击`Cherry-pick commit to main`即可
+
+> [!WARNING]
+>
+> 在Desktop中`Cherry-pick`时，要将分支切换到输出commit的分支，然后再选择若干个commit，命令行则反之
+
+## 解决合并冲突
+
+如果两个分支同时修改了同一个文件的同一行代码，合并的时候就会出现conflict（冲突）
+
+只能手动修改文件来解决冲突
+
+**resolve conflict**
+
+> [!CAUTION]
+>
+> 在Desktop上会有警告
+>
+> There will be 1 conflicted file when merging feature into main
+>
+> 将 feature 合并到 main 时将出现 1 个冲突文件
+
+![image-20250128220613639](./assets/image-20250128220613639.png)
+
+**Abort merge**：取消这次的merge，两个分支各自还原回去
+
+**Continue merge**：需要先手动解决冲突，即编辑文件，修改成理想状态
+
+![image-20250128220956612](./assets/image-20250128220956612.png)
+
+修改完后即可回到Desktop点击`Continue merge`
+
+## pull时冲突
+
+> [!NOTE]
+>
+> 场景：你的同事，她已经写完代码并且推送到远程仓库，但是你本地不知道，你修改了同一个文件的同一行，此时你还没有提交
+
+### Desktop
+
+点击`pull origin`，提示冲突，如果拉取更新会将本地代码覆盖，点击`Stash changes and continue`，存储更改并继续，此时进入文件修改冲突，回到Desktop✔表示已经解决了，即可commit提交了再push了
+
+这样就解决了本地跟远端的冲突
+
+### 命令行
+
+在main上合并feature分支
+
+```bash
+git merge feature
+```
+
+会显示冲突信息
+
+![image-20250128222919756](./assets/image-20250128222919756.png)
+
+打开编辑器手动处理冲突
+
+处理结束后，将处理的文件添加到**暂存区**，再进行一次提交才算解决冲突
+
+```bash
+git add test.txt
+```
+
+```bash
+git commit -m 'Resolve test file conflict'
+```
+
+### 文件冲突
+
+#### Desktop
+
+> [!NOTE]
+>
+> 场景：两个分支同时改动了同一个文件的名字
+
+![image-20250128223913678](./assets/image-20250128223913678.png)
+
+点击关闭提示
+
+![image-20250128224021558](./assets/image-20250128224021558.png)
+
+选中所有文件右键`Discard 3 selected changes`全部撤销更改
+
+打开目录调整为理想状态回到Desktop
+
+![image-20250128224258935](./assets/image-20250128224258935.png)
+
+点击`View conflicts`，最后再提交上去即可
+
+#### 命令行
+
+```bash
+git merge main
+```
+
+提示冲突
+
+```bash
+git status
+```
+
+按照命令行提示操作
+
+```bash
+git rm 'file name'
+```
+
+删除不要的文件
+
+```bash
+git rm 'abandon file name'
+```
+
+保留需要的文件
+
+```bash
+git add 'retain file name'
+```
+
+最后检查一下状态
+
+```bash
+git status
+```
+
+提示没有冲突，变成绿色即成功解决冲突
+
+最后使用commit命令提交
+
+```bash
+git commit -m 'Resolve file name conflict'
+```
+
+最后记得推送至远端
+
+## 贡献者流程
+
+一般先点击Issue参加讨论，可以把你的想法通过Issue和开发者进行交流
+
+可以提一个Issue，填写标题和描述，描述你的大体的实现思路，实现完成后会提交pull request，请问维护者，大家觉得怎么样，**提交Issue**
+
+如果开发者看到了一个Issue并且觉得不错，会回答你：期待你PR
+
+**贡献**:
+
+**第一步：**
+
+先fork复刻项目，把项目复制一份到自己的名下
+
+**第二步：**
+
+在`Code`按钮，找到HTTPS复制，回到Desktop，找到`Clone repository...`输入即可
+
+**第三步：**
+
+创建分支，在分支上进行功能开发，而不是直接使用main分支
+
+开发完功能后，提交一下，提交信息：实现xxx功能
+
+**第四步：**
+
+点击`Publish branch`推送远端
+
+**第五步：**
+同步一下母项目的代码，防止提交PR的时候不会产生冲突
+
+回到GIthub仓库，点击`Sync fork`，从母项目往子项目同步代码
+
+**第六步：**
+
+把子项目的main分支合并到feature分支
+
+因为子项目feature分支是个人分支，可以减少一次merge记录，选择Rebase，出现冲突按照需求解决即可
+
+**第七步：**
+
+点击`Force push origin`强制推送
+
+通过了rebase方法同步了母项目代码，防止提交PR的时候不会产生冲突
+
+**第八步：**
+
+创建PR
+
+当项目管理者认为代码可以的时候，点击`Merge pull request`
+
+当图标变成**紫色Merged**
+
+完成了对开源代码的贡献
+
+仓库的Contributors就会出现贡献者的名字
+
+贡献者可以回到本地将开发分支删除，保留main分支随时关注母项目的改动，有改动点击`sync fork`同步代码
+
+如果还想进行功能开发，再在Desktop创建分支进行开发就行了
+
+## IDEA使用Git
+
+**基础**
+
+**VSC**:版本控制系统
+
+当把代码克隆到本地后，文件夹会出现很多文件夹
+
+IDEA作为一个代码编辑软件，它会自动生成一些文件，但是这些文件不应该提交到git里面的，配置文件只是你自己本地使用的，其他开发者可能并不使用IDEA，否则别人下载文件会携带无用文件
+
+创建 **.gitignore** 文件用于忽略文件或者文件夹不需要被Git管理的
+
+> [!NOTE]
+>
+> IDEA提供了一种简单的方法创建
+>
+> 在文件上点击右键选择Git,点击Add to .gitignore
+
+> [!CAUTION]
+>
+> **文件夹**的**后面**有一个斜杠，代表这是一个文件夹
+>
+> ```
+> /tool.iml
+> .idea/
+> node/
+> ```
+
+点击左边的commit按钮，操作和Desktop类似
+
+> [!IMPORTANT]
+>
+> 如果远程仓库已经有你想忽略的文件，那么要先把添加到.gitignore，把文件从本地仓库移除，推送远端，远端会删除
+>
+> 再把文件还原回到本地仓库
+>
+> 这样以后再提交就不会带此文件了
+
+### pull
+
+在左下角有一个git的选项卡，点击后选择要拉取的分支，点击下小箭头（Update Selected）意思是（git fetch<u>取得远端更新</u> + git pull）完成远程仓库拉取本地仓库
+
+### 分支操作
+
+点击git选项卡的小加号`+`创建分支，创建的分支是基于当前分支创建的，右键点击push推送
+
+### 远端合并本地
+
+#### merge
+
+点击update获取远端更新，右键要切换的分支选择check out ,选择远端的main分支右键`Merge 'origin/main' into 'feature`把main分支的改动merge进feature分支
+
+> [!IMPORTANT]
+>
+> 分支上有一个绿色向上的小箭头代表更改还没有push上期，当前只是把远端的代码合并到本地，没有push
+
+#### rebase
+
+切换到接受合并的分支，选择要合并的分支点击`Rebase 'feature2' onto 'origin/main`，指的是把feature分支变基到main分支上（类似把main分支merge到feature分支上）
+
+> [!IMPORTANT]
+>
+> 右键push时候，按钮的小箭头可以选择`force push`强制推送
+
+**进阶**
 
 ...
 
