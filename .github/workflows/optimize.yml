@@ -48,6 +48,7 @@ jobs:
       - name: Minify Vue files
         run: |
           find docs -type f -name "*.vue" -exec sh -c 'uglifyjs --toplevel -c -m -o "\$1" "\$1"' _ {} \;
+      # 打印文件前后大小
       - name: Check file sizes before optimization
         run: find docs -type f \( -name "*.css" -o -name "*.js" -o -name "*.vue" -o -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.svg" \) -exec du -h {} \;
       - name: Check file sizes after optimization
