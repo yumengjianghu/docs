@@ -5,7 +5,7 @@ on:
     paths:
       - 'docs/'
     branches:
-      - main  # 触发工作流的分支
+      - main  #       触发工作流的分支
 
 jobs:
   optimize:
@@ -38,17 +38,17 @@ jobs:
       # 5. 最小化CSS文件
       - name: Minify CSS
         run: |
-          find docs -type f -name "*.css" -exec cssnano {} -o {} \;
+          find -type f -name "*.css" -exec cssnano {} -o {} \;
 
       # 6. 最小化JS文件
       - name: Minify JS
         run: |
-          find docs -type f -name "*.js" ! -name "*.min.js" -exec uglifyjs {} -o {} \;
+          find -type f -name "*.js" ! -name "*.min.js" -exec uglifyjs {} -o {} \;
 
       # 7. 最小化Vue文件
       - name: Minify Vue files
         run: |
-          find docs -type f -name "*.vue" -exec sh -c 'uglifyjs --toplevel -c -m -o "\$1" "\$1"' _ {} \;
+          find -type f -name "*.vue" -exec sh -c 'uglifyjs --toplevel -c -m -o "\$1" "\$1"' _ {} \;
       # 打印文件前后大小
       - name: Check file sizes before optimization
         run: find docs -type f \( -name "*.css" -o -name "*.js" -o -name "*.vue" -o -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.svg" \) -exec du -h {} \;
