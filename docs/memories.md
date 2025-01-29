@@ -5,7 +5,11 @@
 
 [X]代办：全局css文件修改
 
-<img v-lazy="'public/学习.png'" alt="实际图片" />
+[X]代办：Nuxt.js
 
+<!-- <img v-lazy="'public/学习.png'" alt="实际图片" /> -->
+
+
+<!-- <img src="/public/background.png" alt=""> -->
 ## 评论
 <Giscus />
