@@ -15,7 +15,7 @@ import VueLazyload from 'vue-lazyload'
 import './style.css'
 
 // 导入占位图和错误图
-import loadingImage from '../../public/status/xhj.gif'
+import loadingImage from '../../public/status/warn.svg'
 import errorImage from '../../public/status/loseimg.png'
 
 /** @type {import('vitepress').Theme} */
