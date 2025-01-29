@@ -42,33 +42,41 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Checkout repository
+      - name: 检出代码
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.PAT }}
-      - name: Setup Node
+      - name: 设置Node.js环境
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
-      - name: 安装优化工具
+      - name: 安装依赖
         run: |
           npm install -g imagemin-cli imagemin-pngquant imagemin-mozjpeg imagemin-gifsicle imagemin-svgo
-          npm install -g cssnano uglify-js
-      - name: 压缩图像
+          npm install cssnano uglify-js @vue/cli --save-dev
+      - name: 验证依赖安装
         run: |
-          imagemin "docs/.vitepress/dist/**/*.{jpg,jpeg,png,gif,svg}" --plugin=pngquant --plugin=mozjpeg --plugin=gifsicle --plugin=svgo --out-dir=docs/.vitepress/dist
+          npm list imagemin-cli imagemin-pngquant imagemin-mozjpeg imagemin-gifsicle imagemin-svgo cssnano uglify-js @vue/cli
+      - name: 压缩图片并保持目录结构
+        run: |
+          mkdir -p docs/public-optimized
+          npx imagemin "docs/dist/**/*.{jpg,jpeg,png,gif,svg}" --plugin=pngquant --plugin=mozjpeg --plugin=gifsicle --plugin=svgo --out-dir=docs/public-optimized
+      - name: 替换原始图片为压缩后的图片
+        run: |
+          rsync -av --delete docs/public-optimized/ docs/dist/
+          rm -rf docs/public-optimized
       - name: 压缩 CSS
         run: |
-          find docs/.vitepress/dist -type f -name "*.css" -exec sh -c 'npx cssnano "$1" "$1"' _ {} \;
+          find docs/.vitepress/dist -type f -name "*.css" -exec sh -c 'npx cssnano "\$1" -o "\$1"' _ {} \;
       - name: 压缩 JS
         run: |
-          find docs/.vitepress/dist/assets -type f -name "*.js" ! -name "*.min.js" -exec uglifyjs {} -o {} \;
+          find docs/.vitepress/dist/assets -type f -name "*.js" ! -name "*.min.js" -exec sh -c 'npx uglifyjs "\$1" -o "\$1"' _ {} \;
       - name: 优化前检查文件大小
         run: find docs/.vitepress/dist -type f \( -name "*.css" -o -name "*.js" -o -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.svg" \) -exec du -h {} \;
       - name: 优化后检查文件大小
         run: find docs/.vitepress/dist -type f \( -name "*.css" -o -name "*.js" -o -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.svg" \) -exec du -h {} \;
-      - name: Re-upload artifact
+      - name: 重新上传构件
         uses: actions/upload-pages-artifact@v3
         with:
           path: docs/.vitepress/dist
