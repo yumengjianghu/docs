@@ -47,7 +47,7 @@
 
 元素浮动后的特点
 
-![](img\2024-12-15_132608.jpg)
+![](assets\2024-12-15_132608.jpg)
 
 标准文档流（**文档流**）：元素默认的一种排列方式
 
@@ -512,7 +512,7 @@ Vs code强制折叠（CSS）
 | optimum | 数值 | 规定最优值 |
 | value   | 数值 | 规定当前值 |
 
-![024-12-17_20320](img\2024-12-17_203207.jpg)
+![024-12-17_20320](assets\2024-12-17_203207.jpg)
 
 
 
@@ -1442,7 +1442,7 @@ img{
 - warp自动换行，伸缩容器不够自动换行
 - warp-reverse反向换行
 
-![Snipaste_2024-12-22_13-13-23](img\Snipaste_2024-12-22_13-13-23.png)
+![Snipaste_2024-12-22_13-13-23](assets\Snipaste_2024-12-22_13-13-23.png)
 
 #### 复合属性
 
@@ -1467,7 +1467,7 @@ flex-flow:row-reverse warp-reverse;
 | space-between | 均匀分布，两端对齐（最常用         |
 | space-evenly  | 均匀分布，两端距离与中间距离一致   |
 
-![](img\Snipaste_2024-12-22_13-34-47.png)
+![](assets\Snipaste_2024-12-22_13-34-47.png)
 
 #### 侧轴对齐
 
@@ -1483,7 +1483,7 @@ flex-flow:row-reverse warp-reverse;
 | baseline   | 伸缩项目第一行文字的基线对齐（伸缩项目文字不一样时）     |
 | stretch    | 如果伸缩项目**未设置高度**，将占满整个容器的高度(默认值) |
 
-![](img\Snipaste_2024-12-22_13-47-23.png)
+![](assets\Snipaste_2024-12-22_13-47-23.png)
 
 #####  多行
 
@@ -1499,7 +1499,7 @@ flex-flow:row-reverse warp-reverse;
 | space-evenly  | 均匀分布，侧轴两端距离与中间距离一致                   |
 | stretch       | 占满整个侧轴（默认值                                   |
 
-![](img\Snipaste_2024-12-22_14-01-39.png)
+![](assets\Snipaste_2024-12-22_14-01-39.png)
 
 #### 水平垂直居中
 
@@ -1710,7 +1710,7 @@ calc(100vh-70px);
 
 ### 常用阈值
 
-![](img\Snipaste_2024-12-22_17-34-40.png)
+![](assets\Snipaste_2024-12-22_17-34-40.png)
 
 ```html
 

@@ -522,7 +522,7 @@ Hooks定义：本质是一个函数，把setup函数中的`Composition API`(组�
 ------
 ## 路由
 
-![](img\Snipaste_2024-12-24_21-46-45.png)
+![](assets\Snipaste_2024-12-24_21-46-45.png)
 
 安装路由：`npm i vue-router` 
 
@@ -1186,7 +1186,7 @@ export const useTalkStore = defineStore('talk',()=>{
 
 ## 组件通信
 
-![](img\Snipaste_2024-12-26_19-31-55.png)
+![](assets\Snipaste_2024-12-26_19-31-55.png)
 
 ### props
 
@@ -1252,7 +1252,7 @@ export const useTalkStore = defineStore('talk',()=>{
 
    **命名规范**：
 
-![](img\Snipaste_2024-12-26_20-02-28.png)
+![](assets\Snipaste_2024-12-26_20-02-28.png)
 
 1. 概述：自定义事件常用于：**子 => 父。**
 2. 注意区分好：原生事件、自定义事件。
@@ -1464,7 +1464,7 @@ v-model原理：
 **祖 < - >  孙 互相通信**（本质是props）
 
 **v-bind**:
-![](img\Snipaste_2024-12-26_21-33-42.png)
+![](assets\Snipaste_2024-12-26_21-33-42.png)
 
 1. 概述：`$attrs`用于实现**当前组件的父组件**，向**当前组件的子组件**通信（**祖→孙**）。
 

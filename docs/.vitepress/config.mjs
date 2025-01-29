@@ -45,15 +45,15 @@ export default defineConfig({
     nav: [
       {
         text: '前端', items: [
-          { text: 'HTML5', link: '/word/h5/note/h5' },
+          { text: 'HTML5', link: '/word/h5/note' },
           { text: '布局技巧', link: '/word/CSS3/note' },
           { text: 'JavaScript', link: '/word/JS/Notes' },
           { text: 'TypeScript', link: '/word/TS/note' },
           { text: 'uniapp', link: '/word/uniapp/note' },
           {
             text: '框架', items: [
-              { text: 'Vue3', link: '/word/vue/vue3/vue' },
-              { text: 'Vue2', link: '/word/vue/vue2/note' },
+              { text: 'Vue3', link: '/word/vue3/vue' },
+              { text: 'Vue2', link: '/word/vue2/note' },
               { text: 'React', link: '/word/react/note' },
             ]
           },
