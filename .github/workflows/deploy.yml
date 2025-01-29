@@ -55,7 +55,6 @@ jobs:
         run: |
           npm install -g imagemin-cli imagemin-pngquant imagemin-mozjpeg imagemin-gifsicle imagemin-svgo
           npm install cssnano uglify-js @vue/cli --save-dev
-          npm install
       - name: 验证依赖安装
         run: |
           npm list imagemin-cli imagemin-pngquant imagemin-mozjpeg imagemin-gifsicle imagemin-svgo cssnano uglify-js @vue/cli
@@ -67,18 +66,10 @@ jobs:
         run: |
           rsync -av --delete docs/public-optimized/ docs/.vitepress/dist/
           rm -rf docs/public-optimized
-      - name: 最小化 CSS 文件并输出到 dist 目录
-        run: |
-          mkdir -p docs/.vitepress/dist/css
-          find docs/.vitepress/dist -type f -name "*.css" -exec sh -c 'npx cssnano "\$1" -o "docs/.vitepress/dist/css/$(basename "\$1")"' _ {} \;
-      - name: 最小化 JS 文件并输出到 dist 目录
-        run: |
-          mkdir -p docs/.vitepress/dist/js
-          find docs/.vitepress/dist -type f -name "*.js" ! -name "*.min.js" -exec sh -c 'npx uglifyjs "\$1" -o "docs/.vitepress/dist/js/$(basename "\$1")"' _ {} \;
       - name: 优化前检查文件大小
-        run: find docs/.vitepress/dist -type f \( -name "*.css" -o -name "*.js" -o -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.svg" \) -exec du -h {} \;
+        run: find docs/.vitepress/dist -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.svg" \) -exec du -h {} \;
       - name: 优化后检查文件大小
-        run: find docs/.vitepress/dist -type f \( -name "*.css" -o -name "*.js" -o -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.svg" \) -exec du -h {} \;
+        run: find docs/.vitepress/dist -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.svg" \) -exec du -h {} \;
       - name: 重新上传构件
         uses: actions/upload-pages-artifact@v3
         with:
