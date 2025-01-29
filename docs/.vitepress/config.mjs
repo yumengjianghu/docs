@@ -52,7 +52,7 @@ export default defineConfig({
           { text: 'uniapp', link: '/word/uniapp/note' },
           {
             text: '框架', items: [
-              { text: 'Vue3', link: '/word/vue3/vue' },
+              { text: 'Vue3', link: '/word/vue3/note' },
               { text: 'Vue2', link: '/word/vue2/note' },
               { text: 'React', link: '/word/react/note' },
             ]
