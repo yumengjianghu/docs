@@ -7,7 +7,7 @@
 
 [X]代办：Nuxt.js
 
-<!-- <img v-lazy="'public/学习.png'" alt="实际图片" /> -->
+<img src='http://squv82ws7.hd-bkt.clouddn.com/wordxhj.gif' alt="实际图片" />
 
 
 <!-- <img src="/public/background.png" alt=""> -->
