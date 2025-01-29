@@ -19,20 +19,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: 检出代码
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Setup Node
+      - name: 设置Node环境
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
-      - name: Install dependencies
+      - name: 安装依赖项
         run: npm ci
-      - name: Build with VitePress
+      - name: 使用 VitePress 构建
         run: npm run docs:build
-      - name: Upload artifact
+      - name: 上传构件
         uses: actions/upload-pages-artifact@v3
         with:
           path: docs/.vitepress/dist
@@ -46,7 +46,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.PAT }}
-      - name: Compress images
+      - name: 压缩图像
         uses: calibreapp/image-actions@main
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
@@ -56,7 +56,7 @@ jobs:
           webpQuality: '80'
           include: 'docs/.vitepress/dist/**/*.{png,jpg,jpeg,webp,gif}'
 
-      - name: Commit changes
+      - name: 提交更改
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
@@ -71,8 +71,8 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     needs: optimize
     runs-on: ubuntu-latest
-    name: Deploy
+    name: 部署
     steps:
-      - name: Deploy to GitHub Pages
+      - name: 部署到GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
