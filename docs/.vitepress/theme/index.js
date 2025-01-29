@@ -11,8 +11,12 @@ import card from './components/card.vue' // 名片
 import prompt from './components/prompt.vue'  // 横幅提示
 import MindMap from './components/MindMap.vue'  // 思维导图
 import Experimental from './components/Experimental.vue'  // 实验功能模块
-
+import VueLazyload from 'vue-lazyload'
 import './style.css'
+
+// 导入占位图和错误图
+import loadingImage from '../../public/status/xhj.gif'
+import errorImage from '../../public/status/loseimg.png'
 
 /** @type {import('vitepress').Theme} */
 export default {
@@ -33,5 +37,16 @@ export default {
     app.component('prompt', prompt);
     app.component('MindMap', MindMap);
     app.component('Experimental', Experimental);
+    app.use(VueLazyload,{
+      preLoad: 1.3,
+      error: errorImage,
+      loading: loadingImage,
+      attempt: 3,
+      observer: true,
+      observerOptions: {
+        rootMargin: '0px',
+        threshold: 0.1
+      }
+    })
   }
 }
