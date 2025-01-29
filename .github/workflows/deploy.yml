@@ -72,6 +72,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: docs/.vitepress/dist
+          name: optimized-artifact # 使用不同的工件名称
 
   # 3. 部署
   deploy:
