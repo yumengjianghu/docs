@@ -57,13 +57,13 @@ jobs:
           npm install -g cssnano uglify-js
       - name: Optimize images
         run: |
-          imagemin "docs/.vitepress/dist/**/*.{jpg,jpeg,png,gif,svg}" --plugin=pngquant --plugin=mozjpeg --plugin=gifsicle --plugin=svgo --out-dir=docs/.vitepress/dist
+          imagemin "docs/.vitepress/dist/assets/*.{jpg,jpeg,png,gif,svg}" --plugin=pngquant --plugin=mozjpeg --plugin=gifsicle --plugin=svgo --out-dir=docs/.vitepress/dist
       - name: Minify CSS
         run: |
-          find docs/.vitepress/dist -type f -name "*.css" -exec npx cssnano {} -o {} \;
+          find docs/.vitepress/dist/vp-icons.css -type f -name "*.css" -exec npx cssnano {} -o {} \;
       - name: Minify JS
         run: |
-          find docs/.vitepress/dist -type f -name "*.js" ! -name "*.min.js" -exec uglifyjs {} -o {} \;
+          find docs/.vitepress/dist/assets -type f -name "*.js" ! -name "*.min.js" -exec uglifyjs {} -o {} \;
       - name: Check file sizes before optimization
         run: find docs/.vitepress/dist -type f \( -name "*.css" -o -name "*.js" -o -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.svg" \) -exec du -h {} \;
       - name: Check file sizes after optimization
