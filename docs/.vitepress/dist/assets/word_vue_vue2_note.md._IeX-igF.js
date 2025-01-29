@@ -1,1 +1,0 @@
-import{_ as e,c as t,o}from"./chunks/framework.CLOUWu74.js";const u=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"word/vue/vue2/note.md","filePath":"word/vue/vue2/note.md"}'),r={name:"word/vue/vue2/note.md"};function a(n,s,c,d,p,_){return o(),t("div")}const m=e(r,[["render",a]]);export{u as __pageData,m as default};
