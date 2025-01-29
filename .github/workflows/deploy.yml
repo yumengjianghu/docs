@@ -51,22 +51,22 @@ jobs:
         with:
           node-version: 20
           cache: npm
-      - name: Install optimization tools
+      - name: 安装优化工具
         run: |
           npm install -g imagemin-cli imagemin-pngquant imagemin-mozjpeg imagemin-gifsicle imagemin-svgo
           npm install -g cssnano uglify-js
-      - name: Optimize images
+      - name: 压缩图像
         run: |
-          imagemin "docs/.vitepress/dist/assets/*.{jpg,jpeg,png,gif,svg}" --plugin=pngquant --plugin=mozjpeg --plugin=gifsicle --plugin=svgo --out-dir=docs/.vitepress/dist
-      - name: Minify CSS
+          imagemin "docs/.vitepress/dist/**/*.{jpg,jpeg,png,gif,svg}" --plugin=pngquant --plugin=mozjpeg --plugin=gifsicle --plugin=svgo --out-dir=docs/.vitepress/dist
+      - name: 压缩 CSS
         run: |
-          find docs/.vitepress/dist/vp-icons.css -type f -name "*.css" -exec npx cssnano {} -o {} \;
-      - name: Minify JS
+          find docs/.vitepress/dist -type f -name "*.css" -exec sh -c 'npx cssnano "$1" "$1"' _ {} \;
+      - name: 压缩 JS
         run: |
           find docs/.vitepress/dist/assets -type f -name "*.js" ! -name "*.min.js" -exec uglifyjs {} -o {} \;
-      - name: Check file sizes before optimization
+      - name: 优化前检查文件大小
         run: find docs/.vitepress/dist -type f \( -name "*.css" -o -name "*.js" -o -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.svg" \) -exec du -h {} \;
-      - name: Check file sizes after optimization
+      - name: 优化后检查文件大小
         run: find docs/.vitepress/dist -type f \( -name "*.css" -o -name "*.js" -o -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.svg" \) -exec du -h {} \;
       - name: Re-upload artifact
         uses: actions/upload-pages-artifact@v3
