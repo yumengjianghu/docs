@@ -55,23 +55,26 @@ jobs:
         run: |
           npm install -g imagemin-cli imagemin-pngquant imagemin-mozjpeg imagemin-gifsicle imagemin-svgo
           npm install cssnano uglify-js @vue/cli --save-dev
+          npm install
       - name: 验证依赖安装
         run: |
           npm list imagemin-cli imagemin-pngquant imagemin-mozjpeg imagemin-gifsicle imagemin-svgo cssnano uglify-js @vue/cli
       - name: 压缩图片并保持目录结构
         run: |
           mkdir -p docs/public-optimized
-          npx imagemin "docs/dist/**/*.{jpg,jpeg,png,gif,svg}" --plugin=pngquant --plugin=mozjpeg --plugin=gifsicle --plugin=svgo --out-dir=docs/public-optimized
+          npx imagemin "docs/.vitepress/dist/**/*.{jpg,jpeg,png,gif,svg}" --plugin=pngquant --plugin=mozjpeg --plugin=gifsicle --plugin=svgo --out-dir=docs/public-optimized
       - name: 替换原始图片为压缩后的图片
         run: |
-          rsync -av --delete docs/public-optimized/ docs/dist/
+          rsync -av --delete docs/public-optimized/ docs/.vitepress/dist/
           rm -rf docs/public-optimized
-      - name: 压缩 CSS
+      - name: 最小化 CSS 文件并输出到 dist 目录
         run: |
-          find docs/.vitepress/dist -type f -name "*.css" -exec sh -c 'npx cssnano "\$1" -o "\$1"' _ {} \;
-      - name: 压缩 JS
+          mkdir -p docs/.vitepress/dist/css
+          find docs/.vitepress/dist -type f -name "*.css" -exec sh -c 'npx cssnano "\$1" -o "docs/.vitepress/dist/css/$(basename "\$1")"' _ {} \;
+      - name: 最小化 JS 文件并输出到 dist 目录
         run: |
-          find docs/.vitepress/dist/assets -type f -name "*.js" ! -name "*.min.js" -exec sh -c 'npx uglifyjs "\$1" -o "\$1"' _ {} \;
+          mkdir -p docs/.vitepress/dist/js
+          find docs/.vitepress/dist -type f -name "*.js" ! -name "*.min.js" -exec sh -c 'npx uglifyjs "\$1" -o "docs/.vitepress/dist/js/$(basename "\$1")"' _ {} \;
       - name: 优化前检查文件大小
         run: find docs/.vitepress/dist -type f \( -name "*.css" -o -name "*.js" -o -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.svg" \) -exec du -h {} \;
       - name: 优化后检查文件大小
