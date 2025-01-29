@@ -88,7 +88,7 @@ jobs:
       # 4. 压缩图片
       - name: Optimize images
         run: |
-          imagemin "public/*.{jpg,jpeg,png,gif,svg}" --plugin=pngquant --plugin=mozjpeg --plugin=gifsicle --plugin=svgo --out-dir=docs/assets/images
+          imagemin "docs/**/*.{jpg,jpeg,png,gif,svg}" --plugin=pngquant --plugin=mozjpeg --plugin=gifsicle --plugin=svgo --out-dir=docs/assets/images
 
       # 5. 最小化CSS文件
       - name: Minify CSS
