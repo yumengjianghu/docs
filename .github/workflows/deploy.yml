@@ -59,9 +59,9 @@ jobs:
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           compressOnly: true
-          jpegQuality: '70'
-          pngQuality: '70'
-          webpQuality: '70'
+          jpegQuality: '50'
+          pngQuality: '50'
+          webpQuality: '50'
           ignorePaths: '**/node_modules/**'  # 忽略不需要压缩的路径
 
       - name: 提交更改
