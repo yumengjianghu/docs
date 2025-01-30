@@ -7,7 +7,13 @@
 
 [X]代办：Nuxt.js
 
-<img src='http://squv82ws7.hd-bkt.clouddn.com/wordxhj.gif' alt="实际图片" />
+<!-- <img src='http://squv82ws7.hd-bkt.clouddn.com/wordxhj.gif' alt="实际图片" /> -->
+## 网络懒加载图片
+<img v-lazy="'http://squv82ws7.hd-bkt.clouddn.com/background.png'" alt="Lazy Loaded Image" />
+
+## 本地懒加载图片
+<img v-lazy="'public/background.png'" alt="Lazy Loaded Image" />
+
 
 
 <!-- <img src="/public/background.png" alt=""> -->

@@ -11,6 +11,11 @@ import card from './components/card.vue' // 名片
 import prompt from './components/prompt.vue'  // 横幅提示
 import MindMap from './components/MindMap.vue'  // 思维导图
 import Experimental from './components/Experimental.vue'  // 实验功能模块
+import VueLazyloadNext  from 'vue-lazyload-next'   // 懒加载指令
+
+// 引入懒加载图片
+import loadingIMG from '../../public/status/xhj.gif'
+import errorIMG from '../../public/status/loseimg.png'
 
 import './style.css'
 
@@ -33,5 +38,11 @@ export default {
     app.component('prompt', prompt);
     app.component('MindMap', MindMap);
     app.component('Experimental', Experimental);
+    app.use(VueLazyloadNext, {
+      loading: loadingIMG, // 加载占位图
+      error: errorIMG,     // 错误占位图
+      preLoad:1.3,          // 预加载高度比例
+      attempt:3,             // 重试次数
+    });
   }
 }
