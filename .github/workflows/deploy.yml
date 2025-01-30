@@ -50,6 +50,10 @@ jobs:
           token: ${{ secrets.PAT }}
       - name: 列出文件（调试用）
         run: find docs/.vitepress/dist -type f -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.webp" -o -name "*.gif"
+      - name: 检查文件权限
+        run: ls -l docs/.vitepress/dist
+      - name: 修改文件权限
+        run: chmod -R 755 docs/.vitepress/dist
       - name: 压缩图像
         uses: calibreapp/image-actions@main
         with:
