@@ -49,15 +49,15 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
       - name: 列出文件（调试用）
-        run: ls -R docs/.vitepress/dist
+        run: find docs/.vitepress/dist -type f -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.webp" -o -name "*.gif"
       - name: 压缩图像
         uses: calibreapp/image-actions@main
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           compressOnly: true
-          jpegQuality: '80'
-          pngQuality: '80'
-          webpQuality: '80'
+          jpegQuality: '70'
+          pngQuality: '70'
+          webpQuality: '70'
           ignorePaths: '**/node_modules/**'  # 忽略不需要压缩的路径
 
       - name: 提交更改
