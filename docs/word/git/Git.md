@@ -15,7 +15,7 @@
 
 克隆仓库：`git clone url`
 
-![](assets/2024-11-26_133742.png)
+<img v-lazy="'assets/2024-11-26_133742.png'" alt="" />
 
 #### 文件状态：
 
@@ -24,7 +24,7 @@
 - 已修改（Modified）：指文件内容发生变化，但是还没有添加至暂存区
 - 已暂存（Staged）：指文件修改后并且已经添加至暂存区的文件
 
-![](assets/2024-11-26_134748.png)
+<img v-lazy="'assets/2024-11-26_134748.png'" alt="" />
 
 - `git init` 创建仓库
 
@@ -64,7 +64,7 @@
 
 回退版本：`git reset`
 
-![](assets/2024-11-26_201745.jpg)
+<img v-lazy="'assets/2024-11-26_201745.jpg'" alt="" />
 
 查看暂存区内容：`git ls-files`
 
@@ -112,7 +112,7 @@
 
 查看分支之间差异：`git diff <branchName> <branchName>`
 
-![](assets/2024-11-26_210333.jpg)
+<img v-lazy="'assets/2024-11-26_210333.jpg'" alt="" />
 
 > 图片有误
 
@@ -151,7 +151,7 @@
 >
 > 
 
-![](assets/2024-11-27_212747.jpg)
+<img v-lazy="'assets/2024-11-27_212747.jpg'" alt="" />
 
 
 
@@ -183,19 +183,19 @@
 
 如果指定了一个新的文件名，还需要增加一不配置，创建一个config文件
 
-![](assets/2024-11-27_215627.jpg)
+<img v-lazy="'assets/2024-11-27_215627.jpg'" alt="" />
 
 意思：当我们访问GitHub时，指定使用SSH下的test密钥
 
 使用`vi config` 写入即可
 
-![](assets/2024-11-27_220032.jpg)
+<img v-lazy="'assets/2024-11-27_220032.jpg'" alt="" />
 
 推送：git push
 
 拉取：git pull
 
- ![](assets/2024-11-27_220237.jpg)
+ <img v-lazy="'assets/2024-11-27_220237.jpg'" alt="" />
 
 #### 关联本地仓库和远程仓库
 
@@ -215,7 +215,7 @@
 
 `code .`使用vscode打开当前目录
 
-![](assets/2024-11-28_214525.jpg)
+<img v-lazy="'assets/2024-11-28_214525.jpg'" alt="" />
 
 创建新分支`git branch <name>`
 
@@ -249,7 +249,7 @@
 
 在提交之前中断合并`git merge --abort`(当不想继续执行操作时可以使用命令来中止合并操作)
 
-![](assets/2024-11-28_221940.jpg)
+<img v-lazy="'assets/2024-11-28_221940.jpg'" alt="" />
 
 恢复指定时间点的状态`git checkout -b  <dev>  <id>`
 
@@ -277,7 +277,7 @@ Rebase
 
 GitFlow模型
 
-![](assets/2024-11-28_224107.jpg)
+<img v-lazy="'assets/2024-11-28_224107.jpg'" alt="" />
 
 ## 评论
 <Giscus />

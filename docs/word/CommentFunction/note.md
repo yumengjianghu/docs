@@ -13,9 +13,9 @@
 3. 在左侧菜单中找到 `General`，向下滚动到 `Features` 部分。
 4. 勾选 `Discussions`，启用 Discussions 功能。
 
-![image-20250125125042756](./assets/image-20250125125042756.png)
+<img v-lazy="'./assets/image-20250125125042756.png'" alt="image-20250125125042756" />
 
-![image-20250125125109629](./assets/image-20250125125109629.png)
+<img v-lazy="'./assets/image-20250125125109629.png'" alt="image-20250125125109629" />
 
  **安装 Giscus App**
 

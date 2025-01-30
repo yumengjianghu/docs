@@ -509,7 +509,7 @@ walk('left')
 walk('right')
 ```
 
-![image-20250123085730088](./assets/Snipaste_2025-01-02_21-58-37.png)
+<img v-lazy="'./assets/Snipaste_2025-01-02_21-58-37.png'" alt="image-20250123085730088" />
 
 #### 数字枚举
 
