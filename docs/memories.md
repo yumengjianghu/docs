@@ -12,7 +12,7 @@
 <img v-lazy="'http://squv82ws7.hd-bkt.clouddn.com/background.png'" alt="Lazy Loaded Image" />
 
 ## 本地懒加载图片
-<img v-lazy="'public/background.png'" alt="Lazy Loaded Image" />
+<img v-lazy="'background.png'" alt="Lazy Loaded Image" />
 
 
 
