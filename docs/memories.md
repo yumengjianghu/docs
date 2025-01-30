@@ -7,12 +7,23 @@
 
 [X]代办：Nuxt.js
 
-<!-- <img src='http://squv82ws7.hd-bkt.clouddn.com/wordxhj.gif' alt="实际图片" /> -->
+
 ## 网络懒加载图片
-<img v-lazy="'http://squv82ws7.hd-bkt.clouddn.com/background.png'" alt="Lazy Loaded Image" />
+### 托管平台使用 - [路过图床](https://imgse.com)
+<img v-lazy="'https://s21.ax1x.com/2025/01/30/pEVIocT.png'" alt="加载中..." />
+<hr>
+<img v-lazy="'https://s21.ax1x.com/2025/01/30/pEVII3V.png'" alt="加载中..." />
+
+## 网络懒加载图片
+### 托管平台使用 - [七牛云](https://portal.qiniu.com/)
+> [!CAUTION]
+>
+> **本图片由AI生成！**
+
+<img v-lazy="'http://squv82ws7.hd-bkt.clouddn.com/332936306_0_final.png'" alt="加载中..." />
 
 ## 本地懒加载图片
-<img v-lazy="'background.png'" alt="Lazy Loaded Image" />
+<img v-lazy="'images/guangzhou.jpg'" alt="加载中..." />
 
 
 
