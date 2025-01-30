@@ -58,7 +58,7 @@ jobs:
           jpegQuality: '80'
           pngQuality: '80'
           webpQuality: '80'
-          include: 'docs/.vitepress/dist/**/*.{png,jpg,jpeg,webp,gif}'
+          ignorePaths: '**/node_modules/**'  # 忽略不需要压缩的路径
 
       - name: 提交更改
         run: |
