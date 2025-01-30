@@ -18,7 +18,7 @@
       script.setAttribute('data-input-position', 'top')
       script.setAttribute('data-theme', 'light')
       script.setAttribute('data-lang', 'zh-CN')
-      // script.setAttribute('data-loading', 'lazy')
+      script.setAttribute('data-loading', 'lazy')
       script.setAttribute('crossorigin', 'anonymous')
       script.async = true
       this.$refs.giscus.appendChild(script)

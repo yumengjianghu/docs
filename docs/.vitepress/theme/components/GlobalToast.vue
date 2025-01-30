@@ -1,6 +1,6 @@
 <template>
     <!-- v-if / v-show -->
-    <div v-show="isVisible" class="toast-container" :class="{ hiddenUp: ishidden }">    
+    <div v-show="isVisible" class="toast-container" :class="{ hiddenUp: ishidden }">
         <div class="toast-message"
             :class="{ GreenBgColor: GColorstatus, OrangeBgColor: RColorstatus, WelcomeToHome: isHome }">
             <span class="text">
@@ -146,42 +146,46 @@ export default {
 }
 
 .GreenBgColor {
-
     background: aliceblue url('/docs/status/right.svg') no-repeat 10px center;
-    
-
 }
 
 .OrangeBgColor {
     background: aliceblue url('/docs/status/warn.svg') no-repeat 10px center;
-
 }
 
 .WelcomeToHome {
-    /* background: aliceblue url('/docs/status/backHome.png') no-repeat 10px center,
-        url('/docs/status/backHomeRight.png') no-repeat 10px right
-        ; */
-    /* background: aliceblue url('/docs/status/backHomeRight.png') no-repeat 10px center; */
-
-    background-image: url('/docs/status/backHomeLeft.svg'), url('/docs/status/backHomeRight.svg');
-    background-position: 10px, 920px;
-    background-repeat: no-repeat, no-repeat;
-    background-size: contain contain;
-    font-size: 25px;
-    /* font-weight: 600; */
+    background-image: url('/docs/status/backHomeLeft.svg');
+    background-position: -45%;
+    background-repeat: no-repeat;
+    background-size: 50% 50%;
+    font-size: 15px;
     width: 1000px;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    letter-spacing: 10px;
-    color: #247ef8
+    justify-content: space-between;
+    /* align-items: center; */
+    letter-spacing: 3px;
+    color: #383838;
+    /* border: 1px solid red; */
+
+}
+
+.WelcomeToHome::before {
+    content: '公告:';
+    letter-spacing: 0px;
+    color: #000000;
+    font-weight: bold;
+    height: auto;
+    margin-left: 20px;
+    /* border: 1px solid red; */
 }
 
 @media (max-width:1800px) {
     .WelcomeToHome {
-        background-position: 1px 1px, 60px;
+        background-size: 30% 30%;
+        background-position: left;
         width: auto;
-        color: transparent;
+        font-size: 14px;
+        letter-spacing: 2px;
 
     }
 
@@ -209,8 +213,8 @@ export default {
 
 .hiddenUp {
     opacity: 0;
-    transform: translateY(-20px) translateX(-50%);
-    /* transform: translateX(50px); */
+    /* transform: translateY(-20px) translateX(-50%); */
+    transform: translateX(50px);
 
 }
 </style>

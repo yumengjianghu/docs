@@ -2,7 +2,7 @@
 <!-- 支持多语言字幕，可以通过 subtitles 属性传递字幕文件列表 -->
 
 <animation
-      videoSrc="/docs/video/video.mp4" 
+      videoSrc="http://squv82ws7.hd-bkt.clouddn.com/1565311997-1-16.mp4" 
       :subtitles="[
         {subtitle:{lang:'zh',label:'1',src:'1'},index:1}
       ]"

@@ -18,12 +18,19 @@
 ### 托管平台使用 - [七牛云](https://portal.qiniu.com/)
 > [!CAUTION]
 >
-> **本图片由AI生成！**
+> **本图片由AI生成 ❗**
 
 <img v-lazy="'http://squv82ws7.hd-bkt.clouddn.com/332936306_0_final.png'" alt="加载中..." />
 
+> [!WARNING]
+>
+>😮 如果**图片过大**，且**网速不好**，加载时间可达到**1分钟+** 
+
 ## 本地懒加载图片
 <img v-lazy="'images/guangzhou.jpg'" alt="加载中..." />
+
+
+
 
 
 
