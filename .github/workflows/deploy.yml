@@ -48,6 +48,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.PAT }}
+      - name: 列出文件（调试用）
+        run: ls -R docs/.vitepress/dist
       - name: 压缩图像
         uses: calibreapp/image-actions@main
         with:
