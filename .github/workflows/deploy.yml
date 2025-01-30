@@ -38,46 +38,46 @@ jobs:
         with:
           path: docs/.vitepress/dist
 
-  # 2. 压缩
-  optimize:
-    name: 压缩
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: 检出代码
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.PAT }}
-      - name: 列出文件（调试用）
-        run: find docs/.vitepress/dist -type f -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.webp" -o -name "*.gif"
-      - name: 检查文件权限
-        run: ls -l docs/.vitepress/dist
-      - name: 修改文件权限
-        run: chmod -R 755 docs/.vitepress/dist
-      - name: 压缩图像
-        uses: calibreapp/image-actions@main
-        with:
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-          compressOnly: true
-          jpegQuality: '50'
-          pngQuality: '50'
-          webpQuality: '50'
-          ignorePaths: '**/node_modules/**'  # 忽略不需要压缩的路径
+  # # 2. 压缩
+  # optimize:
+  #   name: 压缩
+  #   runs-on: ubuntu-latest
+  #   needs: build
+  #   steps:
+  #     - name: 检出代码
+  #       uses: actions/checkout@v4
+  #       with:
+  #         token: ${{ secrets.PAT }}
+  #     - name: 列出文件（调试用）
+  #       run: find docs/.vitepress/dist -type f -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.webp" -o -name "*.gif"
+  #     - name: 检查文件权限
+  #       run: ls -l docs/.vitepress/dist
+  #     - name: 修改文件权限
+  #       run: chmod -R 755 docs/.vitepress/dist
+  #     - name: 压缩图像
+  #       uses: calibreapp/image-actions@main
+  #       with:
+  #         githubToken: ${{ secrets.GITHUB_TOKEN }}
+  #         compressOnly: true
+  #         jpegQuality: '80'
+  #         pngQuality: '80'
+  #         webpQuality: '80'
+  #         ignorePaths: '**/node_modules/**'  # 忽略不需要压缩的路径
 
-      - name: 提交更改
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add .
-          git commit -m "Compressed images" || echo "No changes to commit"
-          git push
+      # - name: 提交更改
+      #   run: |
+      #     git config --global user.name "github-actions[bot]"
+      #     git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      #     git add .
+      #     git commit -m "Compressed images" || echo "No changes to commit"
+      #     git push
 
   # 3. 部署
   deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    needs: optimize
+    needs: build
     runs-on: ubuntu-latest
     name: 部署
     steps:
