@@ -1,0 +1,586 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="https://s21.ax1x.com/2025/01/31/pEZi6J0.png">
+  <title>note</title>
+  
+<style>
+ :root {
+    --side-bar-bg-color: #fafafa;
+    --control-text-color: #777;
+}
+
+@include-when-export url(https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext);
+
+/* open-sans-regular - latin-ext_latin */
+@font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Open Sans Regular'), local('OpenSans-Regular'), url('./github/open-sans-v17-latin-ext_latin-regular.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD, U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  /* open-sans-italic - latin-ext_latin */
+  @font-face {
+    font-family: 'Open Sans';
+    font-style: italic;
+    font-weight: normal;
+    src: local('Open Sans Italic'), local('OpenSans-Italic'), url('./github/open-sans-v17-latin-ext_latin-italic.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD, U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  /* open-sans-700 - latin-ext_latin */
+  @font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: bold;
+    src: local('Open Sans Bold'), local('OpenSans-Bold'), url('./github/open-sans-v17-latin-ext_latin-700.woff2') format('woff2'); 
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD, U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  /* open-sans-700italic - latin-ext_latin */
+  @font-face {
+    font-family: 'Open Sans';
+    font-style: italic;
+    font-weight: bold;
+    src: local('Open Sans Bold Italic'), local('OpenSans-BoldItalic'), url('./github/open-sans-v17-latin-ext_latin-700italic.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD, U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+
+html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    font-family: "Open Sans","Clear Sans", "Helvetica Neue", Helvetica, Arial, 'Segoe UI Emoji', sans-serif;
+    color: rgb(51, 51, 51);
+    line-height: 1.6;
+}
+
+#write {
+    max-width: 860px;
+  	margin: 0 auto;
+  	padding: 30px;
+    padding-bottom: 100px;
+}
+
+@media only screen and (min-width: 1400px) {
+	#write {
+		max-width: 1024px;
+	}
+}
+
+@media only screen and (min-width: 1800px) {
+	#write {
+		max-width: 1200px;
+	}
+}
+
+#write > ul:first-child,
+#write > ol:first-child{
+    margin-top: 30px;
+}
+
+a {
+    color: #4183C4;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    position: relative;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    line-height: 1.4;
+    cursor: text;
+}
+h1:hover a.anchor,
+h2:hover a.anchor,
+h3:hover a.anchor,
+h4:hover a.anchor,
+h5:hover a.anchor,
+h6:hover a.anchor {
+    text-decoration: none;
+}
+h1 tt,
+h1 code {
+    font-size: inherit;
+}
+h2 tt,
+h2 code {
+    font-size: inherit;
+}
+h3 tt,
+h3 code {
+    font-size: inherit;
+}
+h4 tt,
+h4 code {
+    font-size: inherit;
+}
+h5 tt,
+h5 code {
+    font-size: inherit;
+}
+h6 tt,
+h6 code {
+    font-size: inherit;
+}
+h1 {
+    font-size: 2.25em;
+    line-height: 1.2;
+    border-bottom: 1px solid #eee;
+}
+h2 {
+    font-size: 1.75em;
+    line-height: 1.225;
+    border-bottom: 1px solid #eee;
+}
+
+/*@media print {
+    .typora-export h1,
+    .typora-export h2 {
+        border-bottom: none;
+        padding-bottom: initial;
+    }
+
+    .typora-export h1::after,
+    .typora-export h2::after {
+        content: "";
+        display: block;
+        height: 100px;
+        margin-top: -96px;
+        border-top: 1px solid #eee;
+    }
+}*/
+
+h3 {
+    font-size: 1.5em;
+    line-height: 1.43;
+}
+h4 {
+    font-size: 1.25em;
+}
+h5 {
+    font-size: 1em;
+}
+h6 {
+   font-size: 1em;
+    color: #777;
+}
+p,
+blockquote,
+ul,
+ol,
+dl,
+table{
+    margin: 0.8em 0;
+}
+li>ol,
+li>ul {
+    margin: 0 0;
+}
+hr {
+    height: 2px;
+    padding: 0;
+    margin: 16px 0;
+    background-color: #e7e7e7;
+    border: 0 none;
+    overflow: hidden;
+    box-sizing: content-box;
+}
+
+li p.first {
+    display: inline-block;
+}
+ul,
+ol {
+    padding-left: 30px;
+}
+ul:first-child,
+ol:first-child {
+    margin-top: 0;
+}
+ul:last-child,
+ol:last-child {
+    margin-bottom: 0;
+}
+blockquote {
+    border-left: 4px solid #dfe2e5;
+    padding: 0 15px;
+    color: #777777;
+}
+blockquote blockquote {
+    padding-right: 0;
+}
+table {
+    padding: 0;
+    word-break: initial;
+}
+table tr {
+    border: 1px solid #dfe2e5;
+    margin: 0;
+    padding: 0;
+}
+table tr:nth-child(2n),
+thead {
+    background-color: #f8f8f8;
+}
+table th {
+    font-weight: bold;
+    border: 1px solid #dfe2e5;
+    border-bottom: 0;
+    margin: 0;
+    padding: 6px 13px;
+}
+table td {
+    border: 1px solid #dfe2e5;
+    margin: 0;
+    padding: 6px 13px;
+}
+table th:first-child,
+table td:first-child {
+    margin-top: 0;
+}
+table th:last-child,
+table td:last-child {
+    margin-bottom: 0;
+}
+
+.CodeMirror-lines {
+    padding-left: 4px;
+}
+
+.code-tooltip {
+    box-shadow: 0 1px 1px 0 rgba(0,28,36,.3);
+    border-top: 1px solid #eef2f2;
+}
+
+.md-fences,
+code,
+tt {
+    border: 1px solid #e7eaed;
+    background-color: #f8f8f8;
+    border-radius: 3px;
+    padding: 0;
+    padding: 2px 4px 0px 4px;
+    font-size: 0.9em;
+}
+
+code {
+    background-color: #f3f4f4;
+    padding: 0 2px 0 2px;
+}
+
+.md-fences {
+    margin-bottom: 15px;
+    margin-top: 15px;
+    padding-top: 8px;
+    padding-bottom: 6px;
+}
+
+
+.md-task-list-item > input {
+  margin-left: -1.3em;
+}
+
+@media print {
+    html {
+        font-size: 13px;
+    }
+    pre {
+        page-break-inside: avoid;
+        word-wrap: break-word;
+    }
+}
+
+.md-fences {
+	background-color: #f8f8f8;
+}
+#write pre.md-meta-block {
+	padding: 1rem;
+    font-size: 85%;
+    line-height: 1.45;
+    background-color: #f7f7f7;
+    border: 0;
+    border-radius: 3px;
+    color: #777777;
+    margin-top: 0 !important;
+}
+
+.mathjax-block>.code-tooltip {
+	bottom: .375rem;
+}
+
+.md-mathjax-midline {
+    background: #fafafa;
+}
+
+#write>h3.md-focus:before{
+	left: -1.5625rem;
+	top: .375rem;
+}
+#write>h4.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+#write>h5.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+#write>h6.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+.md-image>.md-meta {
+    /*border: 1px solid #ddd;*/
+    border-radius: 3px;
+    padding: 2px 0px 0px 4px;
+    font-size: 0.9em;
+    color: inherit;
+}
+
+.md-tag {
+    color: #a7a7a7;
+    opacity: 1;
+}
+
+.md-toc { 
+    margin-top:20px;
+    padding-bottom:20px;
+}
+
+.sidebar-tabs {
+    border-bottom: none;
+}
+
+#typora-quick-open {
+    border: 1px solid #ddd;
+    background-color: #f8f8f8;
+}
+
+#typora-quick-open-item {
+    background-color: #FAFAFA;
+    border-color: #FEFEFE #e5e5e5 #e5e5e5 #eee;
+    border-style: solid;
+    border-width: 1px;
+}
+
+/** focus mode */
+.on-focus-mode blockquote {
+    border-left-color: rgba(85, 85, 85, 0.12);
+}
+
+header, .context-menu, .megamenu-content, footer{
+    font-family: "Segoe UI", "Arial", sans-serif;
+}
+
+.file-node-content:hover .file-node-icon,
+.file-node-content:hover .file-node-open-state{
+    visibility: visible;
+}
+
+.mac-seamless-mode #typora-sidebar {
+    background-color: #fafafa;
+    background-color: var(--side-bar-bg-color);
+}
+
+.mac-os #write{
+    caret-color: AccentColor;
+}
+
+.md-lang {
+    color: #b4654d;
+}
+
+/*.html-for-mac {
+    --item-hover-bg-color: #E6F0FE;
+}*/
+
+#md-notification .btn {
+    border: 0;
+}
+
+.dropdown-menu .divider {
+    border-color: #e5e5e5;
+    opacity: 0.4;
+}
+
+.ty-preferences .window-content {
+    background-color: #fafafa;
+}
+
+.ty-preferences .nav-group-item.active {
+    color: white;
+    background: #999;
+}
+
+.menu-item-container a.menu-style-btn {
+    background-color: #f5f8fa;
+    background-image: linear-gradient( 180deg , hsla(0, 0%, 100%, 0.8), hsla(0, 0%, 100%, 0)); 
+}
+
+  :root {
+    --side-bar-bg-color: #fafafa;
+    --control-text-color: #777;
+  }
+
+  /* 其他 CSS 规则 */
+  body {
+    font-family: "Open Sans","Clear Sans", "Helvetica Neue", Helvetica, Arial, 'Segoe UI Emoji', sans-serif;
+    color: rgb(51, 51, 51);
+    line-height: 1.6;
+  }
+
+  #write {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 30px;
+    padding-bottom: 100px;
+  }
+
+  /* 其他 CSS 规则 */
+  .crown{  
+    width: 1800vm !important;
+    height: 50px;
+    background-color: #1e293b;
+    color:#64748b;
+    margin: 0 auto;
+    text-align: center;
+    line-height: 50px;
+        }
+     .header{
+            color: aliceblue;
+            letter-spacing: 5px;
+        }
+        .footer{
+            
+        }
+  .nav{
+            position: relative;
+            width: 80px;
+            height: 200px;
+            position: fixed;
+            top: 240px;
+            left: -70px;
+            background-color: #f6f8fa;
+            transition: left 0.5s ease;
+            box-shadow: 2px 2px 5px #363636;
+            border-radius: 5px;
+        }
+        .nav:hover{
+            left: 0px;
+            
+        }
+        .backBtn{
+            color: rgb(119, 119, 119);
+            position: absolute;
+            top: 10px;
+            left: 9px;
+            margin: 0 auto;
+            background-color: #1f883d;
+            color: #ffffff;
+            border-radius: 5px;
+            width: 50px;
+            padding: 5px;
+            text-align: center;
+            cursor: pointer;
+            white-space: normal;
+        }
+    *{
+            padding: 0;
+            margin: 0;
+        }
+</style>
+
+</head>
+<body>
+<div class="nav">
+        <span class='backBtn' onclick="goBack()">首页</span>
+</div>
+<div class="crown header"></div>
+  <div id="write">
+    <h1>局域网服务器部署</h1>
+<h2>准备</h2>
+<p>一个可以运行的Node.js的服务器，例如一下的Express 服务器</p>
+<pre><code class="language-js">// server.js
+const express = require(&quot;express&quot;);
+const app = express();
+const port = 3000;
+
+app.get(&quot;/&quot;, (req, res) =&gt; {
+  res.send(&quot;Hello, this is a Node.js server running on the LAN!&quot;);
+});
+
+app.listen(port, () =&gt; {
+  console.log(`Server is running on http://localhost:${port}`);
+});
+</code></pre>
+<p><strong>运行以下命令启动服务器：</strong></p>
+<pre><code class="language-js">node server.js
+</code></pre>
+<p><strong>此时，服务器会在 <code>http://localhost:3000</code> 上运行，但只能在本地访问。</strong></p>
+<h2>获取本机的局域网 IP 地址</h2>
+<p>为了让其他设备访问你的服务器，你需要知道本机在局域网中的 IP 地址。</p>
+<ol>
+<li><p>打开命令提示符（按 <code>Win + R</code>，输入 <code>cmd</code>，然后按回车）。</p>
+</li>
+<li><p>输入以下命令：</p>
+<pre><code>ipconfig
+</code></pre>
+</li>
+<li><p>找到 <code>IPv4 地址</code>，通常是 <code>192.168.x.x</code> 或 <code>10.x.x.x</code>。</p>
+</li>
+</ol>
+<h2>修改 Node.js 服务器监听地址</h2>
+<p>默认情况下，Node.js 服务器只监听 <code>localhost</code>（即 <code>127.0.0.1</code>），这意味着它只能从本机访问。为了让服务器监听局域网中的所有请求，需要将监听地址改为 <code>0.0.0.0</code>。</p>
+<p><strong>修改 <code>server.js</code> 文件：</strong></p>
+<pre><code class="language-js">app.listen(port, &quot;0.0.0.0&quot;, () =&gt; {
+  console.log(`Server is running on http://0.0.0.0:${port}`);
+});
+</code></pre>
+<p><strong>重新启动服务器</strong></p>
+<h2>允许防火墙通过端口</h2>
+<p>如果你的操作系统启用了防火墙，需要确保防火墙允许外部设备访问服务器的端口（例如 <code>3000</code>）。</p>
+<p><strong>在 Windows 上允许端口</strong></p>
+<ol>
+<li>打开“控制面板” -&gt; “系统和安全” -&gt; “Windows Defender 防火墙” -&gt; “高级设置”。</li>
+<li>选择“入站规则” -&gt; “新建规则”。</li>
+<li>选择“端口”，点击“下一步”。</li>
+<li>选择“TCP”，并输入端口号 <code>3000</code>，点击“下一步”。</li>
+<li>选择“允许连接”，点击“下一步”。</li>
+<li>为规则命名（例如 <code>Node.js Server</code>），点击“完成”。</li>
+</ol>
+<h2>在局域网中访问服务器</h2>
+<p>现在，其他设备可以通过你的局域网 IP 地址和端口号访问服务器。</p>
+<p>例如，如果你的 IP 地址是 <code>192.168.1.100</code>，端口号是 <code>3000</code>，其他设备可以在浏览器中访问：</p>
+<pre><code class="language-js">http://192.168.1.100:3000
+</code></pre>
+<h2>使用工具测试局域网访问</h2>
+<p>你可以使用手机或其他电脑，连接到同一个局域网，然后通过浏览器访问服务器的 IP 地址和端口号，确保服务可以正常访问。</p>
+<h2>基于vitePress搭建博客部署局域网</h2>
+<pre><code class="language-bash">npm run docs:dev -- --host 0.0.0.0 
+</code></pre>
+<h2>评论</h2>
+<Giscus />
+
+  </div>
+   <div class="crown footer">
+        © 鱼梦江湖 2025 MIT
+    </div>
+<script>
+        // 获取标题
+        const title = document.querySelector('h1').innerHTML
+        document.querySelector(".header").innerHTML = title
+        function goBack() {
+            window.location.href = 'https://myfishdream.github.io/docs/';
+        }
+    </script>
+</body>
+</html>
+  

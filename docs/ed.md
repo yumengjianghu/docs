@@ -1,6 +1,9 @@
+## 代办事项
+<ToDos  title="快速学习Nuxt.js"/>
+<ToDos  title="全局css文件修改"/>
+<ToDos  title="md文档图片添加懒加载功能"/>
 
-
-# 思维导图
+## 思维导图
 
 <MindMap :data="mindMapData" />
 
