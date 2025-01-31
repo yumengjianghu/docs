@@ -41,8 +41,8 @@ export default {
     app.component('Experimental', Experimental);
     app.component('ToDos', ToDos);
     app.use(VueLazyloadNext, {
-      loading: "http://squv82ws7.hd-bkt.clouddn.com/loadstatus/xhj.gif" || loadingIMG, // 加载占位图
-      error: "http://squv82ws7.hd-bkt.clouddn.com/loadstatus/loseimg.png" || errorIMG,     // 错误占位图
+      loading: loadingIMG, // 加载占位图
+      error: errorIMG,     // 错误占位图
       preLoad:1.3,          // 预加载高度比例
       attempt:3,             // 重试次数
     });
