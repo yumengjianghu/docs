@@ -1,10 +1,6 @@
 import { defineConfig } from 'vitepress'
-
-
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-
-
   base: "/docs/",
   head: [[
     "script",
@@ -63,7 +59,6 @@ export default defineConfig({
         text: '后端', items: [
           { text: 'Nodejs', link: '/word/node/Node' },
           { text: 'Java', link: '/word/java/note' },
-          // { text: '...', link: '/home' },
         ]
       },
       {
@@ -89,9 +84,6 @@ export default defineConfig({
         text: '资源', items: [
           { text: 'Download 1', link: '/word/download1/note' },
           { text: 'Download 2', link: '/word/download2/note' },
-
-          // { text: '...', link: '/word' },
-
         ]
       },
       {
@@ -100,13 +92,9 @@ export default defineConfig({
           { text: '视频模块', link: '/word/video/note.md' },
           { text: '实验功能', link: '/word/Experimental/note.md' },
           { text: '...', link: '/word/other/note' },
-          // { text: 'Git', link: '/word/git/Git' },
-          // { text: '...', link: '/word' },
-
         ]
       }
     ],
-
     // sidebar: [
     //   {
     //     text: '目录',
@@ -129,12 +117,10 @@ export default defineConfig({
           svg: '<svg t="1735727905242" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="14987" width="200" height="200"><path d="M517.632 563.2L0.0512 189.44V153.6h1024v43.6224L517.632 563.2zM267.2128 255.6928l250.368 181.0944L768 256H267.2128z" fill="#74BCFF" p-id="14988"></path><path d="M102.4 256v563.2h819.2V256H102.4M0 153.6h1024v768H0z" fill="#1990FF" p-id="14989"></path></svg>'
         },
         link: ' /docs/IDCard',
-        // target: '_self',
-        // rel: 'sponsored'
       },
     ],
     footer: {
-      copyright: `基于 Vitepress 构建的 DIY 网站<br/>© 2025 鱼梦江湖 MIT`,
+      copyright: 'Website Based on Vitepress create and DIY<br/>© 鱼梦江湖 2025 MIT',
       message: '<span id="busuanzi_container_page_pv" data-page-id="age-01">本页访问量：<span id="busuanzi_value_page_pv"></span> 次</span>',
     }
   }

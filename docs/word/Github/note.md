@@ -14,7 +14,7 @@
 
 在顶部`Type to search`搜索框中搜索项目 **<u>dev sidecar</u>** 
 
-![image-20250127112429020](./assets/image-20250127112429020.png)
+<img v-lazy="'https://s21.ax1x.com/2025/01/31/pEZp04f.png'" alt="加载中..." />
 
 点击Releases ，下拉，下载最新版本
 

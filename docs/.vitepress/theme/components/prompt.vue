@@ -12,7 +12,16 @@ if (localStorage.getItem('FirstVisit') == null) {
     onMounted(() => {
         showToast("欢迎来到菜鸟技术栈，希望你能找到你需要的东西😋")
         localStorage.setItem('FirstVisit', true);
+        setTimeout(() => {
+            showToast("部分文档尝试使用网络懒加载⚡")
+        }, 4000);
     })
 }
+else {
+    onMounted(() => {
+        showToast("部分文档尝试使用网络懒加载⚡")
+    })
+}
+
 </script>
 <style scoped></style>
