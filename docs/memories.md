@@ -1,34 +1,10 @@
-[待开发](IDCard)
 ## 踩坑点：
-<a href="record\StepPit-HTML\note.html" target="_blank">vitepress搭建注意点</a>
+| 标题                                        | 概述                       | 记录时间        | 状态   |
+| ------------------------------------------- | -------------------------- | --------------- | ------ |
+| <a href='memories\文档图片懒加载'>文档图片懒加载</a>   | 文档`img`替换为懒加载`img` | 2025-1-30 23:06 | 未解决 |
+| <a href='memories\自定义域名注意事项'>域名路径问题</a> | 不应该有docs路径           | 2025-2-2 16:30  | 已解决 |
 
-## 网络懒加载图片
-**托管平台使用 - [路过图床](https://imgse.com)**
-<img v-lazy="'https://s21.ax1x.com/2025/01/30/pEVIocT.png'" alt="加载中..." />
-<hr>
-<img v-lazy="'https://s21.ax1x.com/2025/01/30/pEVII3V.png'" alt="加载中..." />
+## 记录点：
 
-## 网络懒加载图片
-**托管平台使用 - [七牛云](https://portal.qiniu.com/)**
-> [!CAUTION]    
->
-> **本图片由AI生成 ❗**
-
-<img v-lazy="'http://squv82ws7.hd-bkt.clouddn.com/332936306_0_final.png'" alt="加载中..." />
-
-> [!WARNING]
->
->😮 如果**图片过大**，且**网速不好**，加载时间可达到**1分钟+** 
-
-## 本地懒加载大图片(3.26MB)
-<img v-lazy="'images/guangzhou.jpg'" alt="加载中..." />
-
-## 网络懒加载大图片(3.26MB)
-<img v-lazy="'images/guangzhou.jpg'" alt="加载中..." />
-
-
-
-
-<!-- <img src="/public/background.png" alt=""> -->
 ## 评论
 <Giscus />

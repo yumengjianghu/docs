@@ -8,7 +8,7 @@ export default defineConfig({
       async: true,
       src: "//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js",
     },
-  ], ["link", { rel: "icon", href: "/docs/文档.png" }]],
+  ], ["link", { rel: "icon", href: "文档.png" }]],
   title: "鱼梦江湖的技术栈",
   description: "知识文档",
   themeConfig: {

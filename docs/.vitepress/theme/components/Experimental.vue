@@ -1,6 +1,6 @@
 <template>
     <!-- ----------------------------------------------------------------------------- -->
-
+    <h2>弹窗测试</h2>
     <GlobalToast :duration="GlobalToastDurationTime" ref="toast">
         <div class="slotContent">
             <input type="text" class="textInput" v-model="testValue"><button class="textInputBtn"
@@ -15,7 +15,7 @@
 
     </div>
     <!-- ----------------------------------------------------------------------------- -->
-    <MindMap :data="mindMapData" />
+    
 </template>
 
 <script setup>
@@ -50,32 +50,7 @@ function UpdateData() {
     showToast(`当前弹窗持续时间:${GlobalToastDurationTime.value / 1000}秒，请输入修改的值`, 'warn', true, true)
 }
 // --------------------------------------------------------------------------------------------
-const mindMapData = {
-    name: "Root",
-    children: [
-        {
-            name: "Node 1",
-            children: [
-                { name: "Node 1.1" },
-                { name: "Node 1.2" },
-                {
-                    name: "Node 1.3",
-                    children: [
-                        { name: "Node 1.3.1" },
-                        { name: "Node 1.3.2" },
-                    ],
-                },
-            ],
-        },
-        {
-            name: "Node 2",
-            children: [
-                { name: "Node 2.1" },
-                { name: "Node 2.2" },
-            ],
-        },
-    ],
-};
+
 </script>
 
 <style scoped>

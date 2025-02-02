@@ -136,7 +136,8 @@ export default {
     display: flex;
     justify-content: right;
     flex-wrap: wrap;
-    background: aliceblue url('/docs/status/error.svg') no-repeat 10px center;
+    /* background: aliceblue url('/docs/status/error.svg') no-repeat 10px center; */
+    background: aliceblue url('/status/error.svg') no-repeat 10px center;
     transition: all 1s ease;
 }
 
@@ -146,15 +147,18 @@ export default {
 }
 
 .GreenBgColor {
-    background: aliceblue url('/docs/status/right.svg') no-repeat 10px center;
+    /* background: aliceblue url('/docs/status/right.svg') no-repeat 10px center; */
+    background: aliceblue url('/status/right.svg') no-repeat 10px center;
 }
 
 .OrangeBgColor {
-    background: aliceblue url('/docs/status/warn.svg') no-repeat 10px center;
+    /* background: aliceblue url('/docs/status/warn.svg') no-repeat 10px center; */
+    background: aliceblue url('/status/warn.svg') no-repeat 10px center;
 }
 
 .WelcomeToHome {
-    background-image: url('/docs/status/backHomeLeft.svg');
+    /* background-image: url('/docs/status/backHomeLeft.svg'); */
+    background-image: url('/status/backHomeLeft.svg');
     background-position: -45%;
     background-repeat: no-repeat;
     background-size: 50% 50%;

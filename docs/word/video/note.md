@@ -1,6 +1,10 @@
 # 自定义视频组件
 <!-- 支持多语言字幕，可以通过 subtitles 属性传递字幕文件列表 -->
 
+> [!IMPORTANT]
+>
+> **视频地址使用HTTP，一些浏览器不支持https+http混用导致无法播放**
+
 <animation
       videoSrc="http://squv82ws7.hd-bkt.clouddn.com/1565311997-1-16.mp4" 
       :subtitles="[
