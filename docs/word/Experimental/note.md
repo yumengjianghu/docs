@@ -19,7 +19,7 @@
 >😮 如果**图片过大**，且**网速不好**，加载时间可达到**1分钟+** 
 
 ### 本地懒加载大图片(3.26MB)
-<img v-lazy="'images/guangzhou.jpg'" alt="加载中..." /> 
+<img v-lazy="'/images/guangzhou.jpg'" alt="加载中..." /> 
 
 ### 网络懒加载大图片(3.26MB)
 > [!NOTE]

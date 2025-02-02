@@ -116,7 +116,7 @@ export default defineConfig({
         icon: {
           svg: '<svg t="1735727905242" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="14987" width="200" height="200"><path d="M517.632 563.2L0.0512 189.44V153.6h1024v43.6224L517.632 563.2zM267.2128 255.6928l250.368 181.0944L768 256H267.2128z" fill="#74BCFF" p-id="14988"></path><path d="M102.4 256v563.2h819.2V256H102.4M0 153.6h1024v768H0z" fill="#1990FF" p-id="14989"></path></svg>'
         },
-        link: ' /docs/IDCard',
+        link: ' /IDCard',
       },
     ],
     footer: {

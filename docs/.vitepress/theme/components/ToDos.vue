@@ -51,7 +51,7 @@ function toggleTask() {
   top: 0;
   width: 32px;
   height: 32px;
-  border: 2px solid red;
+  border: 2px solid rgb(0, 0, 0);
   border-radius: 4px;
   border-radius: 50%;
 
@@ -60,7 +60,7 @@ function toggleTask() {
 }
 
 .custom-checkbox-label::after {
-  content: '❌';
+  content: '';
   position: absolute;
   left: 5.5px;
   top: 4px;
@@ -72,7 +72,7 @@ function toggleTask() {
 }
 
 .custom-checkbox-input:checked + .custom-checkbox-label::before {
-  border-color: #05a134;
+  border-color: #000000;
   background-color: transparent;
   
 }
