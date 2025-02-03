@@ -1,5 +1,5 @@
 <template>
-    <div class="item">
+    <div class="item" ref="item">
         <div class="title" @click="Jump()"><span>{{ title }}</span> <span class="status">{{ status }}</span></div>
         <hr>
         <div class="overview">{{ overview }}</div>
@@ -13,7 +13,8 @@
 </template>
 
 <script setup>
-import { defineProps, ref } from 'vue';
+import { defineProps, ref, onMounted } from 'vue';
+const item = ref(null);
 let isShow = ref(false)
 let isCopy = ref(false)
 let port = window.location.port ? ':' + window.location.port + '/' : null
@@ -22,7 +23,7 @@ let URL = port ? window.location.hostname + port + src : window.location.hostnam
 let { title,
     overview,
     RecordTime, src,
-    status } = defineProps(['title', 'overview', 'RecordTime', 'status', 'src'])
+    status, delay } = defineProps(['title', 'overview', 'RecordTime', 'status', 'src', 'delay'])
 let recordTime = RecordTime ? RecordTime : getFormattedDate()
 function showBox() {
     isShow.value = true
@@ -66,6 +67,14 @@ function getFormattedDate() {
     // 拼接成 "YYYY-MM-DD HH：mm：ss" 格式
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
+// 动态添加元素缓动效果时间
+onMounted(() => {
+    if (item.value) {
+        const index = delay ? delay : '1'
+        item.value.style.setProperty('--delay', index); // 设置变量值
+        item.value.style.animationDelay = `calc(var(--delay) * 0.2s)`; // 追加样式
+    }
+});
 </script>
 
 <style scoped>
