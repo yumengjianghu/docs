@@ -16,25 +16,9 @@
 import { defineProps, ref } from 'vue';
 let isShow = ref(false)
 let isCopy = ref(false)
-
-// --------------------------------------------------
-function processAddress(input) {
-    // 统一所有分隔符为正斜杠并分割路径
-    const parts = input
-        .replace(/[\\/]/g, '/')   // 统一为正斜杠
-        .split('/')               // 分割路径
-        .filter(p => p !== '');   // 移除空段
-    // 删除第三个路径段 (索引2)
-    if (parts.length >= 3) {
-        parts.splice(2, 1);
-    }
-    // 重组路径并保留原始首部斜杠特征
-    return parts.join('/');
-}
-// --------------------------------------------------
 let port = window.location.port ? ':' + window.location.port + '/' : null
 // port=null // 测试 生成环境 / 开发环境
-let URL = port ? window.location.hostname + port + src : processAddress(window.location.hostname + '/' + src)
+let URL = port ? window.location.hostname + port + src : window.location.hostname + '/' + src
 let { title,
     overview,
     RecordTime, src,
