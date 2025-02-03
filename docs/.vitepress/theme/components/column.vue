@@ -76,6 +76,20 @@ function getFormattedDate() {
     position: relative;
     margin-top: 50px;
     box-shadow: 1px 2px 3px #ddd;
+    opacity: 0;
+    animation: slideDown 0.5s ease-out forwards;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 .title {
