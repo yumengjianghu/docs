@@ -5,6 +5,3 @@
 <column title='文档一' RecordTime='' src='memories' overview='文档概述'  status='🚀🚀🚀' />
 <column title='文档二' RecordTime='' src='memories' overview='文档概述'  status='🚀🚀🚀' />
 <column title='文档三' RecordTime='' src='memories' overview='文档概述'  status='🚀🚀🚀' />
-
-## 评论
-<Giscus />
