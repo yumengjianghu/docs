@@ -1,10 +1,10 @@
 ## 踩坑点：
-| 标题                                        | 概述                       | 记录时间        | 状态   |
-| ------------------------------------------- | -------------------------- | --------------- | ------ |
-| <a href='memories\文档图片懒加载'>文档图片懒加载</a>   | 文档`img`替换为懒加载`img` | 2025-1-30 23:06 | 未解决 |
-| <a href='memories\自定义域名注意事项'>域名路径问题</a> | 不应该有docs路径           | 2025-2-2 16:30  | 已解决 |
-
+<column title='自定义域名' RecordTime='2025-2-2 16:30' src='memories\setback\自定义域名注意事项' overview='使用自定义域名后资源路径不一样'  status='已解决' />
+<column title='图片懒加载' RecordTime='2025-1-30 23:06' src='memories\setback\文档图片懒加载' overview='文档img替换为懒加载img'  status='未解决' />
 ## 记录点：
+<column title='文档一' RecordTime='' src='memories' overview='文档概述'  status='🚀🚀🚀' />
+<column title='文档二' RecordTime='' src='memories' overview='文档概述'  status='🚀🚀🚀' />
+<column title='文档三' RecordTime='' src='memories' overview='文档概述'  status='🚀🚀🚀' />
 
 ## 评论
 <Giscus />
