@@ -64,6 +64,3 @@ const mindMapData = {
 </script>
 
 **待完成**
-
-## 评论
-<Giscus />
