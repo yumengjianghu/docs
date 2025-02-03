@@ -59,14 +59,9 @@ export default defineConfig({
         text: '后端', items: [
           { text: 'Nodejs', link: '/word/node/Node' },
           { text: 'Java', link: '/word/java/note' },
-        ]
-      },
-      {
-        text: '数据库', items: [
           { text: 'My SQL', link: '/word/mysql/note' },
           { text: 'SQL Server', link: '/word/sqlserver/note' },
           { text: 'MongoDB', link: '/word/mongodb/note' },
-
         ]
       },
       {
