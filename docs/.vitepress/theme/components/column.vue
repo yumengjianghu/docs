@@ -51,7 +51,9 @@ const copyText = (text) => {
         });
 };
 function Jump() {
-    window.location.href = src
+    if (src) {
+        window.location.href = src
+    }
 }
 function getFormattedDate() {
     const date = new Date();

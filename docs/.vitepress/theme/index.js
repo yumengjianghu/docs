@@ -13,7 +13,7 @@ import Experimental from './components/Experimental.vue'  // 实验功能模块
 import VueLazyloadNext  from 'vue-lazyload-next'   // 懒加载指令
 import ToDos from './components/ToDos.vue'  // 代办组件
 import column from './components/column.vue'  // 记录栏
-
+import lazyshow from './components/lazyshow.vue'
 
 // 引入懒加载图片
 import loadingIMG from '../../public/status/xhj.gif'
@@ -41,6 +41,7 @@ export default {
     app.component('Experimental', Experimental);
     app.component('ToDos', ToDos);
     app.component('column', column);
+    app.component('lazyshow', lazyshow);
     app.use(VueLazyloadNext, {
       loading: loadingIMG, // 加载占位图
       error: errorIMG,     // 错误占位图
