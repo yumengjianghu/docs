@@ -9,7 +9,8 @@
             开始学习！
         </h1>
 
-<img src="http://squv82ws7.hd-bkt.clouddn.com/wordxhj.gif" alt="" style='width:100px'>
+<column title='Typora增强插件📄' RecordTime='2025-2-3 12:37' src='study/Typora-plugin/note' overview='使用插件增强Typora功能，比如一键执行命令行，思维导图，一键到顶，文字风格等'  status='✔' />
+
 <prompt/>
 
 ## 评论

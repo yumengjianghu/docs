@@ -217,8 +217,8 @@ export default {
 
 .hiddenUp {
     opacity: 0;
-    /* transform: translateY(-20px) translateX(-50%); */
-    transform: translateX(50px);
+    transform: translateY(-20px) translateX(-50%);
+    /* transform: translateX(50px); */
 
 }
 </style>
