@@ -8,12 +8,10 @@ import Giscus from './components/Giscus.vue'       // 评论组件
 import CopyBlock from './components/CopyBlock.vue' // 可复制模块
 import GlobalToast from './components/GlobalToast.vue' // 全局提示组件
 import prompt from './components/prompt.vue'  // 横幅提示
-import MindMap from './components/MindMap.vue'  // 思维导图
 import Experimental from './components/Experimental.vue'  // 实验功能模块
 import VueLazyloadNext  from 'vue-lazyload-next'   // 懒加载指令
-import ToDos from './components/ToDos.vue'  // 代办组件
 import column from './components/column.vue'  // 记录栏
-import lazyshow from './components/lazyshow.vue'
+import lazyshow from './components/lazyshow.vue' // 懒显示
 
 // 引入懒加载图片
 import loadingIMG from '../../public/status/xhj.gif'
@@ -37,9 +35,7 @@ export default {
     app.component('CopyBlock', CopyBlock);
     app.component('GlobalToast', GlobalToast);
     app.component('prompt', prompt);
-    app.component('MindMap', MindMap);
     app.component('Experimental', Experimental);
-    app.component('ToDos', ToDos);
     app.component('column', column);
     app.component('lazyshow', lazyshow);
     app.use(VueLazyloadNext, {

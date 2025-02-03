@@ -15,9 +15,6 @@ hero:
       text: 开始学习
       link: /study
     - theme: alt
-      text: 回顾
-      link: /ed
-    - theme: alt
       text: 记录  
       link: /memories
 
