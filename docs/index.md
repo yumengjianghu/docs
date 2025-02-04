@@ -17,6 +17,9 @@ hero:
     - theme: alt
       text: 记录  
       link: /memories
+    - theme: alt
+      text: 标签  
+      link: /memories     
 
 
 features:
@@ -28,3 +31,4 @@ features:
     details: 如果你在文档中发现问题，希望你及时评论反馈
 ---
 
+<MouseEvent/>
