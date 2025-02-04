@@ -9,6 +9,7 @@
     "vitepress": "^1.6.3"
   },
   "dependencies": {
+    "cursor-effects": "^1.0.17",
     "marked": "^15.0.6",
     "vue-lazyload-next": "^0.0.2"
   }
