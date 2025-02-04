@@ -115,7 +115,7 @@ export default defineConfig({
       },
     ],
     footer: {
-      copyright: 'Website Based on Vitepress create and DIY<br/>© 鱼梦江湖 2025 MIT',
+      copyright: 'Website Based on Vitepress create and DIY © 鱼梦江湖 2025 MIT',
       message: '<span id="busuanzi_container_page_pv" data-page-id="age-01">本页访问量：<span id="busuanzi_value_page_pv"></span> 次</span>',
     }
   }

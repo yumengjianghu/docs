@@ -81,29 +81,21 @@ onMounted(() => {
 
 <style scoped>
 .item {
-    border: 1px solid rgb(221, 221, 221);
+    border: 1px solid var(--item-border-color);
     border-radius: 2px;
     padding: 30px;
     position: relative;
     margin-top: 50px;
-    /* box-shadow: 1px 2px 3px #ddd;     */
-    box-shadow: 10px 10px 1px 0px #ddd;
+    box-shadow: 10px 10px 1px 0px var(--item-shadow-color);
     opacity: 0;
     animation: slideDown 0.5s ease-out forwards;
-    transition: all 0.3s;
 }
 .item:hover{
-    border-left-color: #b88eff;
-    border-left-width: 10px;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
+    border-left-color: var(--item-border-color);
+    box-shadow: 20px 20px 1px 0px var(--item-shadow-color);
+    top: -5px;
+    left: -5px;
 }
-/* @media (prefers-color-scheme: dark) {
-    .item{
-    box-shadow: 10px 10px 1px 0px #303030;
-
-    }
-} */
 
 @keyframes slideDown {
     from {
