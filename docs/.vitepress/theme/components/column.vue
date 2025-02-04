@@ -86,10 +86,24 @@ onMounted(() => {
     padding: 30px;
     position: relative;
     margin-top: 50px;
-    box-shadow: 1px 2px 3px #ddd;
+    /* box-shadow: 1px 2px 3px #ddd;     */
+    box-shadow: 10px 10px 1px 0px #ddd;
     opacity: 0;
     animation: slideDown 0.5s ease-out forwards;
+    transition: all 0.3s;
 }
+.item:hover{
+    border-left-color: #b88eff;
+    border-left-width: 10px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+/* @media (prefers-color-scheme: dark) {
+    .item{
+    box-shadow: 10px 10px 1px 0px #303030;
+
+    }
+} */
 
 @keyframes slideDown {
     from {
