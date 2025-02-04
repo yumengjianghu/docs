@@ -133,12 +133,12 @@ onMounted(() => {
 }
 
 .shareBox {
-    color: black;
+    color: var(--vp-c-text-1);
     position: absolute;
     bottom: 0px;
     right: -16px;
-    border: 1px solid rgb(221, 221, 221);
-    background-color: #edf2fa;
+    border: 1px solid var(--item-border-color);
+    background-color: var(--item-copyshow-color);
     padding: 5px;
     font-size: 13px;
     opacity: 0;
@@ -156,9 +156,9 @@ onMounted(() => {
     position: absolute;
     bottom: -1px;
     right: 0;
-    border: 1px solid rgb(221, 221, 221);
-    background-color: #0e943a;
-    color: white;
+    border: 1px solid var(--item-border-color);
+    background-color: #002f64;
+    color: #ccc;
     transition: all 0.5s ease;
     opacity: 0;
     z-index: -1;
@@ -166,7 +166,8 @@ onMounted(() => {
 }
 
 .copyShow {
-    right: -65px;
+    right: -63px;
+    top: -1px;
     opacity: 1;
 }
 

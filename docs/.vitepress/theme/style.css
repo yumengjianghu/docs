@@ -133,6 +133,7 @@
   /* 自定义变量 */
   --item-border-color:#ddd;
   --item-shadow-color:#dddddd;
+  --item-copyshow-color:#f6f6f7;
 }
 
 .dark {
@@ -144,7 +145,7 @@
   /* 自定义变量 */
   --item-border-color:#5d737a;
   --item-shadow-color:#2c3639;
-
+  --item-copyshow-color:#2b4852;
 }
 
 /**

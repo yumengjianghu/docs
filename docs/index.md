@@ -15,11 +15,12 @@ hero:
       text: 开始学习
       link: /study
     - theme: alt
+      text: 标签  
+      link: /tag
+    - theme: alt
       text: 记录  
       link: /memories
-    - theme: alt
-      text: 标签  
-      link: /memories     
+    
 
 
 features:
