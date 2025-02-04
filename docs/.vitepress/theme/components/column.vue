@@ -1,6 +1,6 @@
 <template>
     <div class="item" ref="item">
-        <div class="title" @click="Jump()"><span>{{ title }}</span> <span class="status">{{ status }}</span></div>
+        <div class="title" @click="navigate(src)"><span>{{ title }}</span> <span class="status">{{ status }}</span></div>
         <hr>
         <div class="overview">{{ overview }}</div>
         <div class="share" ref="shareBtn" @click="showBox()">分享
@@ -14,12 +14,20 @@
 
 <script setup>
 import { defineProps, ref, onMounted } from 'vue';
+import { useRouter } from 'vitepress'
+
+const router = useRouter() 
+
+const navigate = (src) => {
+  router.go(src) 
+}
+
 const item = ref(null);
 let shareBtn = ref(null);
 let Tagm = ref(null)
-let port = window.location.port ? ':' + window.location.port + '/' : null
-// port=null // 测试 生成环境 / 开发环境
-let URL = port ? window.location.hostname + port + src : window.location.hostname + '/' + src
+// let port = window.location.port ? ':' + window.location.port + '/' : null
+// // port=null // 测试 生成环境 / 开发环境
+// let URL = port ? window.location.hostname + port + src : window.location.hostname + '/' + src
 let { title,
     overview,
     RecordTime, src,
@@ -47,12 +55,6 @@ const copyText = (text) => {
     }
     return '复制链接成功!';
 };
-function Jump() {
-    if (src) {
-        window.location.href = src
-        
-    }
-}
 function getFormattedDate() {
     const date = new Date();
 
