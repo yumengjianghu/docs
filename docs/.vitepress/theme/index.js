@@ -13,7 +13,7 @@ import VueLazyloadNext  from 'vue-lazyload-next'   // 懒加载指令
 import column from './components/column.vue'  // 记录栏
 import lazyshow from './components/lazyshow.vue' // 懒显示
 import MouseEvent from './components/MouseEvent.vue' // 鼠标跟随特效
-
+import tag from './components/tag.vue'
 
 // 引入懒加载图片
 import loadingIMG from '../../public/status/xhj.gif'
@@ -41,6 +41,7 @@ export default {
     app.component('column', column);
     app.component('lazyshow', lazyshow);
     app.component('MouseEvent', MouseEvent);
+    app.component('tag', tag);
     app.use(VueLazyloadNext, {
       loading: loadingIMG, // 加载占位图
       error: errorIMG,     // 错误占位图

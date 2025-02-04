@@ -133,7 +133,18 @@
   /* 自定义变量 */
   --item-border-color:#ddd;
   --item-shadow-color:#dddddd;
-  --item-copyshow-color:#f6f6f7;
+  --column-background-color:#f5f5f5;
+
+
+
+  /* tag标签颜色 */
+  --tag-life-color:#74bb44;
+  --tag-note-color:#016dd9;
+  --tag-tutorial-color:#7b3987;
+  --tag-Web-color:#389ea9;
+  --tag-gush-color:#e9792a;
+  --tag-resource-color:#009438;
+  --tag-other-color:#365d69;
 }
 
 .dark {
@@ -145,7 +156,8 @@
   /* 自定义变量 */
   --item-border-color:#5d737a;
   --item-shadow-color:#2c3639;
-  --item-copyshow-color:#2b4852;
+  --column-background-color:#1a1a1a;
+
 }
 
 /**

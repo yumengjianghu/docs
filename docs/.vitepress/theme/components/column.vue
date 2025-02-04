@@ -3,56 +3,54 @@
         <div class="title" @click="Jump()"><span>{{ title }}</span> <span class="status">{{ status }}</span></div>
         <hr>
         <div class="overview">{{ overview }}</div>
-        <div class="share" @click="showBox()">分享
-            <div class="shareBox" :class="{ shareBoxShow: isShow }">{{ URL }}
-                <div class="copy" :class="{ copyShow: isCopy }">复制成功</div>
-            </div>
+        <div class="share" ref="shareBtn" @click="showBox()">分享
         </div>
         <div class="time">{{ recordTime }}</div>
+        <div class="slot" ref="Tagm">
+            <!-- <slot></slot> -->
+        </div>
     </div>
 </template>
 
 <script setup>
 import { defineProps, ref, onMounted } from 'vue';
 const item = ref(null);
-let isShow = ref(false)
-let isCopy = ref(false)
+let shareBtn = ref(null);
+let Tagm = ref(null)
 let port = window.location.port ? ':' + window.location.port + '/' : null
 // port=null // 测试 生成环境 / 开发环境
 let URL = port ? window.location.hostname + port + src : window.location.hostname + '/' + src
 let { title,
     overview,
     RecordTime, src,
-    status, delay } = defineProps(['title', 'overview', 'RecordTime', 'status', 'src', 'delay'])
+    status, delay, TagColor } = defineProps(['title', 'overview', 'RecordTime', 'status', 'src', 'delay', 'TagColor'])
 let recordTime = RecordTime ? RecordTime : getFormattedDate()
 function showBox() {
-    isShow.value = true
+    shareBtn.value.innerHTML = copyText(URL)
     setTimeout(() => {
-        isCopy.value = true
-    }, 500)
-    setTimeout(() => {
-        isCopy.value = false
-        setTimeout(() => {
-            isShow.value = false
-        }, 500);
-    }, 2000);
-    copyText(URL)
+        shareBtn.value.innerHTML = '分享'
+    }, 1000)
 }
 
 const copyText = (text) => {
-    navigator.clipboard
+    try {
+        navigator.clipboard
         .writeText(text)
         .then(() => {
             console.log("复制成功")
         })
         .catch(() => {
             console.log("复制失败");
-
         });
+    } catch (error) {
+        return '复制失败'
+    }
+    return '复制链接成功!';
 };
 function Jump() {
     if (src) {
         window.location.href = src
+        
     }
 }
 function getFormattedDate() {
@@ -76,11 +74,29 @@ onMounted(() => {
         item.value.style.setProperty('--delay', index); // 设置变量值
         item.value.style.animationDelay = `calc(var(--delay) * 0.2s)`; // 追加样式
     }
+    if (TagColor) {
+        Tagm.value.style.background = TagColor;
+    }
 });
 </script>
 
 <style scoped>
+.slot {
+    height: 10px;
+    width: 10px;
+    background-color: aqua;
+    /* border: 3px solid aqua; */
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    /* background-color: var(--vp-c-bg); */
+    filter: blur(1px);
+    border-radius: 50%;
+    transition: all 0.5s ease;
+}
+
 .item {
+    overflow: hidden;
     border: 1px solid var(--item-border-color);
     border-radius: 2px;
     padding: 30px;
@@ -89,8 +105,10 @@ onMounted(() => {
     box-shadow: 10px 10px 1px 0px var(--item-shadow-color);
     opacity: 0;
     animation: slideDown 0.5s ease-out forwards;
+    background-color: var(--column-background-color);
 }
-.item:hover{
+
+.item:hover {
     border-left-color: var(--item-border-color);
     box-shadow: 20px 20px 1px 0px var(--item-shadow-color);
     top: -5px;
@@ -130,45 +148,6 @@ onMounted(() => {
     cursor: pointer;
     z-index: 999;
     color: #7a7a7a;
-}
-
-.shareBox {
-    color: var(--vp-c-text-1);
-    position: absolute;
-    bottom: 0px;
-    right: -16px;
-    border: 1px solid var(--item-border-color);
-    background-color: var(--item-copyshow-color);
-    padding: 5px;
-    font-size: 13px;
-    opacity: 0;
-    transition: all 0.5s ease;
-    white-space: nowrap;
-}
-
-.shareBoxShow {
-    bottom: -36px;
-    opacity: 1;
-
-}
-
-.copy {
-    position: absolute;
-    bottom: -1px;
-    right: 0;
-    border: 1px solid var(--item-border-color);
-    background-color: #002f64;
-    color: #ccc;
-    transition: all 0.5s ease;
-    opacity: 0;
-    z-index: -1;
-    padding: 5px;
-}
-
-.copyShow {
-    right: -63px;
-    top: -1px;
-    opacity: 1;
 }
 
 .time {

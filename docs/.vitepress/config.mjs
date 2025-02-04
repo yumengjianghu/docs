@@ -40,7 +40,7 @@ export default defineConfig({
     },
     nav: [
       {
-        text: '前端', items: [
+        text: '🖥前端', items: [
           { text: 'HTML5', link: '/word/h5/note' },
           { text: '布局技巧', link: '/word/CSS3/note' },
           { text: 'JavaScript', link: '/word/JS/Notes' },
@@ -56,7 +56,7 @@ export default defineConfig({
         ]
       },
       {
-        text: '后端', items: [
+        text: '🔌后端', items: [
           { text: 'Nodejs', link: '/word/node/Node' },
           { text: 'Java', link: '/word/java/note' },
           { text: 'My SQL', link: '/word/mysql/note' },
@@ -65,7 +65,7 @@ export default defineConfig({
         ]
       },
       {
-        text: '教程', items: [
+        text: '🏳‍🌈教程', items: [
           { text: 'VitePress博客搭建', link: '/word/VitePress博客搭建/note' },
           { text: 'Github Action部署', link: '/word/Github Action部署/note' },
           { text: 'VitePress插入个人网页', link: '/word/MyWebsiteTutorial/note' },
@@ -76,16 +76,19 @@ export default defineConfig({
         ]
       },
       {
-        text: '资源', items: [
+        text: '🧰资源', items: [
           { text: 'Download 1', link: '/word/download1/note' },
           { text: 'Download 2', link: '/word/download2/note' },
         ]
       },
       {
-        text: '其他', items: [
-          { text: '我的简历', link: '/word/简历/docs.md' },
-          { text: '视频模块', link: '/word/video/note.md' },
-          { text: '实验功能', link: '/word/Experimental/note.md' },
+        text: '🏷️Tags', link: '/tag'
+      },
+      {
+        text: '🗑其他', items: [
+          { text: '📄简历', link: '/word/简历/docs.md' },
+          { text: '📺视频', link: '/word/video/note.md' },
+          { text: '🧪实验功能', link: '/word/Experimental/note.md' },
           { text: '...', link: '/word/other/note' },
         ]
       }
