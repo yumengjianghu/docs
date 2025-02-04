@@ -16,20 +16,20 @@ import * as CursorEffects from "cursor-effects";
 //   size: 3,
 // })
 
-// new CursorEffects.rainbowCursor({
-//     length: 50,
-//     //   colors: ['#FF006E', '#FFBE0B', '#8338EC', '#3A86FF', '#FF38DC']  , //赛博霓虹风
-//     // colors: ['#00F5D4', '#00BBF9', '#009FFD', '#6F2DBD', '#7400B8'], //流体渐变
-//     // colors:['#F94144', '#F3722C', '#F8961E', '#90BE6D', '#43AA8B'] ,  //自然过渡
-//     // colors:['#FF595E', '#FFCA3A', '#8AC926', '#1982C4', '#6A4C93'],  //彩虹衍射
-//     // colors:['#A8DADC', '#457B9D', '#1D3557', '#E63946', '#F4A261'] , //冷系幻彩
-//     size: 4,
-// });
 new CursorEffects.rainbowCursor({
-    length: 10,
-    colors:['#3e63dd'],
-    size: 10,
+    length: 8,
+    //   colors: ['#FF006E', '#FFBE0B', '#8338EC', '#3A86FF', '#FF38DC']  , //赛博霓虹风
+    colors: ['#00F5D4', '#00BBF9', '#009FFD', '#6F2DBD', '#7400B8'], //流体渐变
+    // colors:['#F94144', '#F3722C', '#F8961E', '#90BE6D', '#43AA8B'] ,  //自然过渡
+    // colors:['#FF595E', '#FFCA3A', '#8AC926', '#1982C4', '#6A4C93'],  //彩虹衍射
+    // colors:['#A8DADC', '#457B9D', '#1D3557', '#E63946', '#F4A261'] , //冷系幻彩
+    size: 3,
 });
+// new CursorEffects.rainbowCursor({
+//     length: 10,
+//     colors: ['#3e63dd'],
+//     size: 10,
+// });
 // 表情挂饰
 // new CursorEffects.springyEmojiCursor({ emoji: "🤣" });
 
