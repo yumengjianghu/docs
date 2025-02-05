@@ -1,9 +1,9 @@
 <template>
     <div class="copy-block">
         <!-- 复制按钮 -->
-        <button class="copy-button" @click="copyText">复制</button>
+        <button class="copy-button" @click="copyText" ref="PromptText">CopyBlock</button>
         <!-- 文字内容 -->
-        <div class="content">
+        <div class="content" ref="content">
             {{ prompt }}
             {{ CodedText }}
 
@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref ,onMounted} from "vue";
 
 export default {
     name: "CopyBlock",
@@ -31,10 +31,19 @@ export default {
             required: false,
             default: 'true'
         },
+        size: {
+            type: String,
+            required: false,
+            default: 15
+        },
     },
     setup(props) {
-
+        let PromptText=ref(null)
+        let content=ref(null)
         let CodedText = true;
+        onMounted(()=>{
+            content.value.style.fontSize=props.size+'px'
+        })
         if (props.DisplayStatus == "true") {
             CodedText = props.text.replace(/./g, "◼");
         }
@@ -44,11 +53,17 @@ export default {
             navigator.clipboard
                 .writeText(props.text)
                 .then(() => {
-                    showToast('复制成功', 'true')
+                    // showToast('复制成功', 'true')
+                    PromptText.value.innerHTML='Success'
                 })
                 .catch(() => {
-                    showToast('复制失败', 'false')
+                    // showToast('复制失败', 'false')
+                    PromptText.value.innerHTML='Error'
+                    //  shareBtn.value.innerHTML = '分享'
                 });
+                setTimeout(() => {
+                    PromptText.value.innerHTML='CopyBlock'
+                }, 1000);
         };
         const toast = ref(null);
         const showToast = (message, status) => {
@@ -58,7 +73,9 @@ export default {
             copyText,
             showToast,
             CodedText,
-            toast
+            toast,
+            PromptText,
+            content
         };
     },
 };
@@ -68,10 +85,11 @@ export default {
 .copy-block {
     position: relative;
     padding: 16px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--vp-c-bg-alt);
     border-radius: 4px;
-    background-color: #f6f6f7;
+    background-color: var(--vp-c-bg-alt);
     font-family: Arial, sans-serif;
+    margin-top: 20px;
 }
 
 .copy-button {
@@ -80,8 +98,8 @@ export default {
     right: 8px;
     padding: 2px 8px;
     /* background-color: #007bff; */
-    border: 1px #e2e2e3 solid;
-    color: #000000;
+    border: 1px var(--vp-c-bg) solid;
+    color: #ccc;
     /* border: none; */
     border-radius: 4px;
     cursor: pointer;
@@ -91,7 +109,7 @@ export default {
 }
 
 .copy-button:hover {
-    background-color: #ffffff;
+    background-color: var(--vp-c-bg);
 }
 
 .content {
@@ -99,5 +117,6 @@ export default {
     white-space: pre-wrap;
     /* 保留换行和空格 */
     font-weight: bold;
+    /* font-size: 20px; */
 }
 </style>

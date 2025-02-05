@@ -1,5 +1,7 @@
 <span style="border:1px solid #330000;padding:5px;">插件来自Github仓库[typora_plugin](https://github.com/obgnail/typora_plugin)</span>
 
+<span style="background:#606060; color:#330000; font-family:serif; font-size:1.4em;padding:10px;">搬运自上述仓库，仅为保存</span>
+
 请根据你的勤奋程度选择 [懒人版本](#懒人版本) 或 [详细版本](#详细版本)。
 
 ## 懒人版本

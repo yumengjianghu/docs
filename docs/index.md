@@ -15,7 +15,7 @@ hero:
       text: 开始学习
       link: /study
     - theme: alt
-      text: 文档  
+      text: 全部文档  
       link: /AllDocuments
     
 
