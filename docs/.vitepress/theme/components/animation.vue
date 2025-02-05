@@ -78,7 +78,7 @@ export default {
     const playbackRate = ref(1); // 播放速度
     const isPictureInPicture = ref(false); // 是否处于画中画模式
     onMounted(() => {
-      showToast(`自动静音`, 'true', false, false)
+      // showToast(`自动静音`, 'true', false, false)
       // togglePlay()
 
     })

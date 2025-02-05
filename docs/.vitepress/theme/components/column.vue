@@ -25,9 +25,9 @@ const navigate = (src) => {
 const item = ref(null);
 let shareBtn = ref(null);
 let Tagm = ref(null)
-// let port = window.location.port ? ':' + window.location.port + '/' : null
-// // port=null // 测试 生成环境 / 开发环境
-// let URL = port ? window.location.hostname + port + src : window.location.hostname + '/' + src
+let port = window.location.port ? ':' + window.location.port + '/' : null
+// port=null // 测试 生成环境 / 开发环境
+let URL = port ? window.location.hostname + port + src : window.location.hostname + '/' + src
 let { title,
     overview,
     RecordTime, src,

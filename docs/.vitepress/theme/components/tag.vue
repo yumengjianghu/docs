@@ -1,22 +1,34 @@
 <template>
     <button class="Rbtn" ref="Rbtn" @click="go()">{{ name }}
-        <div class="count">{{ count }}</div>
+        <div class="count" ref="Rcount">{{ count }}</div>
     </button>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vitepress'
+
+const router = useRouter()
+
+const navigate = (src) => {
+    router.go(src)
+}
 let { name, color, count, src } = defineProps(['name', 'color', 'count', 'src'])
 let Rbtn = ref(null)
+let Rcount = ref(null)
 onMounted(() => {
     Rbtn.value.style.background = color
+    if (name == 'Back') {
+        Rcount.value.style.border="none";
+    }
 })
 function go() {
-    let port = window.location.port ? ':' + window.location.port + '/' : null
-    // port=null // 测试 生成环境 / 开发环境
-    let url = port ? 'http://'+window.location.hostname + port + src : 'https://'+window.location.hostname + '/' + src
+    // let port = window.location.port ? ':' + window.location.port + '/' : null
+    // // port=null // 测试 生成环境 / 开发环境
+    // let url = port ? 'http://' + window.location.hostname + port + src : 'https://' + window.location.hostname + '/' + src
     if (src) {
-        window.location.href = url
+        // window.location.href = url
+        navigate(src)
     }
 }
 </script>
@@ -24,6 +36,7 @@ function go() {
 <style scoped>
 .Rbtn {
     position: relative;
+    justify-content: space-between;
     height: 3em;
     width: 8em;
     border: none;
