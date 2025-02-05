@@ -4,3 +4,4 @@
 
 
 <img v-lazy="'/emoji/指上.webp'">
+<like/>
