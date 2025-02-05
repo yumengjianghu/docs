@@ -16,7 +16,7 @@ hero:
       link: /study
     - theme: alt
       text: 文档  
-      link: /memories
+      link: /AllDocuments
     
 
 
