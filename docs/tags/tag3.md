@@ -13,3 +13,15 @@
 
 ##  教程
 
+<lazyshow>
+  <column
+    title='全自动文章创建'
+    RecordTime='2025-2-5 14:3:48'
+    src='word/全自动文章创建/note'
+    overview='只需要输入一串命令 在对应的文件夹创建对应名称文件夹及其子文件'
+    status='😋'
+    delay='1'
+    TagColor='var(--tag-tutorial-color)'
+  ></column>
+</lazyshow>
+
