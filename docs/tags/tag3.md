@@ -27,3 +27,15 @@
 
 
 
+
+<lazyshow>
+  <column
+    title='Supabase'
+    RecordTime='2025-2-5 19:32:3'
+    src='word/Supabase/note'
+    overview='Supabase是一个功能强大且易于使用的开源后端即服务解决方案，提供了实时数据库，身份验证，存储服务，边缘函数和自动生成的API等丰富功能。'
+    status='🌏'
+    delay='1'
+    TagColor='var(--tag-tutorial-color)'
+  ></column>
+</lazyshow>
