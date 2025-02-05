@@ -1,5 +1,5 @@
 # 标签
-<div style="display:flex;justify-content: space-between;">
+<div style="display:flex;justify-content: space-between;flex-wrap: wrap;">
 <tag src='/tags/tag1' name='记录' color='var(--tag-life-color)' count=3 />
 <tag src='/tags/tag2' name='笔记' color='var(--tag-note-color)' count=13 />
 <tag src='/tags/tag3' name='教程' color='var(--tag-tutorial-color)' count=7 />

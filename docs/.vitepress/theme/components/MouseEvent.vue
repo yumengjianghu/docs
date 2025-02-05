@@ -80,7 +80,7 @@ else if(detectDeviceType()=='mobile'){
     },
     characterNewRotationDegreesFunction: function(age, lifeSpan) {
         let lifeLeft = lifeSpan - age;
-        console.log(age, lifeSpan);
+        // console.log(age, lifeSpan);
         return lifeLeft / 5;
     }
 })
