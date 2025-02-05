@@ -12,6 +12,14 @@
 ---
 
 ## 笔记
-<lazyshow><column title='文档' RecordTime='' src='' overview='文档概述'  status='📦' delay='1' TagColor='var(--tag-note-color)'></column></lazyshow>
-<lazyshow><column title='文档' RecordTime='' src='' overview='文档概述'  status='📦' delay='1' TagColor='var(--tag-note-color)'></column></lazyshow>
-<lazyshow><column title='文档' RecordTime='' src='' overview='文档概述'  status='📦' delay='1' TagColor='var(--tag-note-color)'></column></lazyshow>
+<lazyshow>
+  <column
+    title='文档图片懒加载'
+    RecordTime='2025-2-5 13:11:6'
+    src='word/文档图片懒加载/note'
+    overview='1'
+    status='11'
+    delay='1'
+    TagColor='var(--tag-other-color)'
+  ></column>
+</lazyshow>

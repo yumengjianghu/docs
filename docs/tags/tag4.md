@@ -12,6 +12,3 @@
 ---
 
 ## Web
-<lazyshow><column title='文档' RecordTime='' src='' overview='文档概述'  status='📦' delay='1' TagColor='var(--tag-Web-color)'></column></lazyshow>
-<lazyshow><column title='文档' RecordTime='' src='' overview='文档概述'  status='📦' delay='1' TagColor='var(--tag-Web-color)'></column></lazyshow>
-<lazyshow><column title='文档' RecordTime='' src='' overview='文档概述'  status='📦' delay='1' TagColor='var(--tag-Web-color)'></column></lazyshow>
