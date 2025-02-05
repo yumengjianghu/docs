@@ -12,14 +12,3 @@
 ---
 
 ##  吐槽
-<lazyshow>
-  <column
-    title='文档图片懒加载'
-    RecordTime='2025-2-5 13:6:19'
-    src='word/文档图片懒加载/note'
-    overview='实战感想'
-    status='艹'
-    delay='1'
-    TagColor='var(--tag-life-color)'
-  ></column>
-</lazyshow>

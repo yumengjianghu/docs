@@ -12,14 +12,4 @@
 ---
 
 ##  教程
-<lazyshow>
-  <column
-    title='文档图片懒加载'
-    RecordTime='2025-2-5 13:11:16'
-    src='word/文档图片懒加载/note'
-    overview='1'
-    status='1'
-    delay='1'
-    TagColor='var(--tag-other-color)'
-  ></column>
-</lazyshow>
+
