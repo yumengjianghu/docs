@@ -2,17 +2,6 @@
 <!-- 支持多语言字幕，可以通过 subtitles 属性传递字幕文件列表 -->
 <img v-lazy="'/status/施工中.png'">
 
-
-<animation
-      videoSrc="" 
-      :subtitles="[
-        {subtitle:{lang:'zh',label:'1',src:'1'},index:1}
-      ]"
-    />
-    
-> [!IMPORTANT]
->
-> **视频地址使用HTTP，一些浏览器不支持https+http混用导致无法播放**
 <!-- # Bilibili 视频演示
 
 
