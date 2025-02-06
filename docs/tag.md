@@ -118,3 +118,15 @@
     TagColor='var(--tag-tutorial-color)'
   ></column>
 </lazyshow>
+
+<lazyshow>
+  <column
+    title='自定义vitepress'
+    RecordTime='2025-2-6 22:43:49'
+    src='word/自定义vitepress/note'
+    overview='详细记录如何深度自定义vitepress网站'
+    status='待完成❌'
+    delay='1'
+    TagColor='var(--tag-tutorial-color)'
+  ></column>
+</lazyshow>

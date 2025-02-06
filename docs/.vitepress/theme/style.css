@@ -792,8 +792,8 @@
   }
 }
 
-.VPButton.brand[data-v-2dba8ca9],
-.VPButton.alt[data-v-2dba8ca9] {
+.VPButton.brand,
+.VPButton.alt {
   border-radius: 5px !important;
 }
 
