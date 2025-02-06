@@ -13,8 +13,9 @@ import column from './components/column.vue'  // 记录栏
 import lazyshow from './components/lazyshow.vue' // 懒显示
 import MouseEvent from './components/MouseEvent.vue' // 鼠标跟随特效
 import tag from './components/tag.vue'  // 标签
-import toDo from './components/toDo.vue' // 复选框
+import card from './components/card.vue' // 复选框
 import Like from './components/Like.vue'
+import demo from './components/demo.vue'
 
 // 引入懒加载图片
 import loadingIMG from '../../public/status/xhj.gif'
@@ -42,8 +43,9 @@ export default {
     app.component('lazyshow', lazyshow);
     app.component('MouseEvent', MouseEvent);
     app.component('tag', tag);
-    app.component('toDo', toDo);
+    app.component('card', card);
     app.component('Like', Like);
+    app.component('demo', demo);
     app.use(VueLazyloadNext, {
       loading: loadingIMG, // 加载占位图
       error: errorIMG,     // 错误占位图

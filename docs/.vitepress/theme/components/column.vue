@@ -6,9 +6,9 @@
         <div class="share" ref="shareBtn" @click="showBox()">分享
         </div>
         <div class="time">{{ recordTime }}</div>
-        <div class="slot" ref="Tagm">
-            <!-- <slot></slot> -->
-        </div>
+        <div class="slot" ref="Tagm"></div>
+        <div class="slot slot1"></div>
+        <div class="slot slot2"></div>
     </div>
 </template>
 
@@ -86,7 +86,7 @@ onMounted(() => {
 .slot {
     height: 10px;
     width: 10px;
-    background-color: aqua;
+    background-color: rgb(185, 14, 1);
     /* border: 3px solid aqua; */
     position: absolute;
     top: 10px;
@@ -96,11 +96,20 @@ onMounted(() => {
     border-radius: 50%;
     transition: all 0.5s ease;
 }
+.slot1{
+    left: 30px;
+    background-color: #cfad19;
 
+}
+.slot2{
+    left: 50px;
+    background-color: #1a8c1a;
+
+}
 .item {
     overflow: hidden;
     border: 1px solid var(--item-border-color);
-    border-radius: 2px;
+    border-radius: 10px;
     padding: 30px;
     position: relative;
     margin-top: 50px;
@@ -111,7 +120,7 @@ onMounted(() => {
 }
 
 .item:hover {
-    border-left-color: var(--item-border-color);
+    /* border-left-color: var(--item-border-color); */
     box-shadow: 20px 20px 1px 0px var(--item-shadow-color);
     top: -5px;
     left: -5px;

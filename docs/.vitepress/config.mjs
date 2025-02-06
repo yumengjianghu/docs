@@ -8,11 +8,11 @@ export default defineConfig({
       async: true,
       src: "//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js",
     },
-  ], ["link", { rel: "icon", href: "文档.png" }]],
+  ], ["link", { rel: "icon", href: "logo3.png" }]],
   title: "鱼梦江湖的技术栈",
   description: "知识文档",
   themeConfig: {
-    logo: '/logo.png',
+    logo: '/logo3.png',
     sidebar: false, // 关闭侧边栏
     aside: 'left', // 设置右侧侧边栏在左侧显示
     outlineTitle: '目录',
@@ -118,8 +118,8 @@ export default defineConfig({
       },
     ],
     footer: {
-      copyright: 'Website Based on Vitepress create and DIY © 鱼梦江湖 2025 MIT',
-      message: '<span id="busuanzi_container_page_pv" data-page-id="age-01">本页访问量：<span id="busuanzi_value_page_pv"></span> 次</span>',
+      copyright: '<span id="busuanzi_container_page_pv" data-page-id="age-01">👀：<span id="busuanzi_value_page_pv"></span> 次</span>',
+      message: '© 鱼梦江湖 2025 MIT',
     }
   }
 })
