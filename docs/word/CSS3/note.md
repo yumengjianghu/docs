@@ -1,5 +1,5 @@
 ---
-title: 顶部标题
+title: CSS
 editLink: false
 layout: doc
 sidebar: false
@@ -16,7 +16,7 @@ features:
 ---
 
 # 布局小技巧
-<!-- {{ $frontmatter.customize.toUpperCase() }} -->
+{{ $frontmatter.customize.toUpperCase() }}
 
 ## 评论
 <Giscus />
