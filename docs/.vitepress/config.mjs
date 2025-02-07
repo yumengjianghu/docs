@@ -2,6 +2,7 @@ import { defineConfig } from 'vitepress'
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   // base: "/docs/",
+  lastUpdated: true,
   head: [[
     "script",
     {
@@ -12,6 +13,12 @@ export default defineConfig({
   title: "鱼梦江湖的技术栈",
   description: "知识文档",
   themeConfig: {
+    lastUpdated: {
+      formatOptions: {
+        dateStyle:'short',
+        timeStyle:'short'
+      }
+    },
     logo: '/logo3.png',
     sidebar: false, // 关闭侧边栏
     aside: 'left', // 设置右侧侧边栏在左侧显示
