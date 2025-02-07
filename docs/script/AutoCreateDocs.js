@@ -36,6 +36,19 @@ function openFile(filePath) {
     }
     exec(command);
 }
+// 核心修改：顶部插入内容的方法
+function prependToFile(filePath, content) {
+    try {
+        // 读取原有内容
+        const oldContent = fs.readFileSync(filePath, 'utf8');
+        // 合并新内容到顶部
+        const newContent = content + oldContent;
+        // 重新写入文件
+        fs.writeFileSync(filePath, newContent);
+    } catch (error) {
+        throw new Error(`❌ 文件写入失败：${filePath}\n${error.message}`);
+    }
+}
 
 // 主函数
 async function main() {
@@ -120,11 +133,14 @@ async function main() {
         ].join('\n');
 
         // 追加到分类标签文件
-        fs.appendFileSync(tagFilePath, recordData);
+        // fs.appendFileSync(tagFilePath, recordData);
+        prependToFile(tagFilePath, recordData);
         console.log(`🏷️ ${colors.green('已更新')} 分类文档 标签文件：${tagFilePath}`);
         // 追加到所有文档标签文件
-        fs.appendFileSync(AllDocuments_DIR, recordData);
-        fs.appendFileSync(TAG_DIR, recordData);
+        // fs.appendFileSync(AllDocuments_DIR, recordData);
+        // fs.appendFileSync(TAG_DIR, recordData);
+        prependToFile(AllDocuments_DIR, recordData);
+        prependToFile(TAG_DIR, recordData);
         console.log(`🏷️ ${colors.green('已更新')} 所有文档 标签文件：${AllDocuments_DIR} + ${TAG_DIR}`);
         if (fs.existsSync(notePath)) {
             openFile(notePath);
