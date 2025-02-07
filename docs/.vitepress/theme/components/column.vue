@@ -121,9 +121,9 @@ onMounted(() => {
 
 .item:hover {
     /* border-left-color: var(--item-border-color); */
-    box-shadow: 20px 20px 1px 0px var(--item-shadow-color);
-    top: -5px;
-    left: -5px;
+    box-shadow: 15px 15px 1px 0px var(--item-shadow-color);
+    top: -2px;
+    left: -2px;
 }
 
 @keyframes slideDown {
