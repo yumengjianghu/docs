@@ -2,10 +2,9 @@ node_modules
 .DS_Store
 dist-ssr
 /docs/.vitepress/dist/
-/docs/public/record/StepPit
-/docs/public/record/convert-md-to-html.js
 dist/
-script/
+dist
+.dist
 cache
 .cache
 .temp
