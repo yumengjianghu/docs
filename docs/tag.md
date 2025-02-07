@@ -1,3 +1,11 @@
+---
+prev:
+  text: '上一页'
+  link: /tag
+next:
+    text: 下一页
+    link: /tag
+---
 <MouseEvent/>
 # 标签
             
