@@ -1070,7 +1070,221 @@ git blame -L 10,11 文件路径
 
 ## git命令行
 
-...
+### 安装Git
+
+检查是否安装
+
+**git --version**
+
+### 克隆
+
+**git clone url**
+
+### 状态
+
+查看目前的状态，目前分支，是否与远端分支同步，以及文件修改，暂存区...
+
+**git status**
+
+### 提交
+
+**git commit -m 'msg'**
+
+### 推送
+
+**git push**
+
+当第一次推送的时候，会有登录提示，选择GIthub或者Token
+
+Token：进入GIthub点击Setting，下拉找到Developer settings，有一个Personal access tokens
+
+打开，点击Token(classic)，点击Generate new Token
+
+![image-20250207213503272](./assets/image-20250207213503272.png)
+
+![image-20250207213532713](./assets/image-20250207213532713.png)
+
+
+
+选择一个过期时间，勾选全部功能，最后选择Generate token 
+
+生成了一个Github token，复制，填写到登录Token处即可完成绑定
+
+### 添加暂存区
+
+使用**Git add .** 会把所有修改的文件添加到暂存区
+
+### 取出暂存区
+
+**git restore --staged 'filename'**
+
+### 暂存+提交
+
+**git commit -am 'mag'**
+
+> [!NOTE]
+>
+> -a的意思是把所有的文件添加到暂存区，
+>
+> **注意**：只添加修改的文件，新增的文件还是得 git add .
+
+### 拉取
+
+**git pull**
+
+> [!TIP]
+>
+> 建议使用git pull --rebase，这个命令可以在拉取更新的时候产生线性提交记录
+
+**深入了解**，
+
+当写完代码push到远端，被决绝了，原因是团队中其他同事也使用了相同的分支
+
+两人都是从A提交开始写代码，两人同时在写代码，但是同事先把代码提交到远端
+
+当你推送的时候，就会拒绝
+
+![image-20250207214804606](./assets/image-20250207214804606.png)
+
+所以，在实践中，推荐每个人都使用一个独立的分支开发代码，避免此类问题
+
+但是，当两个人需要共同解决同一个分支上的问题时，此时，执行git pull 命令即可
+
+先把远端的最新提交拉取到本地
+
+问题是：git pull = git fetch + git merge
+
+![image-20250207215256057](./assets/image-20250207215256057.png)
+
+因为你的提交和你同事的提交有共同的祖先，Git会merge两个分支的提交，并且创建一个额外的merge提交
+
+经常这么干会累计很多无用信息，把搜索commit变得麻烦，
+
+我们的目的仅仅是：
+
+**把自己的提交挂在你同事提交之后**，即可保持历史数据线性的干净
+
+可以使用git pull --rebase命令，完成操作
+
+此命令会暂时把你的提交放到一边，然后拉取远端仓库的提交，再把你的提交挂在后面，即可保持提交线性的干净
+
+<img v-lazy="'./assets/ezgif-6e02a85964477.gif'">	
+
+使用 git pull
+
+![image-20250207220422773](./assets/image-20250207220422773.png)
+
+使用git pull --rebase
+
+![image-20250207220559302](./assets/image-20250207220559302.png)
+
+现在就没有merge提交了
+
+可以修改Git 设置，让Git pull的时候默认使用rebase的方式
+
+```bash
+git config pull.rebase true
+```
+
+现在使用git pull即使不加--rebase命令也默认使用rebase命令，或者修改为false改回来
+
+![image-20250207220855478](./assets/image-20250207220855478-1738937336766-1.png)
+
+Desktop也会变化
+
+![image-20250207220930291](./assets/image-20250207220930291.png)
+
+在IDEA中，这个Update其实就是Git pull 
+
+
+
+![image-20250207221012909](./assets/image-20250207221012909.png)
+
+### 重命名 移动 删除
+
+当删除了一个文件，使用git rm 'filename' 告诉git 这个文件以后不需要管理了
+
+或者直接执行git rm 'filename'命令将删除操作添加到暂存区，文件夹内也会删除
+
+
+
+移动 git mv 'filename' 'file'，文件名称+文件夹路径，
+
+重命名 git mv 'Oldfilename' 'Newfilename'
+
+### 提交历史
+
+**git log**
+
+### 重置状态
+
+git reset --mixed 'ID' 	文件修改保留在工作区
+
+之后需要使用强制推送(git push -f)
+
+### 丢弃更改
+
+git restore 'filename' 把指定的文件放弃更改
+
+### 提交详细信息
+
+git show 'ID'
+
+### 反向操作
+
+和reset一样属于后悔药的一种
+
+会生成一个反向操作抵消那一次的的更改
+
+git revert 'ID'
+
+填写完提交信息，点击Esc，输入一个冒号，一个wq!，回车
+
+和Vim编辑器一样的
+
+### 修改提交
+
+后悔药的一种
+
+使用git amend修改提交
+
+当代码提交后，突然后悔了，或者改错了，直接在代码中修正，
+
+现在需要把修改加到上一次提交中，
+
+首先git add .
+
+修改上一次的提交记录，git commit --amend
+
+还可以修改上一次的提交信息，点击Esc，冒号，wq!，回车
+
+完成了使用amend操作把上一次添加修改了
+
+> [!IMPORTANT]
+>
+> amend只能对最后一次提交失效
+
+> [!TIP]
+>
+> 如果还没有推送，使用git push就行，如果推送了，使用git push -f，强制推送
+
+### 后悔药
+
+- discard
+- reset
+- revert
+- amend
+
+| 操作    | 命令                                                         | 场景                                 | 注意事项                                                     |
+| ------- | ------------------------------------------------------------ | ------------------------------------ | ------------------------------------------------------------ |
+| discard | git restore 'filename' 单个文件<br />git reset --hard 所有文件 | 工作区的修改还没有提交               | 舍弃掉工作区修改的文件                                       |
+| reset   | git reset 'ID'                                               | 还原到某个提交的状态，舍弃之后的提交 | 如果reset已经推送的提交，会造成强制推送，集成分支禁止强制推送 |
+| revert  | git revert 'ID'                                              | 使用一个新的提交抵消到某一次的提交   | 在集成分支推荐使用此命令                                     |
+| amend   | git commit --amend                                           | 只能修改最新一次的提交               | 如果amend已经push的提交，会造成强制推送...                   |
+
+
+
+
 
 ## Git区概念
 
