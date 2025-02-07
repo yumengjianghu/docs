@@ -12,9 +12,9 @@ import VueLazyloadNext  from 'vue-lazyload-next'   // 懒加载指令
 import column from './components/column.vue'  // 记录栏
 import lazyshow from './components/lazyshow.vue' // 懒显示
 import MouseEvent from './components/MouseEvent.vue' // 鼠标跟随特效
-import tag from './components/tag.vue'  // 标签
-import card from './components/card.vue' // 复选框
-import Like from './components/Like.vue' // 点赞
+import bear from './components/bear.vue'  // 主页熊
+import car from './components/car.vue' // 车
+import server from './components/server.vue' // 服务器
 import demo from './components/demo.vue' // 测试
 // import ThemeSwitch from './components/ThemeSwitch.vue' // 主题切换过渡动画
 
@@ -30,12 +30,12 @@ import './custom.css'
 export default {
   extends: DefaultTheme,
   
-  // Layout: () => {
-  //   return h(DefaultTheme.Layout, null, {
-  //     // https://vitepress.dev/guide/extending-default-theme#layout-slots
-  //     // 'home-hero-info': () => h(demo) // 特点位置插入组件
-  //   })
-  // },
+  Layout: () => {
+    return h(DefaultTheme.Layout, null, {
+      // https://vitepress.dev/guide/extending-default-theme#layout-slots
+      'home-hero-image': () => h(bear) // 特点位置插入组件
+    })
+  },
   // Layout: ThemeSwitch,  // 浅暗切换动画
   enhanceApp({ app, router, siteData }) {
     // ...
@@ -48,9 +48,8 @@ export default {
     app.component('column', column);
     app.component('lazyshow', lazyshow);
     app.component('MouseEvent', MouseEvent);
-    app.component('tag', tag);
-    app.component('card', card);
-    app.component('Like', Like);
+    app.component('car', car);
+    app.component('server', server);
     app.component('demo', demo);
     app.use(VueLazyloadNext, {
       loading: loadingIMG, // 加载占位图
