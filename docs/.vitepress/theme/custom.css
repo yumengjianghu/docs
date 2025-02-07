@@ -97,7 +97,7 @@
   /* --vp-home-hero-image-filter: blur(0px); */
 }
 
-.image-container[data-v-72cc4481] {
+.image-container{
   display: flex;
   justify-content: center;
   align-items: center;
