@@ -11,7 +11,7 @@ import lazyshow from './components/lazyshow.vue' // 懒显示
 import MouseEvent from './components/MouseEvent.vue' // 鼠标跟随特效
 import bear from './components/bear.vue'  // 主页熊
 import demo from './components/demo.vue' // 测试
-// import ThemeSwitch from './components/ThemeSwitch.vue' // 主题切换过渡动画
+import ThemeSwitch from './components/ThemeSwitch.vue' // 主题切换过渡动画
 
 
 // 引入懒加载图片
@@ -28,10 +28,10 @@ export default {
   Layout: () => {
     return h(DefaultTheme.Layout, null, {
       // https://vitepress.dev/guide/extending-default-theme#layout-slots
-      'home-hero-image': () => h(bear), // 特点位置插入组件
+      // 'home-hero-image': () => h(bear), // 特点位置插入组件
     })
   },
-  // Layout: ThemeSwitch,  // 浅暗切换动画
+  Layout: ThemeSwitch,  // 浅暗切换动画
   enhanceApp({ app, router, siteData }) {
     // ...
     app.component('Giscus', Giscus);
