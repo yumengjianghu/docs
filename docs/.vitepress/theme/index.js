@@ -6,13 +6,12 @@ import Giscus from './components/Giscus.vue'       // 评论组件
 import CopyBlock from './components/CopyBlock.vue' // 可复制模块
 import Modal from './components/Modal.vue' // 模态框
 import VueLazyloadNext  from 'vue-lazyload-next'   // 懒加载指令
-import column from './components/column.vue'  // 记录栏
-import lazyshow from './components/lazyshow.vue' // 懒显示
 import MouseEvent from './components/MouseEvent.vue' // 鼠标跟随特效
 import bear from './components/bear.vue'  // 主页熊
 import demo from './components/demo.vue' // 测试
 // import ThemeSwitch from './components/ThemeSwitch.vue' // 主题切换过渡动画
-
+import Classification from './components/classification.vue'
+import DocCard from './components/DocCard.vue'
 
 // 引入懒加载图片
 import loadingIMG from '../../public/status/xhj.gif'
@@ -37,11 +36,11 @@ export default {
     // ...
     app.component('Giscus', Giscus);
     app.component('CopyBlock', CopyBlock);
-    app.component('Modal', Modal);
-    app.component('column', column);
-    app.component('lazyshow', lazyshow);
+    app.component('Modal', Modal)
     app.component('MouseEvent', MouseEvent);
     app.component('demo', demo);
+    app.component('Classification', Classification);
+    app.component('DocCard', DocCard);
     app.use(VueLazyloadNext, {
       loading: loadingIMG, // 加载占位图
       error: errorIMG,     // 错误占位图

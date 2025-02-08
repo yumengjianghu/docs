@@ -15,7 +15,39 @@ export default defineConfig({
       infoLabel: '信息',
       detailsLabel: '详细信息'
     },
-    lineNumbers: true
+    lineNumbers: true,
+    frontmatter: true,
+    toc: { level: [1, 2, 3] },
+    config: (md) => {
+      md.options.frontmatter = true
+    },
+    vite: {
+      optimizeDeps: {
+        exclude: ['vitepress']
+      },
+      server: {
+        fs: {
+          // 允许服务访问上级目录
+          allow: ['..']
+        }
+      },
+      plugins: [
+        {
+          name: 'markdown-frontmatter',
+          transform(code, id) {
+            if (id.endsWith('.md')) {
+              const match = code.match(/^---\n([\s\S]*?)\n---/)
+              if (match) {
+                const frontmatter = match[1]
+                return {
+                  code: `${code}\nexport const frontmatter = \`${frontmatter}\``
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
   },
   // 重写内置组件
   // vite: {
@@ -130,56 +162,44 @@ export default defineConfig({
         text: '笔记', items: [
           {
             text: '前端', items: [
-              { text: 'HTML5', link: '/word/h5/note' },
-              { text: '布局技巧', link: '/word/CSS3/note' },
-              { text: 'JavaScript', link: '/word/JS/Notes' },
-              { text: 'TypeScript', link: '/word/TS/note' },
-              { text: 'uniapp', link: '/word/uniapp/note' },
+              { text: 'H5', link: '/pages/HTML5/note' },
+              { text: 'JavaScript', link: '/pages/JavaScript/note' },
+              { text: 'TypeScript', link: '/pages/TypeScript/note' },
+              { text: 'Uniapp', link: '/pages/uniapp/note' },
             ],
           },
           {
             text: '框架', items: [
-              { text: 'Vue3', link: '/word/vue3/note' },
-              { text: 'Vue2', link: '/word/vue2/note' },
-              { text: 'React', link: '/word/react/note' },
+              { text: 'Vue3', link: '/pages/vue3/note' },
             ]
           },
           {
             text: '后端', items: [
-              { text: 'Nodejs', link: '/word/node/Node' },
-              { text: 'Java', link: '/word/java/note' },
-              { text: 'My SQL', link: '/word/mysql/note' },
-              { text: 'SQL Server', link: '/word/sqlserver/note' },
-              { text: 'MongoDB', link: '/word/mongodb/note' },
+              { text: 'Nodejs', link: '/pages/Node/note' },
+              { text: 'Supabase快速入门', link: '/pages/Supabase/note' },
+
             ],
           },
         ]
       },
       {
         text: '教程', items: [
-          { text: 'VitePress博客搭建', link: '/word/VitePress博客搭建/note' },
-          { text: 'Github Action部署', link: '/word/Github Action部署/note' },
-          { text: 'VitePress插入个人网页', link: '/word/MyWebsiteTutorial/note' },
-          { text: 'VitePress插入评论功能', link: '/word/CommentFunction/note' },
-          { text: '局域网服务器部署', link: '/word/局域网服务器部署/note' },
-          { text: 'Git基本使用', link: '/word/git/Git' },
-          { text: 'Git/Github详解', link: '/word/Github/note' },
+          { text: 'Github Action部署', link: '/pages/GithubActionTemplate/note' },
+          { text: '局域网服务器部署', link: '/pages/LAN server deployment/note' },
+          { text: 'Git基本使用', link: '/pages/Git/note' },
+          { text: 'Git/Github详解', link: '/pages/Github+Git/note' },
+          { text: 'Typora增强', link: '/pages/TyporaPlugin/note' },
+          { text: '自定义Vitepress', link: '/pages/Custom-VitePress/note' },
+          { text: '图标', link: '/pages/emoji/note' },
         ]
       },
-      // {
-      //   text: '🧰资源', items: [
-      //     { text: 'Download 1', link: '/word/download1/note' },
-      //     { text: 'Download 2', link: '/word/download2/note' },
-      //   ]
-      // },
       {
-        text: 'Tags', link: '/tag'
+        text: '分类', link: '/tag'
       },
       {
         text: '其他', items: [
-          { text: '📄简历', link: '/word/简历/docs.md' },
-          { text: '📺视频', link: '/word/video/note.md' },
-          { text: '🧪实验功能', link: '/word/Experimental/note.md' },
+          { text: '🛠工具', link: '/other/Download/note.md' },
+          { text: '🧪实验功能', link: '/other/实验功能/note.md' },
           // {
           //   component: 'demo',
           //   // 可选的 props 传递给组件
@@ -187,7 +207,6 @@ export default defineConfig({
           //     title: 'My Custom Component'
           //   }
           // },
-          { text: '...', link: '/word/other/note' },
         ]
       }
       ,
