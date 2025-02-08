@@ -158,6 +158,8 @@ export default defineConfig({
       },
     },
     nav: [
+      { text: '主页', link: '/' }, 
+      { text: '分类', link: '/tag'},
       {
         text: '笔记', items: [
           {
@@ -192,9 +194,6 @@ export default defineConfig({
           { text: '自定义Vitepress', link: '/pages/Custom-VitePress/note' },
           { text: '图标', link: '/pages/emoji/note' },
         ]
-      },
-      {
-        text: '分类', link: '/tag'
       },
       {
         text: '其他', items: [

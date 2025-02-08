@@ -1,51 +1,26 @@
-<style scoped>
-  /* === removing default button style ===*/
-  .button {
-    margin: 0;
-    height: auto;
-    background: transparent;
-    padding: 0;
-    border: none;
-  }
 
-  /* button styling */
-  .button {
-    --border-right: 6px;
-    --text-stroke-color: rgba(0, 0, 0, 0.6);
-    --animation-color: #48ff00;
-    --fs-size: 2em;
-    letter-spacing: 3px;
-    text-decoration: none;
-    font-size: var(--fs-size);
-    font-family: "Arial";
-    position: relative;
-    text-transform: uppercase;
-    color: transparent;
-    -webkit-text-stroke: 1px var(--text-stroke-color);
-  }
-  /* this is the text, when you hover on button */
-  .hover-text {
-    position: absolute;
-    box-sizing: border-box;
-    content: attr(data-text);
-    color: var(--animation-color);
-    width: 0%;
-    inset: 0;
-    border-right: var(--border-right) solid var(--animation-color);
-    overflow: hidden;
-    transition: 0.5s;
-    -webkit-text-stroke: 1px var(--animation-color);
-  }
-  /* hover */
-  .button:hover .hover-text {
-    width: 100%;
-    filter: drop-shadow(0 5px 23px var(--animation-color))
-  }
-</style>
 
 <template>
-  <button class="button" data-text="Awesome">
-      <span class="actual-text">&nbsp;uiverse&nbsp;</span>
-      <span aria-hidden="true" class="hover-text">&nbsp;uiverse&nbsp;</span>
-  </button>
+
+  <div class="circle"></div>
 </template>
+
+<style scoped>
+.circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #00ffcc 50%, #0055ff 50%);
+  animation: rotate 3s linear infinite;
+  position: relative;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+</style>
