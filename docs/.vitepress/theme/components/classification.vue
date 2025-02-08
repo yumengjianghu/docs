@@ -32,6 +32,7 @@
       </div>
     </div>
 
+    <!-- 筛选器组 -->
     <div class="filters">
       <!-- 分类筛选 -->
       <div class="filter-section" v-if="allCategories.length">
@@ -62,6 +63,33 @@
           </button>
         </div>
       </div>
+
+      <!-- 时间筛选 -->
+      <div class="filter-section" v-if="dateFilters.length">
+        <h3>时间筛选</h3>
+        <div class="date-filters">
+          <div class="year-filter">
+            <button 
+              v-for="item in dateFilters" 
+              :key="item.year"
+              :class="['year-btn', selectedYear === item.year ? 'active' : '']"
+              @click="toggleYear(item.year)"
+            >
+              {{ item.year }}
+            </button>
+          </div>
+          <div class="month-filter" v-if="selectedYear">
+            <button 
+              v-for="month in dateFilters.find(d => d.year === selectedYear)?.months"
+              :key="month"
+              :class="['month-btn', selectedMonth === month ? 'active' : '']"
+              @click="toggleMonth(month)"
+            >
+              {{ month }}月
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- 文档列表 -->
@@ -71,7 +99,6 @@
         :key="doc.path" 
         :doc="doc" 
       />
-      
       <div v-if="!paginatedDocs.length" class="no-docs">
         暂无符合条件的文档
       </div>
@@ -242,6 +269,59 @@ const allCategories = computed(() => {
   return Array.from(categorySet).sort((a, b) => a.localeCompare(b, 'zh-CN'))
 })
 
+// 计算所有可用的年份和月份
+const dateFilters = computed(() => {
+  const dateMap = new Map() // 年份 -> Set(月份)
+  
+  documents.value.forEach(doc => {
+    if (doc.date) {
+      const date = parseDate(doc.date)
+      if (date && date.getTime() > 0) {
+        const year = date.getFullYear()
+        const month = date.getMonth() + 1
+        
+        if (!dateMap.has(year)) {
+          dateMap.set(year, new Set())
+        }
+        dateMap.get(year).add(month)
+      }
+    }
+  })
+  
+  // 转换为排序后的数组
+  return Array.from(dateMap.entries())
+    .sort((a, b) => b[0] - a[0]) // 年份降序
+    .map(([year, months]) => ({
+      year,
+      months: Array.from(months).sort((a, b) => a - b) // 月份升序
+    }))
+})
+
+// 时间筛选状态
+const selectedYear = ref(null)
+const selectedMonth = ref(null)
+
+// 时间筛选操作
+const toggleYear = (year) => {
+  if (selectedYear.value === year) {
+    selectedYear.value = null
+    selectedMonth.value = null
+  } else {
+    selectedYear.value = year
+    selectedMonth.value = null
+  }
+  currentPage.value = 1
+}
+
+const toggleMonth = (month) => {
+  if (selectedMonth.value === month) {
+    selectedMonth.value = null
+  } else {
+    selectedMonth.value = month
+  }
+  currentPage.value = 1
+}
+
 // 修改文档筛选逻辑
 const filteredDocs = computed(() => {
   try {
@@ -268,6 +348,21 @@ const filteredDocs = computed(() => {
       filtered = filtered.filter(doc => 
         doc.category === selectedCategory.value
       )
+    }
+
+    // 时间筛选
+    if (selectedYear.value) {
+      filtered = filtered.filter(doc => {
+        if (!doc.date) return false
+        const date = parseDate(doc.date)
+        if (!date || date.getTime() === 0) return false
+        
+        const matches = date.getFullYear() === selectedYear.value
+        if (selectedMonth.value) {
+          return matches && (date.getMonth() + 1) === selectedMonth.value
+        }
+        return matches
+      })
     }
 
     return filtered
@@ -728,6 +823,116 @@ onMounted(() => {
 /* 调整筛选区域的间距 */
 .filter-section + .filter-section {
   margin-top: 24px;
+}
+
+.date-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.year-filter,
+.month-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.year-btn,
+.month-btn {
+  padding: 4px 12px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 16px;
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9em;
+}
+
+.year-btn {
+  font-weight: 500;
+}
+
+.month-btn {
+  padding: 2px 10px;
+  font-size: 0.85em;
+}
+
+.year-btn:hover,
+.month-btn:hover {
+  background: var(--vp-c-bg-mute);
+}
+
+.year-btn.active,
+.month-btn.active {
+  background: var(--vp-c-brand);
+  color: white;
+  border-color: var(--vp-c-brand);
+}
+
+/* 筛选器标题样式 */
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px 0;
+}
+
+.toggle-icon {
+  font-size: 0.8em;
+  transition: transform 0.3s ease;
+}
+
+.toggle-icon.is-open {
+  transform: rotate(180deg);
+}
+
+/* 过渡动画 */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+/* 列表过渡动画 */
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.3s ease;
+}
+
+.list-enter-from {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+
+/* 筛选器内容过渡 */
+.filter-content {
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .filter-section {
+    margin: 12px 0;
+  }
+  
+  .filter-header {
+    padding: 12px 0;
+  }
 }
 </style>
 
