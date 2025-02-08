@@ -1306,9 +1306,103 @@ git revert 'ID'
 | revert  | git revert 'ID'                                              | 使用一个新的提交抵消到某一次的提交   | 在集成分支推荐使用此命令                                     |
 | amend   | git commit --amend                                           | 只能修改最新一次的提交               | 如果amend已经push的提交，会造成强制推送...                   |
 
+### 分支
 
+git branch 查看所有的本地分支
 
+git branch -a 查看所有分支（包括远端的分支）
 
+![image-20250208204326590](./assets/image-20250208204326590.png)
+
+前面是remotes的是远端分支
+
+### 创建分支
+
+git checkout -b  ‘分支名称’   创建分支（**基于本地当前分支创建的**）
+
+git push --set-upstream origin 'feature2'   把本地的feature2分支在远端也叫feature2这个名字，将两端关联起来
+
+### 删除分支
+
+git branch -d '分支名称'
+
+> [!WARNING]
+>
+> 如果你的分支还没有合并，使用小写d是不能删除的，git会警告，要使用大写的D强制删除
+
+git push origin --delete '分支名称'  删除远程分支
+
+### 切换分支
+
+git switch '分支名称'
+
+### 检出远端分支
+
+将远端的分支拉取到本地
+
+先同步一下远端分支git fetch 
+
+当在远端有一个分支，本地不会自动同步，需要使用git fetch 同步，本地才会显示
+
+使用git checkout '分支名称'  将指定分支检出本地
+
+就是让本地当前的分支变成feature3分支(远程分支)，
+
+将feature3分支自动和远端的feature3分支关联起来了
+
+### 合并分支
+
+先切换到接受合并的分支
+
+git swtich '切换分支名'
+
+git merge 'main' 	指的是把main分支合并到当前分支
+
+还可以合并远端的分支
+
+git merge origin/远端分支
+
+### 比较分支
+
+按照提交比较 git log feature..main	比较main分支和feature分支之间的提交改动
+
+显示的是main分支上有的，feature分支没有的，可以调换顺序
+
+按照文件比较 git diff feature..main 	比较文件的不同
+
+直接使用git diff 比较的是工作区和暂存区的差异
+
+比较暂存区和本地分支的情况 git diff --staged
+
+ 比较工作区和本地分支的情况 git diff HEAD
+
+## Github大文件
+
+在Github中单个文件的大小是被严格限制的，如果单个文件大于50M，push的时候回触发警告
+
+如果大于100M会直接拒绝
+
+Git LFS (Git Large File System )，大文件系统
+
+LFS使用一个单独的文件存储服务器专门存储大文件，我们仓库只存了一个大文件的引用
+
+安装LFS
+
+```bash
+git lfs install 
+```
+
+制定哪些文件需要由LFS管理
+
+git lfs track '文件类型'	*.mp4表示我系统的所有MP4文件都由大文件系统管理
+
+当一个文件大于100M无法推送，得使用LFS就可以推送
+
+> [!IMPORTANT]
+>
+> 存储空间并不是完全免费的，进人右上角个人账号，点击Setting，找到Biling and plans，
+>
+> 有一个plans and usage，往下找，有一个**Git LFS Data**
 
 ## Git区概念
 
@@ -1319,11 +1413,87 @@ git revert 'ID'
 
 ![image-20250127213456310](./assets/image-20250127213456310.png)
 
+## Github Action
+
+Github 的自动化流水线
+
+可以编写一个action脚本，制定Github完成一系列的自动化操作
+
+最场景的用法就是CI/CD
+
+CI/CD的意思是Continuous lntegration / Continuous Delivery
+
+持续集成 持续交付
+
+比如我们希望每提交一次代码的时候，程序能自动完成单元测试，代码编译，程序构建
+
+推送到服务器并且完成部署，这整一套的自动化过程就是CI/CD
+
+甚至可以把它当成一个免费的云服务器使用
+
+### Action 市场
+
+由于很多操作在很多项目里面是类似的，完全可以共享
+
+所有允许开发者将每个操作写成独立的脚本文件存放到代码仓库里面
+
+存放官方写好的Action https://github.com/actions
+
+https://github.com/marketplace Github市场，其中也有Action选项卡，可以搜索需要的
+
+### 仓库
+
+每个Action 都是一套自动化的流程，都有相应的代码
+
+引用别人的Action，使用uses: 作者名称/Action的名称@版本号
+
+![image-20250208215204762](./assets/image-20250208215204762.png)
+
+### 术语
+
+workflow（工作流程）：每个workflow对应一个文件，存放在仓库的.github/workflow目录
+
+job（任务）：一个workflow由一个或者多个jobs构成，含义就是一次工作流程，需要完成的多个任务
+
+step（步骤）：每个job由多个step构成，一步一步的完成
 
 
 
+可以看到，workflow是有层级关系，第一层是workflow，第二层是job，第三次是step
+
+为什么要定义出job和step两个层级？区别？
+
+不同的job默认是并行运行，这样可以提高效率。并且每个job运行在独立的**虚拟环境**中，也就是每个job其实都是运行GitHub的不同的服务器里，这样可以避免job之间的相互干扰。
+
+而step是顺序执行，而且同一个job之间各个的step是按照从上到下的顺序在同一个虚拟环境里面顺序执行的
 
 
+
+event（事件）：也就是触发器，action通常需要某种事件进行触发，这里的事件可以是提交代码，创建分支，提交PR，某个时间点定时等等...
+
+
+
+runs-on:	ubuntu-lastest 申请一个虚拟环境
+
+uses:	actions/checkout@v4  检出代码，也就是把项目的代码检出到那个虚拟机里面
+
+ 在jobs中有很多job
+
+![image-20250208220818601](./assets/image-20250208220818601.png)
+
+申请了一个Windows虚拟环境，使用pyinstaller，用with传递参数
+
+当执行完成后，回到Summary查看执行结果
+
+### 计费
+
+对于公共仓库action完全免费
+
+对于私有仓库每个账号都有一定的免费时长，每个月2000分钟，最多只能上传存储500M的内容
+
+在个人设置可以查看使用额度
+
+## CI/CD实践
 
 
 
