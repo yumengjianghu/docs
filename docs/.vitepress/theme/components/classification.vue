@@ -8,31 +8,56 @@
       已加载 {{ documents.length }} 个文档
     </div>
 
-    <!-- 搜索框 -->
-    <div class="search-box">
-      <input type="text" v-model="searchQuery" placeholder="搜索文档标题或描述..." class="search-input">
+    <!-- 搜索和排序 -->
+    <div class="control-panel">
+      <!-- 搜索框 -->
+      <div class="search-box">
+        <input type="text" v-model="searchQuery" placeholder="搜索文档标题或描述..." class="search-input">
+      </div>
+      
+      <!-- 排序按钮组 -->
+      <div class="sort-buttons">
+        <button 
+          :class="['sort-btn', sortType === 'default' ? 'active' : '']" 
+          @click="sortType = 'default'"
+        >
+          默认排序
+        </button>
+        <button 
+          :class="['sort-btn', sortType === 'newest' ? 'active' : '']" 
+          @click="sortType = 'newest'"
+        >
+          最新优先
+        </button>
+      </div>
     </div>
 
     <div class="filters">
       <!-- 分类筛选 -->
-      <div class="filter-section" v-if="categories.length">
+      <div class="filter-section" v-if="allCategories.length">
         <h3>分类筛选</h3>
         <div class="categories-filter">
-          <button v-for="category in categories" :key="category"
-            :class="['filter-btn category-btn', selectedCategory === category ? 'active' : '']"
-            @click="selectCategory(category)">
+          <button 
+            v-for="category in allCategories" 
+            :key="category"
+            :class="['category-btn', selectedCategory === category ? 'active' : '']"
+            @click="toggleCategory(category)"
+          >
             {{ category }}
           </button>
         </div>
       </div>
 
       <!-- 标签筛选 -->
-      <div class="filter-section" v-if="tags.length">
+      <div class="filter-section" v-if="allTags.length">
         <h3>标签筛选</h3>
         <div class="tags-filter">
-          <button v-for="tag in tags" :key="tag"
-            :class="['filter-btn tag-btn', selectedTags.includes(tag) ? 'active' : '']" 
-            @click="toggleTag(tag)">
+          <button 
+            v-for="tag in allTags" 
+            :key="tag"
+            :class="['tag-btn', selectedTags.includes(tag) ? 'active' : '']"
+            @click="toggleTag(tag)"
+          >
             {{ tag }}
           </button>
         </div>
@@ -40,41 +65,27 @@
     </div>
 
     <!-- 文档列表 -->
-    <div class="documents-list">
-      <!-- 置顶文档 -->
-      <div v-if="stickyDocs.length" class="sticky-docs">
-        <h3 class="section-title">📌 置顶文档</h3>
-        <div class="docs-grid">
-          <div v-for="doc in stickyDocs" :key="doc.path" class="doc-card sticky">
-            <doc-card :doc="doc" />
-          </div>
-        </div>
-      </div>
-
-      <!-- 普通文档 -->
-      <div v-if="paginatedDocs.length" class="normal-docs">
-        <h3 class="section-title" v-if="stickyDocs.length">📑 全部文档</h3>
-        <div class="docs-grid">
-          <div v-for="doc in paginatedDocs" :key="doc.path" class="doc-card">
-            <doc-card :doc="doc" />
-          </div>
-        </div>
-      </div>
-
-      <div v-if="!paginatedDocs.length && !stickyDocs.length" class="no-docs">
+    <div class="documents-grid">
+      <DocCard 
+        v-for="doc in paginatedDocs" 
+        :key="doc.path" 
+        :doc="doc" 
+      />
+      
+      <div v-if="!paginatedDocs.length" class="no-docs">
         暂无符合条件的文档
       </div>
+    </div>
 
-      <!-- 分页控件 -->
-      <div class="pagination" v-if="totalPages > 1">
-        <button class="page-btn" :disabled="currentPage === 1" @click="currentPage--">
-          上一页
-        </button>
-        <span class="page-info">{{ currentPage }} / {{ totalPages }}</span>
-        <button class="page-btn" :disabled="currentPage === totalPages" @click="currentPage++">
-          下一页
-        </button>
-      </div>
+    <!-- 分页 -->
+    <div class="pagination" v-if="totalPages > 1">
+      <button class="page-btn" :disabled="currentPage === 1" @click="currentPage--">
+        上一页
+      </button>
+      <span class="page-info">{{ currentPage }} / {{ totalPages }}</span>
+      <button class="page-btn" :disabled="currentPage === totalPages" @click="currentPage++">
+        下一页
+      </button>
     </div>
   </div>
 </template>
@@ -90,9 +101,21 @@ const { theme } = useData()
 const documents = ref([])
 const selectedTags = ref([])
 const selectedCategory = ref(null)
-const searchQuery = ref('') 
+const searchQuery = ref('')
 const currentPage = ref(1)
 const pageSize = 12
+const sortType = ref('default')
+
+// 计算所有可用的标签
+const allTags = computed(() => {
+  const tagSet = new Set()
+  documents.value.forEach(doc => {
+    if (Array.isArray(doc.tags)) {
+      doc.tags.forEach(tag => tagSet.add(tag))
+    }
+  })
+  return Array.from(tagSet).sort((a, b) => a.localeCompare(b, 'zh-CN'))
+})
 
 // 获取文档列表
 const fetchDocuments = async () => {
@@ -175,6 +198,11 @@ const fetchDocuments = async () => {
 
         console.log('Processed frontmatter:', frontmatter)
 
+        // 确保 tags 是数组
+        if (frontmatter.tags && !Array.isArray(frontmatter.tags)) {
+          frontmatter.tags = [frontmatter.tags]
+        }
+
         // 构建文档信息
         const docInfo = {
           title: frontmatter.title || folderName,
@@ -191,85 +219,117 @@ const fetchDocuments = async () => {
         docs.push(docInfo)
         console.log('Added document:', docInfo)
       } catch (error) {
-        console.error(`处理文档失败 ${path}:`, error)
+        console.error(`Error processing document ${path}:`, error)
       }
     }
 
     documents.value = docs
-    console.log('加载的文档总数:', docs.length)
+    console.log('Total documents loaded:', docs.length)
+    console.log('Available tags:', allTags.value)
   } catch (error) {
-    console.error('获取文档失败:', error)
+    console.error('Failed to fetch documents:', error)
   }
 }
 
-// 计算所有标签
-const tags = computed(() => {
-  const allTags = new Set()
+// 计算所有分类
+const allCategories = computed(() => {
+  const categorySet = new Set()
   documents.value.forEach(doc => {
-    if (doc.tags) {
-      doc.tags.forEach(tag => allTags.add(tag))
+    if (doc.category) {
+      categorySet.add(doc.category)
     }
   })
-  return Array.from(allTags).sort()
+  return Array.from(categorySet).sort((a, b) => a.localeCompare(b, 'zh-CN'))
 })
 
-// 计算所有分类
-const categories = computed(() => {
-  const allCategories = new Set(documents.value.map(doc => doc.category).filter(Boolean))
-  return Array.from(allCategories).sort()
-})
-
-// 筛选文档
+// 修改文档筛选逻辑
 const filteredDocs = computed(() => {
   try {
-    let filtered = [...documents.value]
+    let filtered = documents.value
 
-    // 搜索筛选
+    // 搜索过滤
     if (searchQuery.value) {
       const query = searchQuery.value.toLowerCase()
-      filtered = filtered.filter(doc =>
-        (doc.title?.toLowerCase().includes(query) || false) ||
-        (doc.description?.toLowerCase().includes(query) || false)
+      filtered = filtered.filter(doc => 
+        doc.title.toLowerCase().includes(query) ||
+        doc.description?.toLowerCase().includes(query)
       )
     }
 
-    // 标签筛选
-    if (selectedTags.value.length) {
-      filtered = filtered.filter(doc =>
-        doc.tags && selectedTags.value.every(tag => doc.tags.includes(tag))
+    // 标签过滤
+    if (selectedTags.value.length > 0) {
+      filtered = filtered.filter(doc => 
+        doc.tags?.some(tag => selectedTags.value.includes(tag))
       )
     }
 
-    // 分类筛选
+    // 分类过滤
     if (selectedCategory.value) {
-      filtered = filtered.filter(doc =>
+      filtered = filtered.filter(doc => 
         doc.category === selectedCategory.value
       )
     }
 
-    return filtered.sort((a, b) => {
-      // 首先按置顶排序
-      if (a.sticky !== b.sticky) return b.sticky - a.sticky
-      if (a.sticky) return -1
-      if (b.sticky) return 1
-      
-      // 然后按标题排序
-      return a.title.localeCompare(b.title, 'zh-CN')
-    })
+    return filtered
   } catch (error) {
     console.error('筛选文档时出错:', error)
     return []
   }
 })
 
+// 添加日期解析函数
+const parseDate = (dateStr) => {
+  if (!dateStr) return new Date(0)
+  try {
+    // 移除注释并清理空格
+    const cleanDate = dateStr.split('#')[0].trim()
+    // 分割日期部分
+    const [year, month, day] = cleanDate.split('-').map(s => s.trim())
+    // 确保年月日都是有效数字
+    if (!year || !month || !day) return new Date(0)
+    // 创建日期对象 (月份需要减1因为 JavaScript 月份从0开始)
+    return new Date(parseInt(year), parseInt(month) - 1, parseInt(day))
+  } catch (e) {
+    console.warn('Invalid date format:', dateStr)
+    return new Date(0)
+  }
+}
+
+// 修改文档排序逻辑
+const sortedDocs = computed(() => {
+  let docs = [...filteredDocs.value]
+  
+  if (sortType.value === 'newest') {
+    docs.sort((a, b) => {
+      if (a.sticky !== b.sticky) return b.sticky - a.sticky
+      const dateA = parseDate(a.date)
+      const dateB = parseDate(b.date)
+      if (dateA.getTime() === dateB.getTime()) {
+        return a.title.localeCompare(b.title, 'zh-CN')
+      }
+      return dateB.getTime() - dateA.getTime()
+    })
+  } else {
+    docs.sort((a, b) => {
+      if (a.sticky !== b.sticky) return b.sticky - a.sticky
+      if (a.category !== b.category) {
+        return a.category?.localeCompare(b.category, 'zh-CN') || 0
+      }
+      return a.title.localeCompare(b.title, 'zh-CN')
+    })
+  }
+  
+  return docs
+})
+
 // 置顶文档
 const stickyDocs = computed(() => {
-  return filteredDocs.value.filter(doc => doc.sticky)
+  return sortedDocs.value.filter(doc => doc.sticky)
 })
 
 // 普通文档（非置顶）
 const normalDocs = computed(() => {
-  return filteredDocs.value.filter(doc => !doc.sticky)
+  return sortedDocs.value.filter(doc => !doc.sticky)
 })
 
 // 分页
@@ -277,27 +337,32 @@ const totalPages = computed(() =>
   Math.ceil(normalDocs.value.length / pageSize)
 )
 
+// 修改分页逻辑
 const paginatedDocs = computed(() => {
   const start = (currentPage.value - 1) * pageSize
   const end = start + pageSize
-  return normalDocs.value.slice(start, end)
+  return sortedDocs.value.slice(start, end)
 })
 
 // 标签操作
 const toggleTag = (tag) => {
   const index = selectedTags.value.indexOf(tag)
-  if (index === -1) {
-    selectedTags.value.push(tag)
+  if (index > -1) {
+    selectedTags.value = selectedTags.value.filter(t => t !== tag)
   } else {
-    selectedTags.value.splice(index, 1)
+    selectedTags.value = [tag] // 只选择当前标签
   }
-  currentPage.value = 1
+  currentPage.value = 1 // 重置页码
 }
 
-// 分类操作
-const selectCategory = (category) => {
-  selectedCategory.value = selectedCategory.value === category ? null : category
-  currentPage.value = 1
+// 分类选择逻辑
+const toggleCategory = (category) => {
+  if (selectedCategory.value === category) {
+    selectedCategory.value = null // 取消选择
+  } else {
+    selectedCategory.value = category // 选择新分类
+  }
+  currentPage.value = 1 // 重置页码
 }
 
 onMounted(() => {
@@ -312,8 +377,22 @@ onMounted(() => {
   margin: 0 auto;
 }
 
-.search-box {
+.control-panel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 20px;
+  gap: 20px;
+  position: sticky;
+  top: 0;
+  background: var(--vp-c-bg);
+  z-index: 10;
+  padding: 10px 0;
+}
+
+.search-box {
+  flex: 1;
+  max-width: 400px;
 }
 
 .search-input {
@@ -321,7 +400,38 @@ onMounted(() => {
   padding: 8px 12px;
   border: 1px solid var(--vp-c-divider);
   border-radius: 6px;
-  font-size: 1rem;
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-1);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--vp-c-brand);
+}
+
+.sort-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.sort-btn {
+  padding: 6px 12px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 6px;
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.sort-btn:hover {
+  background: var(--vp-c-bg-mute);
+}
+
+.sort-btn.active {
+  background: var(--vp-c-brand);
+  color: white;
+  border-color: var(--vp-c-brand);
 }
 
 .filters {
@@ -329,20 +439,20 @@ onMounted(() => {
 }
 
 .filter-section {
-  margin-bottom: 20px;
+  margin: 20px 0;
 }
 
 .filter-section h3 {
-  margin-bottom: 10px;
-  font-size: 1.1em;
+  margin-bottom: 12px;
   color: var(--vp-c-text-1);
+  font-size: 1.1em;
 }
 
-.docs-grid {
+.documents-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 30px;
-  position: relative;
+  gap: 20px;
+  margin: 20px 0;
 }
 
 .doc-card {
@@ -402,8 +512,11 @@ onMounted(() => {
 }
 
 .no-docs {
+  grid-column: 1 / -1;
   text-align: center;
   padding: 40px;
+  background: var(--vp-c-bg-soft);
+  border-radius: 8px;
   color: var(--vp-c-text-2);
 }
 
@@ -521,6 +634,100 @@ onMounted(() => {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   margin-top: 8px;
+}
+
+/* 横向滚动布局 */
+.horizontal-scroll {
+  display: flex;
+  grid-template-columns: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 20px; /* 为滚动条留出空间 */
+  gap: 20px;
+}
+
+.horizontal-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+
+.horizontal-scroll::-webkit-scrollbar-track {
+  background: var(--vp-c-bg-soft);
+  border-radius: 4px;
+}
+
+.horizontal-scroll::-webkit-scrollbar-thumb {
+  background: var(--vp-c-brand);
+  border-radius: 4px;
+}
+
+.horizontal-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--vp-c-brand-dark);
+}
+
+/* 在横向滚动模式下的卡片样式 */
+.horizontal-scroll .doc-card-wrapper {
+  flex: 0 0 300px; /* 固定宽度 */
+  scroll-snap-align: start;
+}
+
+.tags-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 20px 0;
+}
+
+.tag-btn {
+  padding: 4px 12px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 16px;
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tag-btn:hover {
+  background: var(--vp-c-bg-mute);
+}
+
+.tag-btn.active {
+  background: var(--vp-c-brand);
+  color: white;
+  border-color: var(--vp-c-brand);
+}
+
+.categories-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 20px 0;
+}
+
+.category-btn {
+  padding: 6px 14px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 16px;
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9em;
+}
+
+.category-btn:hover {
+  background: var(--vp-c-bg-mute);
+}
+
+.category-btn.active {
+  background: var(--vp-c-brand);
+  color: white;
+  border-color: var(--vp-c-brand);
+}
+
+/* 调整筛选区域的间距 */
+.filter-section + .filter-section {
+  margin-top: 24px;
 }
 </style>
 
