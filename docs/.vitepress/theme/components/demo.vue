@@ -1,26 +1,60 @@
-
-
-<template>
-
-  <div class="circle"></div>
-</template>
-
 <style scoped>
-.circle {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background: linear-gradient(90deg, #00ffcc 50%, #0055ff 50%);
-  animation: rotate 3s linear infinite;
+.loader {
   position: relative;
+  width: 120px;
+  height: 90px;
+  /* margin: 0 auto; */
+  margin: 20px 0;
+  /* border: 1px solid red; */
+
 }
 
-@keyframes rotate {
+.loader:before {
+  content: "⏰";
+  color: white;
+  font-size: 50px;
+  position: absolute;
+  bottom: 0px;
+  left: 50px;
+  height: 0px;
+  width: 30px;
+  /* border-radius: 50%; */
+  /* background: #2a589d; */
+  animation: loading-bounce 0.4s  ease-in-out infinite alternate;
+  /* border: 1px solid red; */
+}
+
+.loader:after {
+  content: "💻";
+  color: white;
+  font-size: 50px;
+  position: absolute;
+  bottom: 0px;
+  left: 150px;
+  height: 0px;
+  width: 30px;
+  animation: loading-bounce 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes loading-bounce {
   0% {
-    transform: rotate(0deg);
+    transform: scale(1, 0.7);
   }
+
+  40% {
+    transform: scale(0.8, 1.2);
+  }
+
+  60% {
+    transform: scale(1, 1);
+  }
+
   100% {
-    transform: rotate(360deg);
+    bottom: 140px;
   }
 }
 </style>
+
+<template>
+  <div class="loader"></div>
+</template>
