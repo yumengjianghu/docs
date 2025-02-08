@@ -1168,7 +1168,7 @@ Token：进入GIthub点击Setting，下拉找到Developer settings，有一个Pe
 
 此命令会暂时把你的提交放到一边，然后拉取远端仓库的提交，再把你的提交挂在后面，即可保持提交线性的干净
 
-<img v-lazy="'./assets/ezgif-6e02a85964477.gif'">	
+![image-20250207220422773](./assets/ezgif-6e02a85964477.gif)
 
 使用 git pull
 
