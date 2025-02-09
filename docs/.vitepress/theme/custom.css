@@ -77,7 +77,7 @@
 
 /* 自定义底部距离 */
 @media (min-width: 768px) {
-  .VPFooter[data-v-80147a0d] {
+  .VPFooter {
     padding: 10px !important;
   }
 }
@@ -97,7 +97,7 @@
   /* --vp-home-hero-image-filter: blur(0px); */
 }
 
-.image-container{
+.image-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -106,10 +106,15 @@
 :root {
   --bear-bg-color1: #09ffca;
   --bear-bg-color2: #47caff;
+  --time-bg-color: #f6f6f7;
+
+
 }
 
 .dark {
   --bear-bg-color1: #bd34fe;
   --bear-bg-color2: #47caff;
+
+  --time-bg-color: #282829;
 
 }

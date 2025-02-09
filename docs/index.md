@@ -12,7 +12,7 @@ hero:
     alt: '背景图片'
   actions:
     - theme: brand
-      text: 开始学习
+      text: 时间线
       link: /study
     - theme: alt
       text: 全部文档  
