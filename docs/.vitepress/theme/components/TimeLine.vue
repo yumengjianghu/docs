@@ -169,6 +169,11 @@ const scrollToBottom = () => {
   padding: 0 2rem;
   transition: all 0.5s ease;
 }
+@media (max-width:770px) {
+  .timeline-item {
+    padding-right: 0;
+  }
+}
 
 .timeline-item.left {
   left: 0;
