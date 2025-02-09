@@ -8,7 +8,7 @@ import Modal from './components/Modal.vue' // 模态框
 import VueLazyloadNext  from 'vue-lazyload-next'   // 懒加载指令
 import MouseEvent from './components/MouseEvent.vue' // 鼠标跟随特效
 import bear from './components/bear.vue'  // 主页熊
-import Timeline from './components/Timeline.vue' // 时间线
+import demo from './components/demo.vue' // 测试
 // import ThemeSwitch from './components/ThemeSwitch.vue' // 主题切换过渡动画
 import Classification from './components/classification.vue'
 import DocCard from './components/DocCard.vue'
@@ -38,7 +38,7 @@ export default {
     app.component('CopyBlock', CopyBlock);
     app.component('Modal', Modal)
     app.component('MouseEvent', MouseEvent);
-    app.component('Timeline', Timeline);
+    app.component('demo', demo);
     app.component('Classification', Classification);
     app.component('DocCard', DocCard);
     app.use(VueLazyloadNext, {
