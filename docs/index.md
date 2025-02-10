@@ -26,8 +26,8 @@ features:
       # light: /light-feature-icon.svg
     title: 介绍 
     details: 一个专注于分享的小天地，在这里，我会记录自己的学习心得、实践经验以及生活中的点滴感悟。
-    # link: /tag
-    # linkText: Visit page
+    link: /getdoc
+    linkText: 获取🌏文档
 ---
 
 

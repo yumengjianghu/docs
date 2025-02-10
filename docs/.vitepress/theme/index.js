@@ -13,7 +13,8 @@ import TimeLine from './components/TimeLine.vue' // 测试
 // import ThemeSwitch from './components/ThemeSwitch.vue' // 主题切换过渡动画
 import Classification from './components/classification.vue'
 import DocCard from './components/DocCard.vue'
-
+import createDocs from './components/createDocs.vue'
+import getdocs from './components/getdocs.vue'
 // 引入懒加载图片
 import loadingIMG from '../../public/status/xhj.gif'
 import errorIMG from '../../public/status/loseimg.png'
@@ -43,6 +44,8 @@ export default {
     app.component('TimeLine', TimeLine);
     app.component('Classification', Classification);
     app.component('DocCard', DocCard);
+    app.component('createDocs', createDocs);
+    app.component('getdocs', getdocs);
     app.use(VueLazyloadNext, {
       loading: loadingIMG, // 加载占位图
       error: errorIMG,     // 错误占位图
