@@ -94,10 +94,11 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { useData } from 'vitepress'
+import { useData, useRouter } from 'vitepress'
 import DocCard from './DocCard.vue'
 
 const { theme } = useData()
+const router = useRouter()
 
 // 状态管理
 const documents = ref([])
@@ -108,9 +109,8 @@ const currentPage = ref(1)
 const pageSize = 12
 const sortType = ref('default')
 
-const getWebDocs = ()=>{
-  console.log("跳转");
-  
+const getWebDocs = () => {
+  router.go('/getdoc')
 }
 
 // 计算所有可用的标签
@@ -921,10 +921,12 @@ onMounted(() => {
   background-color: #42b983;
   color: #ffffff;
   transition: all 0.3s;
+  cursor: pointer;
 }
 
 .WebDocs:hover {
-  /* color: #67676c; */
-  background-color: #59dfa2;
+  background-color: #5bac87;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(66, 185, 131, 0.2);
 }
 </style>
