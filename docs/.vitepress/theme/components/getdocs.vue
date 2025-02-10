@@ -397,6 +397,7 @@ fetchDocuments()
   gap: 0.4rem;
   justify-content: flex-end;
   align-items: center;
+  padding: 4px;
   margin: 0;
 }
 

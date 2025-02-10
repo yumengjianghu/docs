@@ -14,21 +14,16 @@
       <div class="search-box">
         <input type="text" v-model="searchQuery" placeholder="搜索文档标题或描述..." class="search-input">
       </div>
-      
+
       <!-- 排序按钮组 -->
       <div class="sort-buttons">
-        <button 
-          :class="['sort-btn', sortType === 'default' ? 'active' : '']" 
-          @click="sortType = 'default'"
-        >
+        <button :class="['sort-btn', sortType === 'default' ? 'active' : '']" @click="sortType = 'default'">
           默认排序
         </button>
-        <button 
-          :class="['sort-btn', sortType === 'newest' ? 'active' : '']" 
-          @click="sortType = 'newest'"
-        >
+        <button :class="['sort-btn', sortType === 'newest' ? 'active' : '']" @click="sortType = 'newest'">
           最新优先
         </button>
+        <button class="sort-btn WebDocs" @click="getWebDocs()">网络文档</button>
       </div>
     </div>
 
@@ -38,12 +33,8 @@
       <div class="filter-section" v-if="allCategories.length">
         <h3>分类筛选</h3>
         <div class="categories-filter">
-          <button 
-            v-for="category in allCategories" 
-            :key="category"
-            :class="['category-btn', selectedCategory === category ? 'active' : '']"
-            @click="toggleCategory(category)"
-          >
+          <button v-for="category in allCategories" :key="category"
+            :class="['category-btn', selectedCategory === category ? 'active' : '']" @click="toggleCategory(category)">
             {{ category }}
           </button>
         </div>
@@ -53,12 +44,8 @@
       <div class="filter-section" v-if="allTags.length">
         <h3>标签筛选</h3>
         <div class="tags-filter">
-          <button 
-            v-for="tag in allTags" 
-            :key="tag"
-            :class="['tag-btn', selectedTags.includes(tag) ? 'active' : '']"
-            @click="toggleTag(tag)"
-          >
+          <button v-for="tag in allTags" :key="tag" :class="['tag-btn', selectedTags.includes(tag) ? 'active' : '']"
+            @click="toggleTag(tag)">
             {{ tag }}
           </button>
         </div>
@@ -69,22 +56,14 @@
         <h3>时间筛选</h3>
         <div class="date-filters">
           <div class="year-filter">
-            <button 
-              v-for="item in dateFilters" 
-              :key="item.year"
-              :class="['year-btn', selectedYear === item.year ? 'active' : '']"
-              @click="toggleYear(item.year)"
-            >
+            <button v-for="item in dateFilters" :key="item.year"
+              :class="['year-btn', selectedYear === item.year ? 'active' : '']" @click="toggleYear(item.year)">
               {{ item.year }}
             </button>
           </div>
           <div class="month-filter" v-if="selectedYear">
-            <button 
-              v-for="month in dateFilters.find(d => d.year === selectedYear)?.months"
-              :key="month"
-              :class="['month-btn', selectedMonth === month ? 'active' : '']"
-              @click="toggleMonth(month)"
-            >
+            <button v-for="month in dateFilters.find(d => d.year === selectedYear)?.months" :key="month"
+              :class="['month-btn', selectedMonth === month ? 'active' : '']" @click="toggleMonth(month)">
               {{ month }}月
             </button>
           </div>
@@ -94,11 +73,7 @@
 
     <!-- 文档列表 -->
     <div class="documents-grid">
-      <DocCard 
-        v-for="doc in paginatedDocs" 
-        :key="doc.path" 
-        :doc="doc" 
-      />
+      <DocCard v-for="doc in paginatedDocs" :key="doc.path" :doc="doc" />
       <div v-if="!paginatedDocs.length" class="no-docs">
         暂无符合条件的文档
       </div>
@@ -133,6 +108,11 @@ const currentPage = ref(1)
 const pageSize = 12
 const sortType = ref('default')
 
+const getWebDocs = ()=>{
+  console.log("跳转");
+  
+}
+
 // 计算所有可用的标签
 const allTags = computed(() => {
   const tagSet = new Set()
@@ -157,7 +137,7 @@ const fetchDocuments = async () => {
 
         // 从路径中获取文档标题（文件夹名称）
         const folderName = path.split('/').slice(-2, -1)[0]
-        
+
         // 尝试获取文档内容
         let content = ''
         let frontmatter = {}
@@ -186,7 +166,7 @@ const fetchDocuments = async () => {
 
                 lines.forEach(line => {
                   if (!line.trim() || line.trim().startsWith('#')) return
-                  
+
                   if (line.includes(':')) {
                     // 如果有之前的数组，保存它
                     if (isArray && currentKey) {
@@ -194,11 +174,11 @@ const fetchDocuments = async () => {
                       arrayItems = []
                       isArray = false
                     }
-                    
+
                     const [key, ...values] = line.split(':')
                     currentKey = key.trim()
                     const value = values.join(':').trim()
-                    
+
                     if (!value) {
                       isArray = true
                     } else {
@@ -272,14 +252,14 @@ const allCategories = computed(() => {
 // 计算所有可用的年份和月份
 const dateFilters = computed(() => {
   const dateMap = new Map() // 年份 -> Set(月份)
-  
+
   documents.value.forEach(doc => {
     if (doc.date) {
       const date = parseDate(doc.date)
       if (date && date.getTime() > 0) {
         const year = date.getFullYear()
         const month = date.getMonth() + 1
-        
+
         if (!dateMap.has(year)) {
           dateMap.set(year, new Set())
         }
@@ -287,7 +267,7 @@ const dateFilters = computed(() => {
       }
     }
   })
-  
+
   // 转换为排序后的数组
   return Array.from(dateMap.entries())
     .sort((a, b) => b[0] - a[0]) // 年份降序
@@ -330,7 +310,7 @@ const filteredDocs = computed(() => {
     // 搜索过滤
     if (searchQuery.value) {
       const query = searchQuery.value.toLowerCase()
-      filtered = filtered.filter(doc => 
+      filtered = filtered.filter(doc =>
         doc.title.toLowerCase().includes(query) ||
         doc.description?.toLowerCase().includes(query)
       )
@@ -338,14 +318,14 @@ const filteredDocs = computed(() => {
 
     // 标签过滤
     if (selectedTags.value.length > 0) {
-      filtered = filtered.filter(doc => 
+      filtered = filtered.filter(doc =>
         doc.tags?.some(tag => selectedTags.value.includes(tag))
       )
     }
 
     // 分类过滤
     if (selectedCategory.value) {
-      filtered = filtered.filter(doc => 
+      filtered = filtered.filter(doc =>
         doc.category === selectedCategory.value
       )
     }
@@ -356,7 +336,7 @@ const filteredDocs = computed(() => {
         if (!doc.date) return false
         const date = parseDate(doc.date)
         if (!date || date.getTime() === 0) return false
-        
+
         const matches = date.getFullYear() === selectedYear.value
         if (selectedMonth.value) {
           return matches && (date.getMonth() + 1) === selectedMonth.value
@@ -393,7 +373,7 @@ const parseDate = (dateStr) => {
 // 修改文档排序逻辑
 const sortedDocs = computed(() => {
   let docs = [...filteredDocs.value]
-  
+
   if (sortType.value === 'newest') {
     docs.sort((a, b) => {
       if (a.sticky !== b.sticky) return b.sticky - a.sticky
@@ -413,7 +393,7 @@ const sortedDocs = computed(() => {
       return a.title.localeCompare(b.title, 'zh-CN')
     })
   }
-  
+
   return docs
 })
 
@@ -737,7 +717,8 @@ onMounted(() => {
   grid-template-columns: none;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  padding-bottom: 20px; /* 为滚动条留出空间 */
+  padding-bottom: 20px;
+  /* 为滚动条留出空间 */
   gap: 20px;
 }
 
@@ -761,7 +742,8 @@ onMounted(() => {
 
 /* 在横向滚动模式下的卡片样式 */
 .horizontal-scroll .doc-card-wrapper {
-  flex: 0 0 300px; /* 固定宽度 */
+  flex: 0 0 300px;
+  /* 固定宽度 */
   scroll-snap-align: start;
 }
 
@@ -821,7 +803,7 @@ onMounted(() => {
 }
 
 /* 调整筛选区域的间距 */
-.filter-section + .filter-section {
+.filter-section+.filter-section {
   margin-top: 24px;
 }
 
@@ -929,11 +911,20 @@ onMounted(() => {
   .filter-section {
     margin: 12px 0;
   }
-  
+
   .filter-header {
     padding: 12px 0;
   }
 }
+
+.WebDocs {
+  background-color: #42b983;
+  color: #ffffff;
+  transition: all 0.3s;
+}
+
+.WebDocs:hover {
+  /* color: #67676c; */
+  background-color: #59dfa2;
+}
 </style>
-
-
