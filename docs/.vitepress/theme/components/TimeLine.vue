@@ -1,8 +1,15 @@
 <template>
   <div class="timeline-container">
     <div class="timeline">
-      <div class="scroll-button" @click="scrollToBottom" title="自动滚动">
-        <div class="scroll-icon">↓</div>
+      <div 
+        class="scroll-button" 
+        @click="scrollToBottom" 
+        :class="{ 'scrolling': isAutoScrolling }"
+        :title="isAutoScrolling ? '点击停止滚动' : '自动滚动'"
+      >
+        <div class="scroll-icon" :class="{ 'pause': isAutoScrolling }">
+          {{ isAutoScrolling ? '■' : '↓' }}
+        </div>
       </div>
       <div class="timeline-line"></div>
       <div
@@ -47,7 +54,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 
 const timelineData = ref([
   {
@@ -129,16 +136,63 @@ const timelineData = ref([
   },
 ])
 
-const scrollToBottom = () => {
-  const scrollStep = window.innerHeight / 150; // 每次滚动的高度
-  const scrollInterval = setInterval(() => {
-    if (window.scrollY + window.innerHeight < document.documentElement.scrollHeight) {
-      window.scrollBy(0, scrollStep);
-    } else {
-      clearInterval(scrollInterval);
-    }
-  }, 16); // 每帧约16ms，接近60fps
+// 添加一个变量来跟踪滚动状态
+const isAutoScrolling = ref(false)
+let scrollInterval = null
+
+// 停止自动滚动
+const stopAutoScroll = () => {
+  if (scrollInterval) {
+    clearInterval(scrollInterval)
+    scrollInterval = null
+  }
+  isAutoScrolling.value = false
 }
+
+// 监听用户滚动
+const handleUserScroll = () => {
+  if (isAutoScrolling.value) {
+    stopAutoScroll()
+  }
+}
+
+// 修改自动滚动函数
+const scrollToBottom = () => {
+  if (isAutoScrolling.value) {
+    stopAutoScroll()
+    return
+  }
+
+  isAutoScrolling.value = true
+  const scrollStep = window.innerHeight / 150
+  
+  scrollInterval = setInterval(() => {
+    if (window.scrollY + window.innerHeight < document.documentElement.scrollHeight) {
+      window.scrollBy(0, scrollStep)
+    } else {
+      stopAutoScroll()
+    }
+  }, 16)
+}
+
+// 在组件挂载时添加事件监听器
+onMounted(() => {
+  window.addEventListener('wheel', handleUserScroll)
+  window.addEventListener('touchstart', handleUserScroll)
+  window.addEventListener('keydown', (e) => {
+    if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '].includes(e.key)) {
+      handleUserScroll()
+    }
+  })
+})
+
+// 在组件卸载时移除事件监听器
+onUnmounted(() => {
+  window.removeEventListener('wheel', handleUserScroll)
+  window.removeEventListener('touchstart', handleUserScroll)
+  window.removeEventListener('keydown', handleUserScroll)
+  stopAutoScroll()
+})
 </script>
 
 <style scoped>
@@ -383,10 +437,20 @@ const scrollToBottom = () => {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+.scroll-button.scrolling {
+  background: var(--vp-c-brand);
+  color: white;
+}
+
 .scroll-icon {
   font-size: 1.2rem;
   color: var(--vp-c-text-1);
   animation: bounce 2s infinite;
+}
+
+.scroll-icon.pause {
+  animation: none;
+  font-size: 1rem;
 }
 
 @keyframes bounce {
