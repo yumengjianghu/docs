@@ -129,7 +129,6 @@
 <script setup>
 import { ref, onMounted, shallowRef, nextTick } from 'vue'
 import { createClient } from '@supabase/supabase-js'
-import Quill from 'quill'
 import Editor from '@tinymce/tinymce-vue'
 import TurndownService from 'turndown'
 import 'quill/dist/quill.snow.css'
@@ -213,84 +212,85 @@ const setCurrentDate = () => {
     article.value.date = now.toISOString().split('T')[0]
 }
 
-// 初始化 Quill 编辑器
-const initQuill = () => {
-    quill.value = new Quill('#quill-editor', {
-        theme: 'snow',
-        placeholder: '请输入文章内容...',
-        modules: {
-            toolbar: {
-                container: [
-                    ['bold', 'italic', 'underline', 'strike'],
-                    ['blockquote', 'code-block'],
-                    [{ 'header': [1, 2, false] }],
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                    [{ 'script': 'sub'}, { 'script': 'super' }],
-                    [{ 'indent': '-1'}, { 'indent': '+1' }],
-                    ['link', 'image'],
-                    ['clean']
-                ],
-                handlers: {},
-            }
-        }
-    })
-
-    const tooltips = {
-        'bold': '粗体',
-        'italic': '斜体',
-        'underline': '下划线',
-        'strike': '删除线',
-        'blockquote': '引用',
-        'code-block': '代码块',
-        'header': '标题',
-        'list': '列表',
-        'script': '上下标',
-        'indent': '缩进',
-        'link': '链接',
-        'image': '图片',
-        'clean': '清除格式'
+// 修改初始化 Quill 编辑器方法
+const initQuill = async () => {
+  // 动态导入 Quill
+  const { default: Quill } = await import('quill')
+  
+  quill.value = new Quill('#quill-editor', {
+    theme: 'snow',
+    placeholder: '请输入文章内容...',
+    modules: {
+      toolbar: {
+        container: [
+          ['bold', 'italic', 'underline', 'strike'],
+          ['blockquote', 'code-block'],
+          [{ 'header': [1, 2, false] }],
+          [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+          [{ 'script': 'sub'}, { 'script': 'super' }],
+          [{ 'indent': '-1'}, { 'indent': '+1' }],
+          ['link', 'image'],
+          ['clean']
+        ],
+        handlers: {},
+      }
     }
+  })
 
-    const toolbar = quill.value.getModule('toolbar')
-    toolbar.container.querySelectorAll('button, .ql-picker').forEach(button => {
-        const className = button.className
-        const format = className.split('ql-')[1]
-        if (tooltips[format]) {
-            button.setAttribute('title', tooltips[format])
-        }
-    })
+  const tooltips = {
+    'bold': '粗体',
+    'italic': '斜体',
+    'underline': '下划线',
+    'strike': '删除线',
+    'blockquote': '引用',
+    'code-block': '代码块',
+    'header': '标题',
+    'list': '列表',
+    'script': '上下标',
+    'indent': '缩进',
+    'link': '链接',
+    'image': '图片',
+    'clean': '清除格式'
+  }
 
-    // 监听内容变化，自动调整高度
-    const adjustHeight = () => {
-        const editorElement = document.querySelector('.ql-editor')
-        if (editorElement) {
-            editorElement.style.minHeight = '500px'
-            editorElement.style.height = 'auto'
-            editorElement.style.height = `${editorElement.scrollHeight}px`
-        }
+  const toolbar = quill.value.getModule('toolbar')
+  toolbar.container.querySelectorAll('button, .ql-picker').forEach(button => {
+    const className = button.className
+    const format = className.split('ql-')[1]
+    if (tooltips[format]) {
+      button.setAttribute('title', tooltips[format])
     }
+  })
 
-    quill.value.on('text-change', () => {
-        article.value.content = quill.value.root.innerHTML
-        adjustHeight()
-    })
+  // 监听内容变化，自动调整高度
+  const adjustHeight = () => {
+    const editorElement = document.querySelector('.ql-editor')
+    if (editorElement) {
+      editorElement.style.minHeight = '500px'
+      editorElement.style.height = 'auto'
+      editorElement.style.height = `${editorElement.scrollHeight}px`
+    }
+  }
 
-    // 初始调整高度
+  quill.value.on('text-change', () => {
+    article.value.content = quill.value.root.innerHTML
     adjustHeight()
+  })
+
+  // 初始调整高度
+  adjustHeight()
 }
 
-// 切换编辑器
-const toggleEditor = () => {
-    if (currentEditor.value === 'quill') {
-        article.value.content = quill.value?.root.innerHTML || ''
-    }
-    currentEditor.value = currentEditor.value === 'quill' ? 'tinymce' : 'quill'
-    if (currentEditor.value === 'quill') {
-        // 使用 nextTick 确保 DOM 已更新
-        nextTick(() => {
-            initQuill()
-        })
-    }
+// 修改切换编辑器方法
+const toggleEditor = async () => {
+  if (currentEditor.value === 'quill') {
+    article.value.content = quill.value?.root.innerHTML || ''
+  }
+  currentEditor.value = currentEditor.value === 'quill' ? 'tinymce' : 'quill'
+  if (currentEditor.value === 'quill') {
+    await nextTick()
+    await initQuill()
+  }
 }
 
 // 添加登录对话框状态
@@ -367,10 +367,10 @@ const resetForm = () => {
     }
 }
 
-onMounted(() => {
-    if (currentEditor.value === 'quill') {
-        initQuill()
-    }
+onMounted(async () => {
+  if (currentEditor.value === 'quill') {
+    await initQuill()
+  }
 })
 </script>
 
