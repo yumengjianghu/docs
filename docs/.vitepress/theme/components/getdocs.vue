@@ -325,7 +325,7 @@ fetchDocuments()
 .docs-list {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.5rem;
   max-width: 900px;
   margin: 0 auto;
 }
@@ -338,8 +338,8 @@ fetchDocuments()
     "category tags"
     "description description";
   grid-template-columns: 1fr auto;
-  gap: 0.5rem 2rem;
-  padding: 1.5rem;
+  gap: 0.3rem 1.2rem;
+  padding: 0.8rem 1.2rem;
   border: 1px solid var(--vp-c-divider);
   border-radius: 8px;
   cursor: pointer;
@@ -358,10 +358,10 @@ fetchDocuments()
   grid-area: title;
   font-size: 1.25rem;
   margin: 0;
+  padding: 0;
   color: var(--vp-c-text-1);
-  transition: color 0.3s ease;
   font-weight: 600;
-  line-height: 1.4;
+  line-height: 1.3;
 }
 
 .doc-meta {
@@ -371,12 +371,13 @@ fetchDocuments()
   font-size: 0.9rem;
   color: var(--vp-c-text-2);
   white-space: nowrap;
-  gap: 1rem;
+  gap: 0.6rem;
+  margin: 0;
 }
 
 .doc-meta > span:not(:last-child)::after {
   content: "•";
-  margin-left: 1rem;
+  margin-left: 0.6rem;
   opacity: 0.6;
 }
 
@@ -385,23 +386,28 @@ fetchDocuments()
   font-size: 0.9rem;
   color: var(--vp-c-brand);
   font-weight: 500;
+  margin: 0;
+  line-height: 1.2;
 }
 
 .doc-tags {
   grid-area: tags;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 0.4rem;
   justify-content: flex-end;
+  align-items: center;
+  margin: 0;
 }
 
 .tag {
-  padding: 2px 8px;
+  padding: 0.1rem 0.5rem;
   background: var(--vp-c-brand-soft);
   color: var(--vp-c-brand-dark);
   border-radius: 4px;
   font-size: 0.8rem;
-  transition: all 0.3s ease;
+  white-space: nowrap;
+  line-height: 1.4;
 }
 
 .doc-description {
@@ -409,7 +415,13 @@ fetchDocuments()
   font-size: 0.9rem;
   color: var(--vp-c-text-2);
   margin: 0;
-  line-height: 1.6;
+  line-height: 1.4;
+  max-height: 2.8em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 /* 文档容器布局 */
@@ -471,7 +483,7 @@ fetchDocuments()
 /* 响应式设计 */
 @media (max-width: 768px) {
   .docs-list {
-    padding: 0 1rem;
+    padding: 0 0.8rem;
   }
 
   .doc-item {
@@ -482,20 +494,26 @@ fetchDocuments()
       "tags"
       "description";
     grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
-
-  .doc-tags {
-    justify-content: flex-start;
+    gap: 0.3rem;
+    padding: 0.6rem 0.8rem;
   }
 
   .doc-meta {
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 0.4rem;
   }
 
-  .doc-meta > span:not(:last-child)::after {
-    content: none;
+  .doc-tags {
+    justify-content: flex-start;
+    margin-top: 0.2rem;
+  }
+
+  .tag {
+    padding: 0.1rem 0.4rem;
+  }
+
+  .doc-description {
+    margin-top: 0.2rem;
   }
 
   .doc-container {
