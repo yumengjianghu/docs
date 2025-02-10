@@ -127,7 +127,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, shallowRef, nextTick } from 'vue'
 import { createClient } from '@supabase/supabase-js'
 import Quill from 'quill'
 import Editor from '@tinymce/tinymce-vue'
@@ -159,8 +159,9 @@ const article = ref({
     content: ''
 })
 
+// 使用 shallowRef 来存储编辑器实例
+const quill = shallowRef(null)
 const currentEditor = ref('quill')
-const quill = ref(null)
 const isSubmitting = ref(false)
 
 // Supabase 配置
@@ -281,11 +282,14 @@ const initQuill = () => {
 // 切换编辑器
 const toggleEditor = () => {
     if (currentEditor.value === 'quill') {
-        article.value.content = quill.value.root.innerHTML
+        article.value.content = quill.value?.root.innerHTML || ''
     }
     currentEditor.value = currentEditor.value === 'quill' ? 'tinymce' : 'quill'
     if (currentEditor.value === 'quill') {
-        setTimeout(initQuill, 0)
+        // 使用 nextTick 确保 DOM 已更新
+        nextTick(() => {
+            initQuill()
+        })
     }
 }
 
@@ -306,8 +310,8 @@ const submitArticle = async () => {
         tags: JSON.stringify(article.value.tags.split(',').map(tag => tag.trim())),
         description: article.value.description,
         content: currentEditor.value === 'quill'
-          ? quill.value.root.innerHTML  // 保存完整的 HTML
-          : article.value.content  // TinyMCE 内容
+          ? quill.value?.root.innerHTML || ''  // 添加空值检查
+          : article.value.content
     }
     
     // 保存待发布的文章数据
@@ -327,9 +331,9 @@ const handleLoginSuccess = async () => {
         // 确保保存完整的 HTML 内容
         const articleData = {
           ...pendingArticleData.value,
-          content: currentEditor.value === 'quill' 
-            ? quill.value.root.innerHTML  // 保存 Quill 编辑器的 HTML
-            : pendingArticleData.value.content  // TinyMCE 已经是 HTML
+          content: currentEditor.value === 'quill'
+            ? quill.value?.root.innerHTML || pendingArticleData.value.content
+            : pendingArticleData.value.content
         }
         
         await supabase.from('articles').insert([articleData])
@@ -357,8 +361,9 @@ const resetForm = () => {
         description: '',
         content: ''
     }
-    if (quill.value) {
-        quill.value.root.innerHTML = ''
+    
+    if (currentEditor.value === 'quill' && quill.value) {
+        quill.value.setText('')
     }
 }
 
