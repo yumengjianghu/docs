@@ -1,0 +1,6 @@
+# Env files
+.env
+.env.local
+.env.*.local
+
+# 其他已有的忽略规则... 

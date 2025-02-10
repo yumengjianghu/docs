@@ -89,8 +89,8 @@ import 'highlight.js/styles/github-dark.css'
 
 // Supabase 配置
 const supabase = createClient(
-  'https://wyynppzrdxgjdtdrzdqu.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind5eW5wcHpyZHhnamR0ZHJ6ZHF1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzkxMDYxMDAsImV4cCI6MjA1NDY4MjEwMH0.OEUVtD1N008Ld1X2usWkVbdCFJstXU2pTECrgi6ND0M'
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_ANON_KEY
 )
 
 const documents = ref([])
@@ -325,7 +325,7 @@ fetchDocuments()
 .docs-list {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.4rem;
   max-width: 900px;
   margin: 0 auto;
 }
@@ -338,10 +338,10 @@ fetchDocuments()
     "category tags"
     "description description";
   grid-template-columns: 1fr auto;
-  gap: 0.5rem 2rem;
-  padding: 1.5rem;
+  gap: 0.25rem 1rem;
+  padding: 0.75rem;
   border: 1px solid var(--vp-c-divider);
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
   transition: all 0.3s ease;
   background: var(--vp-c-bg);
@@ -356,12 +356,12 @@ fetchDocuments()
 
 .doc-title {
   grid-area: title;
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   margin: 0;
   color: var(--vp-c-text-1);
   transition: color 0.3s ease;
   font-weight: 600;
-  line-height: 1.4;
+  line-height: 1.2;
 }
 
 .doc-meta {
@@ -371,12 +371,12 @@ fetchDocuments()
   font-size: 0.9rem;
   color: var(--vp-c-text-2);
   white-space: nowrap;
-  gap: 1rem;
+  gap: 0.5rem;
 }
 
 .doc-meta > span:not(:last-child)::after {
   content: "•";
-  margin-left: 1rem;
+  margin-left: 0.5rem;
   opacity: 0.6;
 }
 
@@ -385,23 +385,27 @@ fetchDocuments()
   font-size: 0.9rem;
   color: var(--vp-c-brand);
   font-weight: 500;
+  margin: 0;
+  line-height: 1.2;
 }
 
 .doc-tags {
   grid-area: tags;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 4px;
   justify-content: flex-end;
+  align-items: center;
 }
 
 .tag {
-  padding: 2px 8px;
+  padding: 0 6px;
   background: var(--vp-c-brand-soft);
   color: var(--vp-c-brand-dark);
-  border-radius: 4px;
+  border-radius: 3px;
   font-size: 0.8rem;
-  transition: all 0.3s ease;
+  line-height: 1.4;
+  white-space: nowrap;
 }
 
 .doc-description {
@@ -409,7 +413,13 @@ fetchDocuments()
   font-size: 0.9rem;
   color: var(--vp-c-text-2);
   margin: 0;
-  line-height: 1.6;
+  line-height: 1.3;
+  max-height: 2.6em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 /* 文档容器布局 */
@@ -471,7 +481,8 @@ fetchDocuments()
 /* 响应式设计 */
 @media (max-width: 768px) {
   .docs-list {
-    padding: 0 1rem;
+    padding: 0 0.5rem;
+    gap: 0.6rem;  /* 增加列表项间距 */
   }
 
   .doc-item {
@@ -482,20 +493,56 @@ fetchDocuments()
       "tags"
       "description";
     grid-template-columns: 1fr;
-    gap: 0.75rem;
+    gap: 0.4rem;  /* 增加内部元素间距 */
+    padding: 0.8rem;  /* 增加内边距 */
   }
 
-  .doc-tags {
-    justify-content: flex-start;
+  .doc-title {
+    font-size: 1rem;  /* 稍微调整标题大小 */
+    line-height: 1.3;
   }
 
   .doc-meta {
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 0.4rem;  /* 增加元数据项间距 */
+    font-size: 0.85rem;
   }
 
   .doc-meta > span:not(:last-child)::after {
-    content: none;
+    content: "•";
+    margin-left: 0.4rem;
+  }
+
+  .doc-category {
+    margin: 0.2rem 0;  /* 添加上下边距 */
+  }
+
+  .doc-tags {
+    justify-content: flex-start;
+    margin: 0.2rem 0;  /* 添加上下边距 */
+    gap: 0.4rem;  /* 增加标签间距 */
+  }
+
+  .tag {
+    padding: 0.1rem 0.5rem;  /* 增加标签内边距 */
+    font-size: 0.75rem;
+  }
+
+  .doc-description {
+    margin-top: 0.2rem;  /* 添加描述顶部边距 */
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+
+  /* 调整加载状态样式 */
+  .loading-wrapper {
+    min-height: 150px;
+    padding: 1rem;
+  }
+
+  .loading-text {
+    font-size: 0.85rem;
+    margin-top: 0.8rem;
   }
 
   .doc-container {
