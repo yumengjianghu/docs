@@ -23,7 +23,7 @@
         <button :class="['sort-btn', sortType === 'newest' ? 'active' : '']" @click="sortType = 'newest'">
           最新优先
         </button>
-        <button class="sort-btn WebDocs" @click="getWebDocs()">网络文档</button>
+        <button class="sort-btn WebDocs" @click="getWebDocs()">云端文档</button>
       </div>
     </div>
 
