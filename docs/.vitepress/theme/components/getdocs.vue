@@ -1,20 +1,6 @@
 // src/components/DocumentRenderer.vue
 <template>
   <div class="docs-container">
-    <!-- 搜索栏 -->
-    <div class="search-container">
-      <div class="search-box">
-        <input 
-          type="text" 
-          v-model="searchQuery" 
-          placeholder="搜索文档标题、描述或标签..." 
-          class="search-input"
-          @input="handleSearch"
-        >
-        <span class="search-icon">🔍</span>
-      </div>
-    </div>
-
     <!-- 文档列表 -->
     <div v-if="!currentDoc">
       <!-- 列表加载状态 -->
@@ -26,7 +12,7 @@
       <!-- 文档列表内容 -->
       <div v-else class="docs-list">
         <div 
-          v-for="doc in filteredDocuments" 
+          v-for="doc in documents" 
           :key="doc.id" 
           class="doc-item"
           @click="loadFullDoc(doc.id)"
@@ -54,12 +40,6 @@
           <div class="loading-overlay" v-if="loadingDocId === doc.id">
             <loading-dots />
           </div>
-        </div>
-        
-        <!-- 无搜索结果提示 -->
-        <div v-if="filteredDocuments.length === 0" class="no-results">
-          <p>没有找到匹配的文档</p>
-          <button @click="clearSearch" class="clear-search">清除搜索</button>
         </div>
       </div>
     </div>
@@ -123,10 +103,6 @@ const isLoadingDoc = ref(false)
 // 添加正在加载的文档ID
 const loadingDocId = ref(null)
 
-// 添加搜索相关的状态
-const searchQuery = ref('')
-const searchDebounceTimeout = ref(null)
-
 // 格式化日期
 const formatDate = (dateString) => {
   const date = new Date(dateString)
@@ -143,9 +119,7 @@ const fetchDocuments = async () => {
     isLoading.value = true
     const { data, error } = await supabase
       .from('articles')
-      .select('id, title, date, created_at, author, category, tags, description')
-      .order('created_at', { ascending: false })
-      .order('date', { ascending: false })
+      .select('id, title, date, author, category, tags, description')
 
     if (error) throw error
 
@@ -236,59 +210,6 @@ const renderedContent = computed(() => {
     console.error('渲染失败:', error)
     return '内容渲染失败'
   }
-})
-
-// 处理搜索输入
-const handleSearch = () => {
-  if (searchDebounceTimeout.value) {
-    clearTimeout(searchDebounceTimeout.value)
-  }
-  searchDebounceTimeout.value = setTimeout(() => {
-    // 搜索逻辑在 filteredDocuments 计算属性中处理
-  }, 300)
-}
-
-// 清除搜索
-const clearSearch = () => {
-  searchQuery.value = ''
-}
-
-// 修改过滤文档的计算属性
-const filteredDocuments = computed(() => {
-  let docs = documents.value
-
-  // 如果有搜索查询，进行过滤
-  if (searchQuery.value) {
-    const query = searchQuery.value.toLowerCase()
-    docs = docs.filter(doc => {
-      const title = doc.title?.toLowerCase() || ''
-      const description = doc.description?.toLowerCase() || ''
-      const tags = doc.tags?.map(tag => tag.toLowerCase()) || []
-      const category = doc.category?.toLowerCase() || ''
-      const author = doc.author?.toLowerCase() || ''
-
-      return (
-        title.includes(query) ||
-        description.includes(query) ||
-        tags.some(tag => tag.includes(query)) ||
-        category.includes(query) ||
-        author.includes(query)
-      )
-    })
-  }
-
-  // 如果需要本地再次排序
-  return docs.sort((a, b) => {
-    // 首先按创建时间排序
-    const timeA = new Date(a.created_at).getTime()
-    const timeB = new Date(b.created_at).getTime()
-    if (timeA !== timeB) return timeB - timeA
-
-    // 如果创建时间相同，则按日期排序
-    const dateA = new Date(a.date).getTime()
-    const dateB = new Date(b.date).getTime()
-    return dateB - dateA
-  })
 })
 
 // 初始加载
@@ -784,83 +705,5 @@ fetchDocuments()
 .doc-content :deep(th) {
   background: var(--vp-c-bg-soft);
   font-weight: 600;
-}
-
-/* 搜索框样式 */
-.search-container {
-  margin-bottom: 1.5rem;
-  padding: 0 1rem;
-}
-
-.search-box {
-  position: relative;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.search-input {
-  width: 100%;
-  padding: 0.8rem 1rem 0.8rem 2.5rem;
-  font-size: 1rem;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 8px;
-  background: var(--vp-c-bg);
-  color: var(--vp-c-text-1);
-  transition: all 0.3s ease;
-}
-
-.search-input:focus {
-  outline: none;
-  border-color: var(--vp-c-brand);
-  box-shadow: 0 0 0 2px var(--vp-c-brand-soft);
-}
-
-.search-icon {
-  position: absolute;
-  left: 0.8rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--vp-c-text-2);
-  pointer-events: none;
-}
-
-/* 无搜索结果样式 */
-.no-results {
-  text-align: center;
-  padding: 2rem;
-  color: var(--vp-c-text-2);
-}
-
-.clear-search {
-  margin-top: 1rem;
-  padding: 0.5rem 1rem;
-  background: var(--vp-c-brand);
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.clear-search:hover {
-  background: var(--vp-c-brand-dark);
-  transform: translateY(-1px);
-}
-
-/* 响应式设计 */
-@media (max-width: 768px) {
-  .search-container {
-    padding: 0 0.5rem;
-  }
-
-  .search-input {
-    font-size: 0.9rem;
-    padding: 0.6rem 1rem 0.6rem 2.2rem;
-  }
-
-  .search-icon {
-    left: 0.6rem;
-    font-size: 0.9rem;
-  }
 }
 </style>
