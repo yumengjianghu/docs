@@ -82,8 +82,9 @@
                 </div>
 
                 <!-- Quill 编辑器 -->
-                <div v-if="currentEditor === 'quill'" class="editor-wrapper">
+                <div v-if="currentEditor === 'quill'" class="editor-wrapper" ref="editorWrapper">
                     <div id="quill-editor"></div>
+                    <div class="resize-handle" @mousedown="startResize"></div>
                 </div>
 
                 <!-- TinyMCE 编辑器 -->
@@ -127,7 +128,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, shallowRef, nextTick } from 'vue'
+import { ref, onMounted, shallowRef, nextTick, onUnmounted } from 'vue'
 import { createClient } from '@supabase/supabase-js'
 import Editor from '@tinymce/tinymce-vue'
 import TurndownService from 'turndown'
@@ -214,9 +215,13 @@ const setCurrentDate = () => {
 
 // 修改初始化 Quill 编辑器方法
 const initQuill = async () => {
-  // 动态导入 Quill
   const { default: Quill } = await import('quill')
   
+  // 注册自定义字号格式
+  const Size = Quill.import('attributors/style/size')
+  Size.whitelist = ['12px', '14px', '16px', '18px', '20px', '24px']
+  Quill.register(Size, true)
+
   quill.value = new Quill('#quill-editor', {
     theme: 'snow',
     placeholder: '请输入文章内容...',
@@ -225,18 +230,44 @@ const initQuill = async () => {
         container: [
           ['bold', 'italic', 'underline', 'strike'],
           ['blockquote', 'code-block'],
-          [{ 'header': [1, 2, false] }],
+          [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
           [{ 'list': 'ordered'}, { 'list': 'bullet' }],
           [{ 'script': 'sub'}, { 'script': 'super' }],
           [{ 'indent': '-1'}, { 'indent': '+1' }],
+          [{ 'size': Size.whitelist }],  // 使用注册的字号列表
+          [{ 'color': [] }, { 'background': [] }],
           ['link', 'image'],
           ['clean']
         ],
-        handlers: {},
+        handlers: {
+          image: function() {
+            const input = document.createElement('input')
+            input.setAttribute('type', 'file')
+            input.setAttribute('accept', 'image/*')
+            input.click()
+
+            input.onchange = async () => {
+              const file = input.files[0]
+              if (file) {
+                try {
+                  const reader = new FileReader()
+                  reader.onload = (e) => {
+                    const range = this.quill.getSelection(true)
+                    this.quill.insertEmbed(range.index, 'image', e.target.result)
+                  }
+                  reader.readAsDataURL(file)
+                } catch (error) {
+                  console.error('图片上传失败:', error)
+                }
+              }
+            }
+          }
+        }
       }
     }
   })
 
+  // 修改工具栏提示
   const tooltips = {
     'bold': '粗体',
     'italic': '斜体',
@@ -248,6 +279,9 @@ const initQuill = async () => {
     'list': '列表',
     'script': '上下标',
     'indent': '缩进',
+    'size': '字号',
+    'color': '文字颜色',
+    'background': '背景颜色',
     'link': '链接',
     'image': '图片',
     'clean': '清除格式'
@@ -367,6 +401,55 @@ const resetForm = () => {
     }
 }
 
+// 添加编辑器宽度调整相关的状态和方法
+const editorWrapper = ref(null)
+const isResizing = ref(false)
+const startX = ref(0)
+const startWidth = ref(0)
+
+// 开始调整大小
+const startResize = (e) => {
+  isResizing.value = true
+  startX.value = e.clientX
+  startWidth.value = editorWrapper.value.offsetWidth
+
+  // 添加事件监听器
+  document.addEventListener('mousemove', handleResize)
+  document.addEventListener('mouseup', stopResize)
+  
+  // 添加调整时的样式
+  document.body.style.cursor = 'ew-resize'
+  document.body.style.userSelect = 'none'
+}
+
+// 处理调整过程
+const handleResize = (e) => {
+  if (!isResizing.value) return
+  
+  const diff = e.clientX - startX.value
+  const newWidth = Math.max(500, Math.min(startWidth.value + diff, window.innerWidth - 40))
+  editorWrapper.value.style.width = `${newWidth}px`
+}
+
+// 停止调整
+const stopResize = () => {
+  isResizing.value = false
+  
+  // 移除事件监听器
+  document.removeEventListener('mousemove', handleResize)
+  document.removeEventListener('mouseup', stopResize)
+  
+  // 恢复默认样式
+  document.body.style.cursor = ''
+  document.body.style.userSelect = ''
+}
+
+// 组件卸载时清理
+onUnmounted(() => {
+  document.removeEventListener('mousemove', handleResize)
+  document.removeEventListener('mouseup', stopResize)
+})
+
 onMounted(async () => {
   if (currentEditor.value === 'quill') {
     await initQuill()
@@ -469,6 +552,7 @@ textarea:focus {
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     padding: 2rem;
+    overflow: hidden;
 }
 
 .editor-header {
@@ -479,9 +563,12 @@ textarea:focus {
 }
 
 .editor-wrapper {
+    position: relative;
+    width: 100%;
     border: 1px solid var(--vp-c-divider);
     border-radius: 6px;
-    overflow: hidden;
+    overflow: visible;
+    transition: width 0.1s ease;
 }
 
 /* 按钮样式 */
@@ -595,6 +682,14 @@ textarea:focus {
     .cancel-btn {
         width: 100%;
         padding: 1rem;
+    }
+
+    .resize-handle {
+        display: none;
+    }
+
+    .editor-wrapper {
+        width: 100% !important;
     }
 
     :deep(.ql-editor),
@@ -719,5 +814,134 @@ textarea:focus {
 .submit-btn:disabled {
     opacity: 0.8;
     cursor: not-allowed;
+}
+
+/* 增强编辑器样式 */
+:deep(.ql-editor img) {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1em auto;
+  border-radius: 4px;
+}
+
+:deep(.ql-color-picker), :deep(.ql-background) {
+  .ql-picker-options {
+    padding: 5px;
+    width: 152px;
+    
+    .ql-picker-item {
+      width: 16px;
+      height: 16px;
+      margin: 2px;
+      border-radius: 2px;
+    }
+  }
+}
+
+:deep(.ql-picker.ql-color), :deep(.ql-picker.ql-background) {
+  width: 40px;
+}
+
+/* 修改字号选择器样式 */
+:deep(.ql-snow .ql-picker.ql-size) {
+  width: 80px;
+}
+
+:deep(.ql-snow .ql-size .ql-picker-label::before),
+:deep(.ql-snow .ql-size .ql-picker-item::before) {
+  content: '默认';
+}
+
+:deep(.ql-snow .ql-size .ql-picker-label[data-value="12px"]::before),
+:deep(.ql-snow .ql-size .ql-picker-item[data-value="12px"]::before) {
+  content: '12px';
+  font-size: 12px;
+}
+
+:deep(.ql-snow .ql-size .ql-picker-label[data-value="14px"]::before),
+:deep(.ql-snow .ql-size .ql-picker-item[data-value="14px"]::before) {
+  content: '14px';
+  font-size: 14px;
+}
+
+:deep(.ql-snow .ql-size .ql-picker-label[data-value="16px"]::before),
+:deep(.ql-snow .ql-size .ql-picker-item[data-value="16px"]::before) {
+  content: '16px';
+  font-size: 16px;
+}
+
+:deep(.ql-snow .ql-size .ql-picker-label[data-value="18px"]::before),
+:deep(.ql-snow .ql-size .ql-picker-item[data-value="18px"]::before) {
+  content: '18px';
+  font-size: 18px;
+}
+
+:deep(.ql-snow .ql-size .ql-picker-label[data-value="20px"]::before),
+:deep(.ql-snow .ql-size .ql-picker-item[data-value="20px"]::before) {
+  content: '20px';
+  font-size: 20px;
+}
+
+:deep(.ql-snow .ql-size .ql-picker-label[data-value="24px"]::before),
+:deep(.ql-snow .ql-size .ql-picker-item[data-value="24px"]::before) {
+  content: '24px';
+  font-size: 24px;
+}
+
+/* 应用字号样式 */
+:deep(.ql-editor) {
+  [style*="font-size: 12px"] { font-size: 12px !important; }
+  [style*="font-size: 14px"] { font-size: 14px !important; }
+  [style*="font-size: 16px"] { font-size: 16px !important; }
+  [style*="font-size: 18px"] { font-size: 18px !important; }
+  [style*="font-size: 20px"] { font-size: 20px !important; }
+  [style*="font-size: 24px"] { font-size: 24px !important; }
+}
+
+/* 优化下拉菜单样式 */
+:deep(.ql-snow .ql-picker-options) {
+  padding: 4px 0;
+  background-color: var(--vp-c-bg);
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+:deep(.ql-snow .ql-picker-item) {
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+:deep(.ql-snow .ql-picker-item:hover) {
+  background-color: var(--vp-c-bg-soft);
+  color: var(--vp-c-brand);
+}
+
+/* 调整手柄样式 */
+.resize-handle {
+  position: absolute;
+  top: 0;
+  right: -5px;
+  width: 10px;
+  height: 100%;
+  cursor: ew-resize;
+  background: transparent;
+}
+
+.resize-handle:hover::after,
+.resize-handle:active::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 4px;
+  width: 2px;
+  height: 100%;
+  background-color: var(--vp-c-brand);
+  opacity: 0.5;
+}
+
+.resize-handle:active::after {
+  opacity: 1;
 }
 </style>
