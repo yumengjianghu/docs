@@ -10,60 +10,71 @@
         </div>
 
         <h1 class="page-title">创建文章</h1>
+        <div class="mode-switch">
+            <button 
+                type="button" 
+                class="mode-switch-btn"
+                @click="showDetails = !showDetails"
+            >
+                <span class="switch-icon">{{ showDetails ? '📄' : '📃' }}</span>
+                {{ showDetails ? '简洁模式' : '详细模式' }}
+            </button>
+        </div>
         <form @submit.prevent="submitArticle" class="create-form">
             <!-- 基本信息区域 -->
             <div class="form-basic-info">
                 <div class="form-section-title">基本信息</div>
                 <!-- 标题 -->
                 <div class="form-group">
-                    <label for="title">标题</label>
+                    <label for="title">标题 <span class="required">*</span></label>
                     <input type="text" id="title" v-model="article.title" required />
                 </div>
 
-                <!-- 日期 -->
-                <div class="form-group date-group">
-                    <label for="date">创建日期</label>
-                    <div class="date-input-group">
-                        <input type="date" id="date" v-model="article.date" required />
-                        <button type="button" @click="setCurrentDate" class="secondary-btn">
-                            获取当前时间
-                        </button>
+                <!-- 详细信息，根据 showDetails 控制显示 -->
+                <div v-if="showDetails" class="details-section">
+                    <!-- 日期 -->
+                    <div class="form-group date-group">
+                        <label for="date">创建日期</label>
+                        <div class="date-input-group">
+                            <input type="date" id="date" v-model="article.date" />
+                            <button type="button" @click="setCurrentDate" class="secondary-btn">
+                                获取当前时间
+                            </button>
+                        </div>
                     </div>
-                </div>
 
-                <!-- 作者 -->
-                <div class="form-group">
-                    <label for="author">作者</label>
-                    <input type="text" id="author" v-model="article.author" required />
-                </div>
+                    <!-- 作者 -->
+                    <div class="form-group">
+                        <label for="author">作者</label>
+                        <input type="text" id="author" v-model="article.author" />
+                    </div>
 
-                <!-- 主题分类 -->
-                <div class="form-group">
-                    <label for="category">主题分类</label>
-                    <input type="text" id="category" v-model="article.category" required />
-                </div>
+                    <!-- 主题分类 -->
+                    <div class="form-group">
+                        <label for="category">主题分类</label>
+                        <input type="text" id="category" v-model="article.category" />
+                    </div>
 
-                <!-- 标签 -->
-                <div class="form-group">
-                    <label for="tags">标签（用逗号分隔）</label>
-                    <input 
-                        type="text" 
-                        id="tags" 
-                        v-model="article.tags" 
-                        placeholder="例如: vue,javascript,web" 
-                        required 
-                    />
-                </div>
+                    <!-- 标签 -->
+                    <div class="form-group">
+                        <label for="tags">标签（用逗号分隔）</label>
+                        <input 
+                            type="text" 
+                            id="tags" 
+                            v-model="article.tags" 
+                            placeholder="例如: vue,javascript,web" 
+                        />
+                    </div>
 
-                <!-- 描述 -->
-                <div class="form-group">
-                    <label for="description">描述</label>
-                    <textarea 
-                        id="description" 
-                        v-model="article.description" 
-                        rows="3"
-                        required
-                    ></textarea>
+                    <!-- 描述 -->
+                    <div class="form-group">
+                        <label for="description">描述</label>
+                        <textarea 
+                            id="description" 
+                            v-model="article.description" 
+                            rows="3"
+                        ></textarea>
+                    </div>
                 </div>
             </div>
 
@@ -151,11 +162,11 @@ turndownService.addRule('images', {
 
 const article = ref({
     title: '',
-    author: '',
-    date: '',
-    category: '',
-    tags: '',
-    description: '',
+    author: '匿名作者',
+    date: new Date().toISOString().split('T')[0],
+    category: '未分类',
+    tags: '其他',
+    description: '暂无描述',
     content: ''
 })
 
@@ -331,75 +342,109 @@ const toggleEditor = async () => {
 const showLoginDialog = ref(false)
 const pendingArticleData = ref(null)
 
+// 添加控制详细信息显示的状态
+const showDetails = ref(false)
+
 // 修改提交方法
-const submitArticle = async () => {
-    if (isSubmitting.value) return
-    
-    // 准备文章数据
-    const articleData = {
-        title: article.value.title,
-        date: article.value.date,
-        author: article.value.author,
-        category: article.value.category,
-        tags: JSON.stringify(article.value.tags.split(',').map(tag => tag.trim())),
-        description: article.value.description,
-        content: currentEditor.value === 'quill'
-          ? quill.value?.root.innerHTML || ''  // 添加空值检查
-          : article.value.content
+const submitArticle = async (e) => {
+  e.preventDefault()
+  
+  // 只检查标题
+  if (!article.value.title.trim()) {
+    showNotification('请输入文章标题', 'error')
+    return
+  }
+
+  try {
+    isSubmitting.value = true
+
+    // 准备文章数据，使用默认值
+    const submittedArticle = {
+      title: article.value.title.trim(),
+      author: showDetails.value ? (article.value.author.trim() || '匿名作者') : '匿名作者',
+      date: showDetails.value ? (article.value.date || new Date().toISOString().split('T')[0]) : new Date().toISOString().split('T')[0],
+      category: showDetails.value ? (article.value.category.trim() || '未分类') : '未分类',
+      tags: showDetails.value ? (article.value.tags.trim() || ['其他']) : ['其他'],
+      description: showDetails.value ? (article.value.description.trim() || '暂无描述') : '暂无描述',
+      content: currentEditor.value === 'quill'
+        ? quill.value?.root.innerHTML || ''
+        : article.value.content || ''
     }
-    
+
     // 保存待发布的文章数据
-    pendingArticleData.value = articleData
+    pendingArticleData.value = submittedArticle
     
     // 显示登录对话框
     showLoginDialog.value = true
+  } catch (error) {
+    console.error('提交失败:', error)
+    showNotification('提交失败: ' + error.message, 'error')
+  } finally {
+    isSubmitting.value = false
+  }
 }
 
-// 登录成功后的处理
+// 修改登录成功后的处理
 const handleLoginSuccess = async () => {
-    if (!pendingArticleData.value) return
+  if (!pendingArticleData.value) return
+  
+  try {
+    isSubmitting.value = true
     
-    try {
-        isSubmitting.value = true
-        
-        // 确保保存完整的 HTML 内容
-        const articleData = {
-          ...pendingArticleData.value,
-          content: currentEditor.value === 'quill'
-            ? quill.value?.root.innerHTML || pendingArticleData.value.content
-            : pendingArticleData.value.content
-        }
-        
-        await supabase.from('articles').insert([articleData])
-        
-        showNotification('文章发布成功！')
-        resetForm()
-    } catch (error) {
-        console.error('发布失败:', error)
-        showNotification('发布失败，请重试', 'error')
-    } finally {
-        isSubmitting.value = false
-        showLoginDialog.value = false
-        pendingArticleData.value = null
-    }
+    // 使用已经处理过的数据直接提交
+    await supabase.from('articles').insert([pendingArticleData.value])
+    
+    showNotification('文章发布成功！')
+    resetForm()
+  } catch (error) {
+    console.error('发布失败:', error)
+    showNotification('发布失败，请重试', 'error')
+  } finally {
+    isSubmitting.value = false
+    showLoginDialog.value = false
+    pendingArticleData.value = null
+  }
 }
 
-// 重置表单
+// 修改表单重置方法，确保设置默认值
 const resetForm = () => {
-    article.value = {
-        title: '',
-        author: '',
-        date: '',
-        category: '',
-        tags: '',
-        description: '',
-        content: ''
-    }
-    
-    if (currentEditor.value === 'quill' && quill.value) {
-        quill.value.setText('')
-    }
+  const now = new Date().toISOString().split('T')[0]
+  
+  article.value = {
+    title: '',
+    author: '匿名作者',
+    date: now,
+    category: '未分类',
+    tags: '其他',
+    description: '暂无描述',
+    content: ''
+  }
+  
+  if (currentEditor.value === 'quill' && quill.value) {
+    quill.value.setText('')
+  }
 }
+
+// 组件挂载时确保默认值
+onMounted(() => {
+  // 设置初始默认值
+  const now = new Date().toISOString().split('T')[0]
+  if (!article.value.date) {
+    article.value.date = now
+  }
+  if (!article.value.author) {
+    article.value.author = '匿名作者'
+  }
+  if (!article.value.category) {
+    article.value.category = '未分类'
+  }
+  if (!article.value.tags) {
+    article.value.tags = '其他'
+  }
+  if (!article.value.description) {
+    article.value.description = '暂无描述'
+  }
+})
 
 // 添加编辑器宽度调整相关的状态和方法
 const editorWrapper = ref(null)
@@ -943,5 +988,71 @@ textarea:focus {
 
 .resize-handle:active::after {
   opacity: 1;
+}
+
+/* 添加必填标记样式 */
+.required {
+  color: var(--vp-c-danger);
+  margin-left: 4px;
+}
+
+/* 可选字段标签样式 */
+.form-group label:not(:has(+ input[required])) {
+  color: var(--vp-c-text-2);
+}
+
+/* 添加模式切换按钮样式 */
+.mode-switch {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.mode-switch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-1);
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.mode-switch-btn:hover {
+  background: var(--vp-c-bg-mute);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.switch-icon {
+  font-size: 1.2em;
+}
+
+/* 详细信息区域的过渡动画 */
+.details-section {
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .mode-switch-btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
 </style>
