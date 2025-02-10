@@ -23,6 +23,16 @@
           />
         </div>
         <div class="error-message" v-if="error">{{ error }}</div>
+        <div class="remember-login">
+          <label>
+            <input 
+              type="checkbox" 
+              :checked="rememberLogin"
+              @change="$emit('update:remember-login', $event.target.checked)"
+            >
+            下次发布文章时记住登录状态
+          </label>
+        </div>
         <div class="dialog-actions">
           <button type="button" class="cancel-btn" @click="$emit('close')">取消</button>
           <button type="submit" class="submit-btn" :disabled="isVerifying">
@@ -46,7 +56,7 @@ const supabase = createClient(
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind5eW5wcHpyZHhnamR0ZHJ6ZHF1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzkxMDYxMDAsImV4cCI6MjA1NDY4MjEwMH0.OEUVtD1N008Ld1X2usWkVbdCFJstXU2pTECrgi6ND0M'
 )
 
-const emit = defineEmits(['close', 'success'])
+const emit = defineEmits(['close', 'success', 'update:remember-login'])
 
 const username = ref('')
 const password = ref('')
@@ -60,16 +70,8 @@ const handleSubmit = async () => {
   try {
     isVerifying.value = true
     
-    // 使用 SHA-256 加密
     const hashedPassword = CryptoJS.SHA256(password.value).toString().toLowerCase()
     
-    // 打印查询参数
-    console.log('查询参数:', {
-      name: username.value,
-      hashedPassword: hashedPassword
-    })
-    
-    // 查询数据库
     const { data, error: queryError } = await supabase
       .from('Manage')
       .select('*')
@@ -78,19 +80,18 @@ const handleSubmit = async () => {
         password: hashedPassword
       })
     
-    // 打印查询结果
-    console.log('查询结果:', { data, error: queryError })
-    
-    if (queryError) {
-      console.error('查询错误:', queryError)
-      throw queryError
-    }
+    if (queryError) throw queryError
     
     if (data && data.length > 0) {
-      console.log('验证成功')
-      emit('success')
+      // 创建会话数据
+      const sessionData = {
+        user: data[0],
+        access_token: CryptoJS.SHA256(Date.now().toString()).toString(),
+        expires_at: Date.now() + (24 * 60 * 60 * 1000) // 24小时后过期
+      }
+      
+      emit('success', sessionData)
     } else {
-      console.log('未找到匹配记录')
       error.value = '用户名或密码错误'
     }
   } catch (err) {
@@ -219,5 +220,25 @@ const handleSubmit = async () => {
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+.remember-login {
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+}
+
+.remember-login label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  color: var(--vp-c-text-2);
+}
+
+.remember-login input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
 }
 </style> 

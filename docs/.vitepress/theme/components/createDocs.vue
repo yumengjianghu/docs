@@ -132,6 +132,8 @@
         <login-dialog
             v-if="showLoginDialog"
             :supabase="supabase"
+            :remember-login="rememberLogin"
+            @update:remember-login="rememberLogin = $event"
             @close="showLoginDialog = false"
             @success="handleLoginSuccess"
         />
@@ -345,11 +347,32 @@ const pendingArticleData = ref(null)
 // 添加控制详细信息显示的状态
 const showDetails = ref(false)
 
+// 修改登录状态管理
+const rememberLogin = ref(localStorage.getItem('rememberLogin') === 'true')
+const session = ref(null)
+
+// 检查登录状态
+const checkLoginStatus = async () => {
+  try {
+    if (rememberLogin.value) {
+      const { data: { session: currentSession }, error } = await supabase.auth.getSession()
+      if (currentSession && !error) {
+        session.value = currentSession
+      } else {
+        // 如果会话无效，清除存储的状态
+        localStorage.removeItem('rememberLogin')
+        rememberLogin.value = false
+      }
+    }
+  } catch (error) {
+    console.error('检查登录状态失败:', error)
+  }
+}
+
 // 修改提交方法
 const submitArticle = async (e) => {
   e.preventDefault()
   
-  // 只检查标题
   if (!article.value.title.trim()) {
     showNotification('请输入文章标题', 'error')
     return
@@ -358,7 +381,6 @@ const submitArticle = async (e) => {
   try {
     isSubmitting.value = true
 
-    // 准备文章数据，使用默认值
     const submittedArticle = {
       title: article.value.title.trim(),
       author: showDetails.value ? (article.value.author.trim() || '匿名作者') : '匿名作者',
@@ -371,11 +393,17 @@ const submitArticle = async (e) => {
         : article.value.content || ''
     }
 
-    // 保存待发布的文章数据
-    pendingArticleData.value = submittedArticle
-    
-    // 显示登录对话框
-    showLoginDialog.value = true
+    // 检查是否已登录
+    if (session.value) {
+      // 直接提交文章
+      await supabase.from('articles').insert([submittedArticle])
+      showNotification('文章发布成功！')
+      resetForm()
+    } else {
+      // 需要登录
+      pendingArticleData.value = submittedArticle
+      showLoginDialog.value = true
+    }
   } catch (error) {
     console.error('提交失败:', error)
     showNotification('提交失败: ' + error.message, 'error')
@@ -384,18 +412,28 @@ const submitArticle = async (e) => {
   }
 }
 
-// 修改登录成功后的处理
-const handleLoginSuccess = async () => {
-  if (!pendingArticleData.value) return
-  
+// 修改登录成功处理方法
+const handleLoginSuccess = async (sessionData) => {
   try {
-    isSubmitting.value = true
-    
-    // 使用已经处理过的数据直接提交
-    await supabase.from('articles').insert([pendingArticleData.value])
-    
-    showNotification('文章发布成功！')
-    resetForm()
+    // 保存会话信息
+    session.value = sessionData
+
+    // 如果选择记住登录，保存状态
+    if (rememberLogin.value) {
+      localStorage.setItem('rememberLogin', 'true')
+      // 保存会话令牌
+      localStorage.setItem('sessionToken', sessionData.access_token)
+    } else {
+      localStorage.removeItem('rememberLogin')
+      localStorage.removeItem('sessionToken')
+    }
+
+    // 如果有待发布的文章，立即发布
+    if (pendingArticleData.value) {
+      await supabase.from('articles').insert([pendingArticleData.value])
+      showNotification('文章发布成功！')
+      resetForm()
+    }
   } catch (error) {
     console.error('发布失败:', error)
     showNotification('发布失败，请重试', 'error')
@@ -493,9 +531,14 @@ const stopResize = () => {
 onUnmounted(() => {
   document.removeEventListener('mousemove', handleResize)
   document.removeEventListener('mouseup', stopResize)
+  // 如果不记住登录，清除会话信息
+  if (!rememberLogin.value) {
+    session.value = null
+  }
 })
 
 onMounted(async () => {
+  await checkLoginStatus()
   if (currentEditor.value === 'quill') {
     await initQuill()
   }
