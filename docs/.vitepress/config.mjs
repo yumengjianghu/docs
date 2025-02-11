@@ -160,6 +160,7 @@ export default defineConfig({
     nav: [
       { text: '主页', link: '/' },
       { text: '分类', link: '/tag' },
+      { text: '留言板', link: '/MessageBoards' },
       {
         text: '笔记', items: [
           {

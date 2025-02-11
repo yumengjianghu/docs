@@ -15,9 +15,12 @@ import Classification from './components/classification.vue'
 import DocCard from './components/DocCard.vue'
 import createDocs from './components/createDocs.vue'
 import getdocs from './components/getdocs.vue'
+import MessageBoards from './components/MessageBoards.vue'
+
 // 引入懒加载图片
 import loadingIMG from '../../public/status/xhj.gif'
 import errorIMG from '../../public/status/loseimg.png'
+
 
 import './style.css'
 import './custom.css'
@@ -46,6 +49,7 @@ export default {
     app.component('DocCard', DocCard);
     app.component('createDocs', createDocs);
     app.component('getdocs', getdocs);
+    app.component('MessageBoards', MessageBoards);
     app.use(VueLazyloadNext, {
       loading: loadingIMG, // 加载占位图
       error: errorIMG,     // 错误占位图
