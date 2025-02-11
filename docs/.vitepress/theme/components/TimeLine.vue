@@ -38,7 +38,9 @@
             class="timeline-cover" 
             :class="{ 'no-image': !item.image }"
             :style="item.image ? `background-image: url(${item.image})` : ''"
-          ></div>
+          >
+          <div ></div>
+        </div>
           <div class="content-text">
             <div class="header-row">
               <h3 class="timeline-title">{{ item.title }}</h3>
@@ -333,15 +335,18 @@ onUnmounted(() => {
   margin-top: 0.5rem;
 }
 
+/* 时间点基础样式 */
 .timeline-dot {
   position: absolute;
   width: 16px;
   height: 16px;
-  background: #fff;
-  border: 2px solid #3b82f6;
+  background: var(--vp-c-bg);
+  border: 2px solid var(--vp-c-brand);
   border-radius: 50%;
   top: 50%;
   transform: translateY(-50%);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 2;
 }
 
 .timeline-item.left .timeline-dot {
@@ -352,7 +357,105 @@ onUnmounted(() => {
   left: -8px;
 }
 
-/* 响应式设计 */
+/* 发光效果 */
+.timeline-dot::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--vp-c-brand);
+  opacity: 0;
+  transform: scale(1.5);
+  transition: all 0.3s ease;
+}
+
+/* 基础点亮状态 */
+.timeline-dot.lit {
+  border-color: var(--vp-c-brand);
+  animation: dotGlow 3s infinite;
+}
+
+.timeline-dot.lit::after {
+  animation: ringPulse 3s infinite;
+}
+
+/* 完全点亮状态 */
+.timeline-dot.delayed-lit {
+  border-color: var(--vp-c-brand-light);
+  background: var(--vp-c-brand-soft);
+  animation: dotGlow 3s infinite;
+}
+
+.timeline-dot.delayed-lit::after {
+  animation: ringPulse 3s infinite;
+}
+
+/* 悬浮状态 */
+.timeline-dot.active {
+  transform: translateY(-50%) scale(1.2);
+  border-color: var(--vp-c-brand);
+  background: var(--vp-c-brand);
+  animation: activeGlow 2s infinite;
+}
+
+.timeline-dot.active::after {
+  animation: activeRing 2s infinite;
+}
+
+/* 点的发光动画 */
+@keyframes dotGlow {
+  0%, 100% {
+    box-shadow: 0 0 5px var(--vp-c-brand);
+  }
+  50% {
+    box-shadow: 0 0 12px var(--vp-c-brand-light);
+  }
+}
+
+/* 环形脉冲动画 */
+@keyframes ringPulse {
+  0% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0;
+    transform: scale(2);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+/* 激活状态发光动画 */
+@keyframes activeGlow {
+  0%, 100% {
+    box-shadow: 0 0 10px var(--vp-c-brand);
+  }
+  50% {
+    box-shadow: 0 0 20px var(--vp-c-brand-light);
+  }
+}
+
+/* 激活状态环形动画 */
+@keyframes activeRing {
+  0% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0;
+    transform: scale(2.5);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+/* 保持移动端适配 */
 @media (max-width: 768px) {
   .timeline-line {
     left: 0;

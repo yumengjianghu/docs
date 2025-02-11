@@ -158,35 +158,11 @@ export default defineConfig({
       },
     },
     nav: [
-      { text: '主页', link: '/' },
-      { text: '分类', link: '/tag' },
-      { text: '留言板', link: '/MessageBoards' },
+      { text: '🏳‍🌈主页', link: '/' },
+      { text: '🗂分类', link: '/tag' },
+      { text: '💬留言板', link: '/MessageBoards' },
       {
-        text: '笔记', items: [
-          {
-            text: '前端', items: [
-              { text: 'H5', link: '/pages/HTML5/note' },
-              { text: 'JavaScript', link: '/pages/JavaScript/note' },
-              { text: 'TypeScript', link: '/pages/TypeScript/note' },
-              { text: 'Uniapp', link: '/pages/uniapp/note' },
-            ],
-          },
-          {
-            text: '框架', items: [
-              { text: 'Vue3', link: '/pages/vue3/note' },
-            ]
-          },
-          {
-            text: '后端', items: [
-              { text: 'Nodejs', link: '/pages/Node/note' },
-              { text: 'Supabase快速入门', link: '/pages/Supabase/note' },
-
-            ],
-          },
-        ]
-      },
-      {
-        text: '教程', items: [
+        text: '📑教程', items: [
           { text: 'Github Action部署', link: '/pages/GithubActionTemplate/note' },
           { text: '局域网服务器部署', link: '/pages/LAN server deployment/note' },
           { text: 'Git基本使用', link: '/pages/Git/note' },
@@ -197,7 +173,7 @@ export default defineConfig({
         ]
       },
       {
-        text: '其他', items: [
+        text: '🚧其他', items: [
           { text: '🛠工具', link: '/other/Download/note.md' },
           { text: '🧪实验功能', link: '/other/实验功能/note.md' },
           { text: '🖋文章创建', link: '/createdoc' }
