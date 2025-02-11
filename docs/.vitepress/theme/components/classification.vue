@@ -8,22 +8,37 @@
       已加载 {{ documents.length }} 个文档
     </div>
 
-    <!-- 搜索和排序 -->
-    <div class="control-panel">
-      <!-- 搜索框 -->
+    <!-- 搜索框独立一行 -->
+    <div class="search-wrapper">
       <div class="search-box">
-        <input type="text" v-model="searchQuery" placeholder="搜索文档标题或描述..." class="search-input">
+        <input 
+          type="text" 
+          v-model="searchQuery" 
+          placeholder="搜索文档标题或描述..." 
+          class="search-input"
+        >
+        <div class="search-icon">🔍</div>
       </div>
+    </div>
 
-      <!-- 排序按钮组 -->
+    <!-- 排序按钮组 -->
+    <div class="sort-wrapper">
       <div class="sort-buttons">
-        <button :class="['sort-btn', sortType === 'default' ? 'active' : '']" @click="sortType = 'default'">
+        <button 
+          :class="['sort-btn', sortType === 'default' ? 'active' : '']" 
+          @click="sortType = 'default'"
+        >
           默认排序
         </button>
-        <button :class="['sort-btn', sortType === 'newest' ? 'active' : '']" @click="sortType = 'newest'">
+        <button 
+          :class="['sort-btn', sortType === 'newest' ? 'active' : '']" 
+          @click="sortType = 'newest'"
+        >
           最新优先
         </button>
-        <button class="sort-btn WebDocs" @click="getWebDocs()">云端文档</button>
+        <button class="sort-btn WebDocs" @click="getWebDocs()">
+          云端文档
+        </button>
       </div>
     </div>
 
@@ -31,41 +46,58 @@
     <div class="filters">
       <!-- 分类筛选 -->
       <div class="filter-section" v-if="allCategories.length">
-        <h3>分类筛选</h3>
-        <div class="categories-filter">
-          <button v-for="category in allCategories" :key="category"
-            :class="['category-btn', selectedCategory === category ? 'active' : '']" @click="toggleCategory(category)">
-            {{ category }}
-          </button>
+        <div class="filter-header" @click="toggleSection('category')">
+          <h3>分类筛选</h3>
+          <span class="toggle-icon" :class="{ 'is-open': openSections.category }">▼</span>
+        </div>
+        <div class="filter-content" v-show="openSections.category">
+          <div class="categories-filter">
+            <button v-for="category in allCategories" :key="category"
+              :class="['category-btn', selectedCategory === category ? 'active' : '']" 
+              @click="toggleCategory(category)">
+              {{ category }}
+            </button>
+          </div>
         </div>
       </div>
 
       <!-- 标签筛选 -->
       <div class="filter-section" v-if="allTags.length">
-        <h3>标签筛选</h3>
-        <div class="tags-filter">
-          <button v-for="tag in allTags" :key="tag" :class="['tag-btn', selectedTags.includes(tag) ? 'active' : '']"
-            @click="toggleTag(tag)">
-            {{ tag }}
-          </button>
+        <div class="filter-header" @click="toggleSection('tags')">
+          <h3>标签筛选</h3>
+          <span class="toggle-icon" :class="{ 'is-open': openSections.tags }">▼</span>
+        </div>
+        <div class="filter-content" v-show="openSections.tags">
+          <div class="tags-filter">
+            <button v-for="tag in allTags" :key="tag"
+              :class="['tag-btn', selectedTags.includes(tag) ? 'active' : '']" 
+              @click="toggleTag(tag)">
+              {{ tag }}
+            </button>
+          </div>
         </div>
       </div>
 
       <!-- 时间筛选 -->
       <div class="filter-section" v-if="dateFilters.length">
-        <h3>时间筛选</h3>
-        <div class="date-filters">
-          <div class="year-filter">
-            <button v-for="item in dateFilters" :key="item.year"
-              :class="['year-btn', selectedYear === item.year ? 'active' : '']" @click="toggleYear(item.year)">
-              {{ item.year }}
-            </button>
-          </div>
-          <div class="month-filter" v-if="selectedYear">
-            <button v-for="month in dateFilters.find(d => d.year === selectedYear)?.months" :key="month"
-              :class="['month-btn', selectedMonth === month ? 'active' : '']" @click="toggleMonth(month)">
-              {{ month }}月
-            </button>
+        <div class="filter-header" @click="toggleSection('date')">
+          <h3>时间筛选</h3>
+          <span class="toggle-icon" :class="{ 'is-open': openSections.date }">▼</span>
+        </div>
+        <div class="filter-content" v-show="openSections.date">
+          <div class="date-filters">
+            <div class="year-filter">
+              <button v-for="item in dateFilters" :key="item.year"
+                :class="['year-btn', selectedYear === item.year ? 'active' : '']" @click="toggleYear(item.year)">
+                {{ item.year }}
+              </button>
+            </div>
+            <div class="month-filter" v-if="selectedYear">
+              <button v-for="month in dateFilters.find(d => d.year === selectedYear)?.months" :key="month"
+                :class="['month-btn', selectedMonth === month ? 'active' : '']" @click="toggleMonth(month)">
+                {{ month }}月
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -440,6 +472,18 @@ const toggleCategory = (category) => {
   currentPage.value = 1 // 重置页码
 }
 
+// 添加折叠状态管理
+const openSections = ref({
+  category: true,
+  tags: true,
+  date: true
+})
+
+// 切换折叠状态
+const toggleSection = (section) => {
+  openSections.value[section] = !openSections.value[section]
+}
+
 onMounted(() => {
   fetchDocuments()
 })
@@ -465,42 +509,74 @@ onMounted(() => {
   padding: 10px 0;
 }
 
+.search-wrapper {
+  margin-bottom: 20px;
+  padding: 20px 0;
+  background: var(--vp-c-bg);
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+
 .search-box {
-  flex: 1;
-  max-width: 400px;
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
 }
 
 .search-input {
   width: 100%;
-  padding: 8px 12px;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 6px;
+  padding: 12px 40px 12px 16px;
+  border: 2px solid var(--vp-c-divider);
+  border-radius: 8px;
   background: var(--vp-c-bg-soft);
   color: var(--vp-c-text-1);
+  font-size: 1em;
+  transition: all 0.3s ease;
 }
 
 .search-input:focus {
   outline: none;
   border-color: var(--vp-c-brand);
+  box-shadow: 0 0 0 3px var(--vp-c-brand-soft);
+}
+
+.search-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--vp-c-text-2);
+  pointer-events: none;
+}
+
+.sort-wrapper {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
 }
 
 .sort-buttons {
   display: flex;
   gap: 10px;
+  padding: 10px;
+  background: var(--vp-c-bg-soft);
+  border-radius: 8px;
 }
 
 .sort-btn {
-  padding: 6px 12px;
+  padding: 8px 16px;
   border: 1px solid var(--vp-c-divider);
   border-radius: 6px;
-  background: var(--vp-c-bg-soft);
+  background: var(--vp-c-bg);
   color: var(--vp-c-text-2);
   cursor: pointer;
   transition: all 0.3s ease;
+  font-size: 0.9em;
 }
 
 .sort-btn:hover {
   background: var(--vp-c-bg-mute);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .sort-btn.active {
@@ -514,13 +590,21 @@ onMounted(() => {
 }
 
 .filter-section {
-  margin: 20px 0;
+  background: var(--vp-c-bg-soft);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.filter-section:hover {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
 }
 
 .filter-section h3 {
-  margin-bottom: 12px;
-  color: var(--vp-c-text-1);
+  margin: 0 0 15px 0;
   font-size: 1.1em;
+  color: var(--vp-c-text-1);
 }
 
 .documents-grid {
@@ -607,9 +691,28 @@ onMounted(() => {
 
 .tag-btn,
 .category-btn {
-  background: var(--vp-c-bg-soft);
-  border-radius: 15px;
-  padding: 4px 12px;
+  padding: 6px 14px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 20px;
+  background: var(--vp-c-bg);
+  color: var(--vp-c-text-2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9em;
+}
+
+.tag-btn:hover,
+.category-btn:hover {
+  background: var(--vp-c-bg-mute);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tag-btn.active,
+.category-btn.active {
+  background: var(--vp-c-brand);
+  color: white;
+  border-color: var(--vp-c-brand);
 }
 
 .doc-tags {
@@ -754,57 +857,11 @@ onMounted(() => {
   margin: 20px 0;
 }
 
-.tag-btn {
-  padding: 4px 12px;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 16px;
-  background: var(--vp-c-bg-soft);
-  color: var(--vp-c-text-2);
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.tag-btn:hover {
-  background: var(--vp-c-bg-mute);
-}
-
-.tag-btn.active {
-  background: var(--vp-c-brand);
-  color: white;
-  border-color: var(--vp-c-brand);
-}
-
 .categories-filter {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   margin: 20px 0;
-}
-
-.category-btn {
-  padding: 6px 14px;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 16px;
-  background: var(--vp-c-bg-soft);
-  color: var(--vp-c-text-2);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 0.9em;
-}
-
-.category-btn:hover {
-  background: var(--vp-c-bg-mute);
-}
-
-.category-btn.active {
-  background: var(--vp-c-brand);
-  color: white;
-  border-color: var(--vp-c-brand);
-}
-
-/* 调整筛选区域的间距 */
-.filter-section+.filter-section {
-  margin-top: 24px;
 }
 
 .date-filters {
@@ -860,44 +917,18 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  padding: 8px 0;
+  padding: 12px 0;
+  user-select: none;
 }
 
 .toggle-icon {
-  font-size: 0.8em;
+  font-size: 0.9em;
+  color: var(--vp-c-text-2);
   transition: transform 0.3s ease;
 }
 
 .toggle-icon.is-open {
   transform: rotate(180deg);
-}
-
-/* 过渡动画 */
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-  transform: translateY(-10px);
-}
-
-/* 列表过渡动画 */
-.list-enter-active,
-.list-leave-active {
-  transition: all 0.3s ease;
-}
-
-.list-enter-from {
-  opacity: 0;
-  transform: translateY(30px);
-}
-
-.list-leave-to {
-  opacity: 0;
-  transform: translateY(-30px);
 }
 
 /* 筛选器内容过渡 */
@@ -906,26 +937,76 @@ onMounted(() => {
   overflow: hidden;
 }
 
-/* 响应式调整 */
+/* 移动端优化 */
 @media (max-width: 768px) {
+  .classification-container {
+    padding: 10px;
+  }
+
+  .search-wrapper {
+    padding: 15px 10px;
+  }
+
+  .search-box {
+    margin: 0 5px;
+  }
+
+  .sort-wrapper {
+    padding: 0 5px;
+  }
+
   .filter-section {
-    margin: 12px 0;
+    margin: 10px 5px;
+    border-radius: 6px;
+  }
+
+  .documents-grid {
+    gap: 10px;
+    margin: 10px 5px;
+  }
+
+  .tag-btn,
+  .category-btn,
+  .year-btn,
+  .month-btn {
+    padding: 4px 10px;
+    font-size: 0.85em;
+  }
+
+  .tags-filter,
+  .categories-filter,
+  .year-filter,
+  .month-filter {
+    gap: 6px;
   }
 
   .filter-header {
-    padding: 12px 0;
+    padding: 10px 0;
+  }
+
+  .filter-content {
+    padding: 10px;
+  }
+}
+
+/* 深色模式优化 */
+@media (prefers-color-scheme: dark) {
+  .filter-section {
+    background: var(--vp-c-bg-soft);
+  }
+
+  .toggle-icon {
+    color: var(--vp-c-text-2);
   }
 }
 
 .WebDocs {
   background-color: #42b983;
-  color: #ffffff;
-  transition: all 0.3s;
-  cursor: pointer;
+  color: white;
 }
 
 .WebDocs:hover {
-  background-color: #5bac87;
+  background-color: #3aa876;
   transform: translateY(-1px);
   box-shadow: 0 2px 8px rgba(66, 185, 131, 0.2);
 }
