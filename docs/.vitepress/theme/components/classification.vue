@@ -2,10 +2,10 @@
   <div class="classification-container">
     <!-- 添加调试信息显示 -->
     <div v-if="documents.length === 0" class="debug-info">
-      正在加载文档...
+      ❌ 正在加载文档...
     </div>
     <div v-else class="debug-info">
-      已加载 {{ documents.length }} 个文档
+      ✔ 已加载 {{ documents.length }} 个文档
     </div>
 
     <!-- 搜索框独立一行 -->
@@ -571,8 +571,8 @@ onMounted(() => {
 .sort-wrapper {
   margin-bottom: 20px;
   display: flex;
-  justify-content: center;
-  padding: 10px 0;
+  justify-content: left;
+  padding: 20px 0 10px 0;
   border-top: 1px solid var(--vp-c-divider);
 
 }
@@ -1179,5 +1179,5 @@ onMounted(() => {
   background-color: #3aa876;
   transform: translateY(-1px);
   box-shadow: 0 2px 8px rgba(66, 185, 131, 0.2);
-}
+  }
 </style>
