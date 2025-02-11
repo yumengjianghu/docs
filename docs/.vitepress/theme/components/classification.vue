@@ -474,9 +474,9 @@ const toggleCategory = (category) => {
 
 // 添加折叠状态管理
 const openSections = ref({
-  category: true,
-  tags: true,
-  date: true
+  category: false,
+  tags: false,
+  date: false
 })
 
 // 切换折叠状态
@@ -523,13 +523,14 @@ onMounted(() => {
 
 .search-wrapper {
   margin-bottom: 20px;
-  padding: 20px 0;
+  padding: 20px 0;  
   background: var(--vp-c-bg);
-  border-bottom: 1px solid var(--vp-c-divider);
+  /* border-bottom: 1px solid var(--vp-c-divider); */
   position: sticky;
   top: 0;
   z-index: 100;
-  backdrop-filter: blur(8px);
+  /* backdrop-filter: blur(8px); */
+  background: transparent;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -571,6 +572,9 @@ onMounted(() => {
   margin-bottom: 20px;
   display: flex;
   justify-content: center;
+  padding: 10px 0;
+  border-top: 1px solid var(--vp-c-divider);
+
 }
 
 .sort-buttons {

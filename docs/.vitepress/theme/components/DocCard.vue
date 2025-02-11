@@ -67,15 +67,16 @@ const formatLastUpdated = (timestamp) => {
 <style scoped>
 .doc-card-wrapper {
   height: 100%;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 8px;
+  border: 2px solid var(--vp-c-divider);
+  border-radius: 12px;
   background: var(--vp-c-bg-soft);
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .doc-card-wrapper:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: var(--vp-c-brand);
+  box-shadow: 0 0 0 3px var(--vp-c-brand-soft);
 }
 
 .doc-card-link {
