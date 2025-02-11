@@ -1,5 +1,16 @@
 <template>
   <div class="message-boards">
+    <!-- 添加顶部通知 -->
+    <transition name="notification">
+      <div 
+        v-if="notification.show" 
+        class="notification-top"
+        :class="notification.type"
+      >
+        {{ notification.message }}
+      </div>
+    </transition>
+
     <!-- 移除整体加载遮罩，只保留评论加载动画 -->
     <div class="message-header-section">
       <h2 class="title" v-motion :initial="{ opacity: 0, y: 50 }" :enter="{ opacity: 1, y: 0 }">留言板</h2>
@@ -132,14 +143,23 @@
                   <span class="message-time">{{ formatTime(message.created_at) }}</span>
                 </div>
               </div>
-              <button 
-                class="like-btn"
-                @click="toggleLike(message)"
-                :class="{ 'liked': message.isLiked }"
-              >
-                <span class="like-icon">😘</span>
-                <span class="like-count">{{ message.likes }}</span>
-              </button>
+              <div class="message-actions">
+                <button 
+                  v-if="canDelete(message)"
+                  @click="deleteMessage(message)"
+                  class="delete-btn"
+                >
+                  删除
+                </button>
+                <button 
+                  class="like-btn"
+                  @click="toggleLike(message)"
+                  :class="{ 'liked': message.isLiked }"
+                >
+                  <span class="like-icon">😘</span>
+                  <span class="like-count">{{ message.likes }}</span>
+                </button>
+              </div>
             </div>
             <!-- 评论主要内容 -->
             <div class="message-content-wrapper">
@@ -520,6 +540,35 @@ const loadMessageContent = async (index) => {
   messages.value[index] = {
     ...message,
     isLoaded: true
+  }
+}
+
+// 检查是否可以删除消息
+const canDelete = (message) => {
+  const now = new Date()
+  const messageTime = new Date(message.created_at)
+  const diffInMinutes = (now - messageTime) / 1000 / 60
+  return diffInMinutes <= 1
+}
+
+// 删除消息
+const deleteMessage = async (message) => {
+  if (!confirm('确定要删除这条留言吗？')) return
+
+  try {
+    const { error } = await supabase
+      .from('message_boards')
+      .delete()
+      .eq('id', message.id)
+
+    if (error) throw error
+
+    // 从列表中移除消息
+    messages.value = messages.value.filter(m => m.id !== message.id)
+    showNotification('留言已删除', 'success')
+  } catch (error) {
+    console.error('删除失败:', error)
+    showNotification('删除失败，请重试', 'error')
   }
 }
 </script>
@@ -1216,6 +1265,122 @@ const loadMessageContent = async (index) => {
   .messages-container {
     width: 100%;
     margin-left: 0;
+  }
+}
+
+/* 修改顶部通知样式 */
+.notification-top {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.875rem 1.5rem;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+  min-width: 240px;
+  border: 1px solid;
+}
+
+.notification-top::before {
+  content: '';
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.notification-top.success {
+  background: #F0FDF4;
+  color: #15803D;
+  border-color: #86EFAC;
+}
+
+.notification-top.success::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2315803D'%3E%3Cpath d='M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-.997-6l7.07-7.071-1.414-1.414-5.656 5.657-2.829-2.829-1.414 1.414L11.003 16z'/%3E%3C/svg%3E");
+}
+
+.notification-top.error {
+  background: #FEF2F2;
+  color: #B91C1C;
+  border-color: #FECACA;
+}
+
+.notification-top.error::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23B91C1C'%3E%3Cpath d='M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-7v2h2v-2h-2zm0-8v6h2V7h-2z'/%3E%3C/svg%3E");
+}
+
+/* 优化通知动画 */
+.notification-enter-active {
+  transition: all 0.4s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.notification-leave-active {
+  transition: all 0.2s cubic-bezier(0.32, 0, 0.67, 0);
+}
+
+.notification-enter-from,
+.notification-leave-to {
+  opacity: 0;
+  transform: translate(-50%, -30px);
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .notification-top {
+    width: calc(100% - 32px);
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    min-width: auto;
+  }
+}
+
+/* 删除按钮样式 */
+.message-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.delete-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  background: var(--vp-c-red-soft);
+  border: 1px solid var(--vp-c-red);
+  color: var(--vp-c-red);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.delete-btn:hover {
+  background: var(--vp-c-red-soft);
+  transform: translateY(-1px);
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .notification-top {
+    width: 90%;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  .message-actions {
+    gap: 0.5rem;
+  }
+
+  .delete-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
   }
 }
 </style>
