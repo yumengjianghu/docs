@@ -11,15 +11,15 @@ import MouseEvent from './components/MouseEvent.vue' // 鼠标跟随特效
 import bear from './components/bear.vue'  // 主页熊
 import TimeLine from './components/TimeLine.vue' // 测试
 import ThemeSwitch from './components/ThemeSwitch.vue' // 主题切换过渡动画
-import Classification from './components/classification.vue'
-import DocCard from './components/DocCard.vue'
-import createDocs from './components/createDocs.vue'
-import getdocs from './components/getdocs.vue'
-import MessageBoards from './components/MessageBoards.vue'
+import Classification from './components/classification.vue'  // 分类
+import DocCard from './components/DocCard.vue'  // 分类小卡片
+import createDocs from './components/createDocs.vue'  // 创建文章
+import getdocs from './components/getdocs.vue'  // 获取文章
+import MessageBoards from './components/MessageBoards.vue'  // 留言板
 
 // 引入懒加载图片
-import loadingIMG from '../../public/status/xhj.gif'
-import errorIMG from '../../public/status/loseimg.png'
+import loadingIMG from '../../src/status/xhj.gif'
+import errorIMG from '../../src/status/loseimg.png'
 
 
 import './style.css'

@@ -1,5 +1,5 @@
 <script setup>
-import { ref,defineExpose } from 'vue'
+import { ref } from 'vue'
 const showModal = ref(false)
 const { text } = defineProps(['bg', 'text'])
 function isShow(){
