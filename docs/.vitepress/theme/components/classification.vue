@@ -11,12 +11,7 @@
     <!-- 搜索框独立一行 -->
     <div class="search-wrapper">
       <div class="search-box">
-        <input 
-          type="text" 
-          v-model="searchQuery" 
-          placeholder="搜索文档标题或描述..." 
-          class="search-input"
-        >
+        <input type="text" v-model="searchQuery" placeholder="搜索文档标题或描述..." class="search-input">
         <div class="search-icon">🔍</div>
       </div>
     </div>
@@ -24,16 +19,10 @@
     <!-- 排序按钮组 -->
     <div class="sort-wrapper">
       <div class="sort-buttons">
-        <button 
-          :class="['sort-btn', sortType === 'default' ? 'active' : '']" 
-          @click="sortType = 'default'"
-        >
+        <button :class="['sort-btn', sortType === 'default' ? 'active' : '']" @click="sortType = 'default'">
           默认排序
         </button>
-        <button 
-          :class="['sort-btn', sortType === 'newest' ? 'active' : '']" 
-          @click="sortType = 'newest'"
-        >
+        <button :class="['sort-btn', sortType === 'newest' ? 'active' : '']" @click="sortType = 'newest'">
           最新优先
         </button>
         <button class="sort-btn WebDocs" @click="getWebDocs()">
@@ -53,7 +42,7 @@
         <div class="filter-content" v-show="openSections.category">
           <div class="categories-filter">
             <button v-for="category in allCategories" :key="category"
-              :class="['category-btn', selectedCategory === category ? 'active' : '']" 
+              :class="['category-btn', selectedCategory === category ? 'active' : '']"
               @click="toggleCategory(category)">
               {{ category }}
             </button>
@@ -69,8 +58,7 @@
         </div>
         <div class="filter-content" v-show="openSections.tags">
           <div class="tags-filter">
-            <button v-for="tag in allTags" :key="tag"
-              :class="['tag-btn', selectedTags.includes(tag) ? 'active' : '']" 
+            <button v-for="tag in allTags" :key="tag" :class="['tag-btn', selectedTags.includes(tag) ? 'active' : '']"
               @click="toggleTag(tag)">
               {{ tag }}
             </button>
@@ -487,13 +475,13 @@ const toggleSection = (section) => {
 onMounted(() => {
   fetchDocuments()
   const cards = document.querySelectorAll('.doc-card')
-  
+
   cards.forEach(card => {
     card.addEventListener('mousemove', (e) => {
       const rect = card.getBoundingClientRect()
       const x = ((e.clientX - rect.left) / rect.width) * 100
       const y = ((e.clientY - rect.top) / rect.height) * 100
-      
+
       card.style.setProperty('--x', `${x}%`)
       card.style.setProperty('--y', `${y}%`)
     })
@@ -523,10 +511,10 @@ onMounted(() => {
 
 .search-wrapper {
   margin-bottom: 20px;
-  padding: 20px 0;  
+  padding: 20px 0;
   background: var(--vp-c-bg);
-  /* border-bottom: 1px solid var(--vp-c-divider); */
-  position: sticky;
+  border-bottom: 1px solid var(--vp-c-divider);
+  /* position: sticky; */
   top: 0;
   z-index: 100;
   /* backdrop-filter: blur(8px); */
@@ -572,8 +560,8 @@ onMounted(() => {
   margin-bottom: 20px;
   display: flex;
   justify-content: left;
-  padding: 20px 0 10px 0;
-  border-top: 1px solid var(--vp-c-divider);
+  /* padding: 20px 0 10px 0; */
+  /* border-top: 1px solid var(--vp-c-divider); */
 
 }
 
@@ -735,13 +723,11 @@ onMounted(() => {
   content: '';
   position: absolute;
   inset: -2px;
-  background: linear-gradient(
-    120deg,
-    var(--vp-c-brand) 0%,
-    var(--vp-c-brand-light) 30%,
-    var(--vp-c-brand) 60%,
-    var(--vp-c-brand-light) 100%
-  );
+  background: linear-gradient(120deg,
+      var(--vp-c-brand) 0%,
+      var(--vp-c-brand-light) 30%,
+      var(--vp-c-brand) 60%,
+      var(--vp-c-brand-light) 100%);
   border-radius: inherit;
   opacity: 0;
   transition: opacity 0.4s ease;
@@ -760,7 +746,7 @@ onMounted(() => {
 
 .doc-card:hover {
   transform: translateY(-6px);
-  box-shadow: 
+  box-shadow:
     0 10px 20px rgba(0, 0, 0, 0.1),
     0 6px 6px rgba(0, 0, 0, 0.06);
 }
@@ -772,11 +758,9 @@ onMounted(() => {
 
 .doc-card:hover::after {
   inset: 2px;
-  background: linear-gradient(
-    to bottom right,
-    var(--vp-c-bg),
-    var(--vp-c-bg-soft)
-  );
+  background: linear-gradient(to bottom right,
+      var(--vp-c-bg),
+      var(--vp-c-bg-soft));
 }
 
 .doc-card:active {
@@ -787,6 +771,7 @@ onMounted(() => {
   0% {
     filter: hue-rotate(0deg);
   }
+
   100% {
     filter: hue-rotate(360deg);
   }
@@ -1055,7 +1040,7 @@ onMounted(() => {
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: 0.9em;
-  margin-top:5px;
+  margin-top: 5px;
 
 }
 
@@ -1084,6 +1069,10 @@ onMounted(() => {
 @media (max-width: 768px) {
   .classification-container {
     padding: 10px;
+  }
+
+  .sort-btn {
+    font-size: 12px;
   }
 
   .search-wrapper {
@@ -1156,13 +1145,11 @@ onMounted(() => {
   .doc-card::after {
     background: var(--vp-c-bg-soft);
   }
-  
+
   .doc-card:hover::after {
-    background: linear-gradient(
-      to bottom right,
-      var(--vp-c-bg-soft),
-      var(--vp-c-bg-mute)
-    );
+    background: linear-gradient(to bottom right,
+        var(--vp-c-bg-soft),
+        var(--vp-c-bg-mute));
   }
 
   .filter-content {
@@ -1179,5 +1166,5 @@ onMounted(() => {
   background-color: #3aa876;
   transform: translateY(-1px);
   box-shadow: 0 2px 8px rgba(66, 185, 131, 0.2);
-  }
+}
 </style>
