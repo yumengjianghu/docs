@@ -18,7 +18,7 @@
     "cursor-effects": "^1.0.17",
     "highlight.js": "^11.11.1",
     "markdown-it": "^14.1.0",
-    "marked": "^15.0.6",
+    "marked": "^15.0.7",
     "quill": "^2.0.3",
     "turndown": "^7.2.0",
     "vite-plugin-markdown-preview": "^1.1.1",
