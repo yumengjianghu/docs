@@ -19,92 +19,106 @@
       </p>
     </div>
 
-    <!-- 留言表单 -->
-    <div class="message-form" v-motion :initial="{ opacity: 0, scale: 0.9 }" :enter="{ opacity: 1, scale: 1, delay: 300 }">
-      <div class="form-header">
-        <div class="author-info">
-          <div class="avatar-section">
-            <div class="avatar-upload" :class="{ 'is-anonymous': isAnonymous }">
-              <img 
-                :src="avatarPreview || defaultAvatar" 
-                alt="头像"
-                class="avatar-preview"
-              >
-              <div 
-                class="avatar-overlay" 
-                v-if="!isAnonymous"
-                @click="triggerAvatarUpload"
-              >
-                <span class="upload-icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                    <circle cx="12" cy="13" r="4"/>
-                  </svg>
-                </span>
-                <span class="upload-text">更换头像</span>
+    <!-- 折叠面板 -->
+    <div class="message-form-panel" :class="{ 'is-collapsed': isCollapsed }">
+      <div class="panel-header" @click="togglePanel">
+        <h3 class="panel-title">
+          <span class="panel-icon">✍️</span>
+          写留言
+        </h3>
+        <span class="collapse-icon">{{ isCollapsed ? '展开' : '收起' }}</span>
+      </div>
+      
+      <!-- 留言表单区域 -->
+      <div class="panel-content" v-show="!isCollapsed">
+        <!-- 留言表单 -->
+        <div class="message-form" v-motion :initial="{ opacity: 0, scale: 0.9 }" :enter="{ opacity: 1, scale: 1, delay: 300 }">
+          <div class="form-header">
+            <div class="author-info">
+              <div class="avatar-section">
+                <div class="avatar-upload" :class="{ 'is-anonymous': isAnonymous }">
+                  <img 
+                    :src="avatarPreview || defaultAvatar" 
+                    alt="头像"
+                    class="avatar-preview"
+                  >
+                  <div 
+                    class="avatar-overlay" 
+                    v-if="!isAnonymous"
+                    @click="triggerAvatarUpload"
+                  >
+                    <span class="upload-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                        <circle cx="12" cy="13" r="4"/>
+                      </svg>
+                    </span>
+                    <span class="upload-text">更换头像</span>
+                  </div>
+                </div>
+                <input
+                  type="file"
+                  ref="avatarInput"
+                  @change="handleAvatarChange"
+                  accept="image/*"
+                  class="avatar-input"
+                  style="display: none;"
+                >
+              </div>
+              
+              <div class="user-info">
+                <div class="identity-switch">
+                  <button 
+                    class="identity-btn" 
+                    :class="{ active: !isAnonymous }"
+                    @click="setIdentity(false)"
+                  >
+                    <span class="identity-icon">👤</span>
+                    实名
+                  </button>
+                  <button 
+                    class="identity-btn" 
+                    :class="{ active: isAnonymous }"
+                    @click="setIdentity(true)"
+                  >
+                    <span class="identity-icon">🎭</span>
+                    匿名
+                  </button>
+                </div>
+                <input
+                  v-if="!isAnonymous"
+                  type="text"
+                  v-model="author"
+                  placeholder="请输入你的名字"
+                  class="author-input"
+                >
               </div>
             </div>
-            <input
-              type="file"
-              ref="avatarInput"
-              @change="handleAvatarChange"
-              accept="image/*"
-              class="avatar-input"
-              style="display: none;"
-            >
           </div>
-          
-          <div class="user-info">
-            <div class="identity-switch">
+
+          <div class="content-wrapper">
+            <textarea
+              v-model="content"
+              placeholder="说点什么吧..."
+              class="content-input"
+              :class="{ 'has-content': content.length > 0 }"
+              @input="adjustHeight"
+              ref="contentInput"
+            ></textarea>
+            <div class="form-footer">
+              <span class="char-count" :class="{ 'near-limit': content.length > 450 }">
+                {{ content.length }}/500
+              </span>
               <button 
-                class="identity-btn" 
-                :class="{ active: !isAnonymous }"
-                @click="setIdentity(false)"
+                @click="submitMessage" 
+                class="submit-btn"
+                :disabled="isSubmitting || !content.trim()"
               >
-                <span class="identity-icon">👤</span>
-                实名
-              </button>
-              <button 
-                class="identity-btn" 
-                :class="{ active: isAnonymous }"
-                @click="setIdentity(true)"
-              >
-                <span class="identity-icon">🎭</span>
-                匿名
+                <span v-if="isSubmitting" class="loading-spinner"></span>
+                <span>{{ isSubmitting ? '发送中...' : '发送' }}</span>
               </button>
             </div>
-            <input
-              v-if="!isAnonymous"
-              type="text"
-              v-model="author"
-              placeholder="请输入你的名字"
-              class="author-input"
-            >
           </div>
-        </div>
-      </div>
-
-      <div class="content-wrapper">
-        <textarea
-          v-model="content"
-          placeholder="说点什么吧..."
-          class="content-input"
-          :class="{ 'has-content': content.length > 0 }"
-          @input="adjustHeight"
-          ref="contentInput"
-        ></textarea>
-        <div class="form-footer">
-          <span class="char-count" :class="{ 'near-limit': content.length > 450 }">
-            {{ content.length }}/500
-          </span>
-          <button 
-            @click="submitMessage" 
-            class="submit-btn"
-            :disabled="isSubmitting || !content.trim()"
-          >
-            <span v-if="isSubmitting" class="loading-spinner"></span>
-            <span>{{ isSubmitting ? '发送中...' : '发送' }}</span>
-          </button>
         </div>
       </div>
     </div>
@@ -149,14 +163,14 @@
                   @click="deleteMessage(message)"
                   class="delete-btn"
                 >
-                  删除
+                  撤回
                 </button>
                 <button 
                   class="like-btn"
                   @click="toggleLike(message)"
                   :class="{ 'liked': message.isLiked }"
                 >
-                  <span class="like-icon">😘</span>
+                  <span class="like-icon">⚡</span>
                   <span class="like-count">{{ message.likes }}</span>
                 </button>
               </div>
@@ -237,6 +251,9 @@ const avatarInput = ref(null)
 
 // 添加新的加载状态
 const commentsLoading = ref(false)
+
+// 添加折叠状态管理
+const isCollapsed = ref(true)
 
 // 显示通知
 const showNotification = (message, type = 'success') => {
@@ -571,6 +588,10 @@ const deleteMessage = async (message) => {
     showNotification('删除失败，请重试', 'error')
   }
 }
+
+const togglePanel = () => {
+  isCollapsed.value = !isCollapsed.value
+}
 </script>
 
 <style scoped>
@@ -832,27 +853,60 @@ const deleteMessage = async (message) => {
 }
 
 .message-item {
-  width: 100%;
-  box-sizing: border-box;
-  background: var(--vp-c-bg-soft);
-  border-radius: 16px;
-  padding: 1.2rem; /* 减少 20% (从 1.5rem 减少到 1.2rem) */
-  margin-bottom: 1.5rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  border: 1px solid var(--vp-c-divider);
+  background: #fff;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 3px;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.08),
+    0 1px 2px rgba(0, 0, 0, 0.12);
+  transform: rotate(-1deg);
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
+/* 随机旋转角度 */
+.message-item:nth-child(2n) {
+  transform: rotate(1deg);
+}
+
+.message-item:nth-child(3n) {
+  transform: rotate(-0.5deg);
+}
+
+.message-item:nth-child(5n) {
+  transform: rotate(0.5deg);
+}
+
+/* 便签悬浮效果 */
 .message-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px) rotate(0deg) !important;
+  box-shadow: 
+    0 10px 20px rgba(0, 0, 0, 0.1),
+    0 3px 6px rgba(0, 0, 0, 0.08);
 }
 
+/* 图钉效果 */
+.message-item::before {
+  content: '📌';
+  position: absolute;
+  top: -0.8rem;
+  left: 1rem;
+  font-size: 1.5rem;
+  opacity: 0.9;
+  transform: rotate(-15deg);
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.1));
+}
+
+/* 作者信息区域 */
 .message-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 1.5rem;
+  align-items: center;
+  padding-bottom: 1rem;
+  border-bottom: 1px dashed var(--vp-c-text-2);
+  margin-bottom: 1rem;
 }
 
 .message-author-info {
@@ -861,151 +915,143 @@ const deleteMessage = async (message) => {
   gap: 1rem;
 }
 
+/* 头像样式 */
 .avatar {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  border: 2px solid var(--vp-c-brand-soft);
-  padding: 2px;
-  background: var(--vp-c-bg);
+  border: 2px solid #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
+.message-item:hover .avatar {
+  transform: rotate(-8deg);
+}
+
+/* 作者信息 */
 .author-details {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.3rem;
 }
 
 .author-name {
   font-weight: 600;
   color: var(--vp-c-text-1);
   font-size: 1.1rem;
+  /* font-family: "Comic Sans MS", cursive, sans-serif; */
 }
 
 .message-time {
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   color: var(--vp-c-text-2);
+  /* font-style: italic; */
 }
 
-.message-content-wrapper {
-  margin-top: 1rem;
-  padding: 1.2rem; /* 减少 20% (从 1.5rem 减少到 1.2rem) */
-  background: var(--vp-c-bg);
-  border-radius: 12px;
-  position: relative;
-}
-
-.message-content-wrapper::before {
-  content: '';
-  position: absolute;
-  top: -8px;
-  left: 30px;
-  width: 16px;
-  height: 16px;
-  background: var(--vp-c-bg);
-  transform: rotate(45deg);
-  border-left: 1px solid var(--vp-c-divider);
-  border-top: 1px solid var(--vp-c-divider);
-}
-
+/* 留言内容区域 */
 .message-content {
-  color: var(--vp-c-text-1);
+  font-size: 1.05rem;
   line-height: 1.8;
-  font-size: 1.1rem;
-  white-space: pre-wrap;
-  word-break: break-word;
+  color: var(--vp-c-text-1);
+  padding: 0.5rem;
+  background: linear-gradient(
+    transparent 0%,
+    transparent 94%,
+    rgba(0, 0, 0, 0.1) 95%,
+    transparent 96%
+  ) 0 0 / 20px 20px;
+  /* font-family: "Comic Sans MS", cursive, sans-serif; */
 }
 
+/* 操作按钮 */
+.message-actions {
+  display: flex;
+  gap: 0.8rem;
+}
+
+/* 点赞按钮 */
 .like-btn {
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  background: var(--vp-c-bg);
-  border: 1px solid var(--vp-c-divider);
+  padding: 0.4rem 0.8rem;
+  border: none;
+  background: transparent;
+  color: var(--vp-c-text-2);
+  cursor: pointer;
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-
-.like-btn::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  height: 100%;
-  background: var(--vp-c-brand-soft);
-  border-radius: inherit;
-  transform: translate(-50%, -50%) scale(0);
-  opacity: 0;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.like-btn:hover::before {
-  transform: translate(-50%, -50%) scale(1);
-  opacity: 0.1;
+  gap: 0.4rem;
+  /* font-family: "Comic Sans MS", cursive, sans-serif; */
 }
 
 .like-btn:hover {
-  transform: translateY(-1px);
+  transform: scale(1.1);
+  color: var(--vp-c-brand);
 }
 
 .like-btn.liked {
-  background: var(--vp-c-brand-soft);
-  border-color: var(--vp-c-brand);
   color: var(--vp-c-brand);
 }
 
 .like-icon {
-  font-size: 1rem;
-  position: relative;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
 }
 
-.liked .like-icon {
-  animation: likeAnimation 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+.like-btn:hover .like-icon {
+  transform: scale(1.2) rotate(10deg);
 }
 
-.like-count {
-  position: relative;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@keyframes likeAnimation {
-  0% {
-    transform: scale(1);
+/* 深色模式适配 */
+@media (prefers-color-scheme: dark) {
+  .message-item {
+    background: var(--vp-c-bg-soft);
+    border: 1px solid var(--vp-c-divider);
   }
-  50% {
-    transform: scale(1.4);
+
+  .message-content {
+    background: linear-gradient(
+      transparent 0%,
+      transparent 94%,
+      rgba(255, 255, 255, 0.1) 95%,
+      transparent 96%
+    ) 0 0 / 20px 20px;
   }
-  100% {
-    transform: scale(1);
+
+  .avatar {
+    border-color: var(--vp-c-bg-soft);
   }
 }
 
-/* 添加数字变化动画 */
-.like-count {
-  display: inline-block;
-  min-width: 1em;
-  text-align: center;
-}
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .message-item {
+    padding: 1.2rem;
+    margin-bottom: 1.5rem;
+  }
 
-.like-count-enter-active,
-.like-count-leave-active {
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
+  .message-item::before {
+    font-size: 1.2rem;
+    top: -0.6rem;
+  }
 
-.like-count-enter-from {
-  opacity: 0;
-  transform: translateY(-100%);
-}
+  .avatar {
+    width: 40px;
+    height: 40px;
+  }
 
-.like-count-leave-to {
-  opacity: 0;
-  transform: translateY(100%);
+  .author-name {
+    font-size: 1rem;
+  }
+
+  .message-time {
+    font-size: 0.8rem;
+  }
+
+  .message-content {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
 }
 
 /* 输入框样式优化 */
@@ -1380,6 +1426,134 @@ const deleteMessage = async (message) => {
 
   .delete-btn {
     padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* 折叠面板样式 */
+.message-form-panel {
+  background: var(--vp-c-bg-soft);
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  border: 1px solid var(--vp-c-divider);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.message-form-panel:hover {
+  border-color: var(--vp-c-brand-soft);
+}
+
+.panel-header {
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.3s ease;
+}
+
+.panel-header:hover {
+  background: var(--vp-c-bg-mute);
+}
+
+.panel-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--vp-c-text-1);
+}
+
+.panel-icon {
+  font-size: 1.2rem;
+}
+
+.collapse-icon {
+  font-size: 0.9rem;
+  color: var(--vp-c-text-2);
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  background: var(--vp-c-bg);
+  border: 1px solid var(--vp-c-divider);
+  transition: all 0.3s ease;
+}
+
+.panel-header:hover .collapse-icon {
+  background: var(--vp-c-bg-soft);
+  border-color: var(--vp-c-brand-soft);
+  color: var(--vp-c-brand);
+}
+
+.panel-content {
+  padding: 1.5rem;
+  border-top: 1px dashed var(--vp-c-divider);
+}
+
+/* 留言卡片主题适配优化 */
+.message-item {
+  background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-divider);
+  box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.04),
+    0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.message-item:hover {
+  border-color: var(--vp-c-brand-soft);
+  box-shadow: 
+    0 10px 20px rgba(0, 0, 0, 0.06),
+    0 3px 6px rgba(0, 0, 0, 0.04);
+}
+
+/* 深色模式优化 */
+@media (prefers-color-scheme: dark) {
+  .message-item {
+    background: var(--vp-c-bg-mute);
+    border-color: var(--vp-c-divider);
+  }
+
+  .message-item:hover {
+    box-shadow: 
+      0 10px 20px rgba(0, 0, 0, 0.2),
+      0 3px 6px rgba(0, 0, 0, 0.15);
+  }
+
+  .panel-header:hover {
+    background: var(--vp-c-bg-soft);
+  }
+
+  .collapse-icon {
+    background: var(--vp-c-bg-mute);
+  }
+
+  .message-content {
+    background: linear-gradient(
+      transparent 0%,
+      transparent 94%,
+      rgba(255, 255, 255, 0.06) 95%,
+      transparent 96%
+    ) 0 0 / 20px 20px;
+  }
+}
+
+/* 移动端适配补充 */
+@media (max-width: 768px) {
+  .panel-header {
+    padding: 0.8rem 1rem;
+  }
+
+  .panel-content {
+    padding: 1rem;
+  }
+
+  .panel-title {
+    font-size: 1rem;
+  }
+
+  .collapse-icon {
+    padding: 0.3rem 0.6rem;
     font-size: 0.8rem;
   }
 }
