@@ -135,11 +135,11 @@ export default defineConfig({
       },
     },
     nav: [
-      { text: '🏳‍🌈主页', link: '/' },
-      { text: '🗂分类', link: '/tag' },
-      { text: '💬留言板', link: '/MessageBoards' },
+      { text: '主页', link: '/' },
+      { text: '分类', link: '/tag' },
+      // { text: '留言板', link: '/MessageBoards' },
       {
-        text: '📑教程', items: [
+        text: '教程', items: [
           { text: 'Github Action部署', link: '/pages/GithubActionTemplate/note' },
           { text: '局域网服务器部署', link: '/pages/LAN server deployment/note' },
           { text: 'Git基本使用', link: '/pages/Git/note' },
@@ -150,10 +150,10 @@ export default defineConfig({
         ]
       },
       {
-        text: '🚧其他', items: [
-          { text: '🛠工具', link: '/other/Download/note.md' },
-          { text: '🧪实验功能', link: '/other/实验功能/note.md' },
-          { text: '🖋文章创建', link: '/createdoc' }
+        text: '其他', items: [
+          { text: '工具', link: '/other/Download/note.md' },
+          { text: '实验功能', link: '/other/实验功能/note.md' },
+          { text: '文章创建', link: '/createdoc' }
           // {
           //   component: 'demo',
           //   // 可选的 props 传递给组件

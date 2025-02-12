@@ -82,10 +82,7 @@
   }
 }
 
-.VPButton.brand,
-.VPButton.alt {
-  border-radius: 5px !important;
-}
+
 
 :root {
   --vp-home-hero-name-color: transparent;
