@@ -17,7 +17,7 @@ export default {
     script.setAttribute('data-emit-metadata', '0')
     script.setAttribute('data-input-position', 'top')
     if (document.querySelector("html").className) {
-      script.setAttribute('data-theme', 'dark')
+      script.setAttribute('data-theme', 'noborder_dark')
     } else {
       script.setAttribute('data-theme', 'light')
     }
