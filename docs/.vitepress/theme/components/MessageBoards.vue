@@ -13,10 +13,30 @@
 
     <!-- 移除整体加载遮罩，只保留评论加载动画 -->
     <div class="message-header-section">
-      <h2 class="title" v-motion :initial="{ opacity: 0, y: 50 }" :enter="{ opacity: 1, y: 0 }">留言板</h2>
+      <h2 class="title" v-motion :initial="{ opacity: 0, y: 50 }" :enter="{ opacity: 1, y: 0 }">📋留言板</h2>
       <p class="subtitle" v-motion :initial="{ opacity: 0 }" :enter="{ opacity: 1, delay: 200 }">
         在这里留下你的想法和建议...
       </p>
+    </div>
+
+    <!-- 在留言列表前添加排序选项 -->
+    <div class="sort-options">
+      <button 
+        class="sort-btn" 
+        :class="{ active: sortType === 'newest' }"
+        @click="sortType = 'newest'"
+      >
+        <span class="sort-icon">⏱️</span>
+        最新
+      </button>
+      <button 
+        class="sort-btn" 
+        :class="{ active: sortType === 'likes' }"
+        @click="sortType = 'likes'"
+      >
+        <span class="sort-icon">⚡</span>
+        最热
+      </button>
     </div>
 
     <!-- 折叠面板 -->
@@ -209,7 +229,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted, nextTick, watch } from 'vue'
 import { createClient } from '@supabase/supabase-js'
 import Loading from './Loading.vue'
 
@@ -254,6 +274,9 @@ const commentsLoading = ref(false)
 
 // 添加折叠状态管理
 const isCollapsed = ref(true)
+
+// 添加排序状态
+const sortType = ref('newest')
 
 // 显示通知
 const showNotification = (message, type = 'success') => {
@@ -388,27 +411,17 @@ const formatTime = (timestamp) => {
 
 // 修改提交留言方法
 const submitMessage = async () => {
-  if (!content.value.trim() || isSubmitting.value) return
+  if (isSubmitting.value || !content.value.trim()) return
   
-  if (!isAnonymous.value && !author.value.trim()) {
-    showNotification('请输入你的名字', 'error')
-    return
-  }
-
-  if (content.value.length > 500) {
-    showNotification('留言内容不能超过500字', 'error')
-    return
-  }
+  isSubmitting.value = true
 
   try {
-    isSubmitting.value = true
-    
     const { data, error } = await supabase
       .from('message_boards')
       .insert([{
-        author: isAnonymous.value ? '匿名用户' : author.value.trim(),
         content: content.value.trim(),
-        is_anonymous: isAnonymous.value,
+        author: isAnonymous.value ? '匿名用户' : (author.value || '匿名用户'),
+        likes: 0,
         avatar: isAnonymous.value ? defaultAvatar : (avatarPreview.value || defaultAvatar)
       }])
       .select()
@@ -445,35 +458,39 @@ const setIdentity = (anonymous) => {
   handleAnonymousChange()
 }
 
+// 监听排序变化
+watch(sortType, async () => {
+  messages.value = []
+  page.value = 0
+  await loadMessages()
+})
+
 // 修改加载评论方法
 const loadMessages = async () => {
   try {
     commentsLoading.value = true
-
-    const { data, error } = await supabase
+    let query = supabase
       .from('message_boards')
       .select('*')
-      .order('created_at', { ascending: false })
       .range(page.value * MESSAGES_PER_PAGE, (page.value + 1) * MESSAGES_PER_PAGE - 1)
+
+    // 根据排序类型添加排序条件
+    if (sortType.value === 'newest') {
+      query = query.order('created_at', { ascending: false })
+    } else if (sortType.value === 'likes') {
+      query = query.order('likes', { ascending: false })
+      query = query.order('created_at', { ascending: false })
+    }
+
+    const { data, error } = await query
 
     if (error) throw error
 
-    const newMessages = data.map(message => ({
-      ...message,
-      isLiked: false,
-      isLoaded: true
-    }))
-
-    // 使用 push 而不是直接赋值，保持现有消息
-    if (page.value === 0) {
-      messages.value = newMessages
-    } else {
-      messages.value.push(...newMessages)
-    }
-
+    messages.value = [...messages.value, ...data]
     hasMore.value = data.length === MESSAGES_PER_PAGE
+    page.value++
   } catch (error) {
-    console.error('加载失败:', error)
+    console.error('加载消息失败:', error)
     showNotification('加载失败，请重试', 'error')
   } finally {
     commentsLoading.value = false
@@ -1555,6 +1572,69 @@ const togglePanel = () => {
   .collapse-icon {
     padding: 0.3rem 0.6rem;
     font-size: 0.8rem;
+  }
+}
+
+/* 排序选项样式 */
+.sort-options {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 0.5rem;
+  background: var(--vp-c-bg-soft);
+  border-radius: 8px;
+  border: 1px solid var(--vp-c-divider);
+}
+
+.sort-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  background: transparent;
+  color: var(--vp-c-text-2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.sort-btn:hover {
+  background: var(--vp-c-bg-mute);
+  color: var(--vp-c-text-1);
+}
+
+.sort-btn.active {
+  background: var(--vp-c-brand-soft);
+  color: var(--vp-c-brand);
+}
+
+.sort-icon {
+  font-size: 1.1rem;
+}
+
+/* 深色模式适配 */
+@media (prefers-color-scheme: dark) {
+  .sort-options {
+    background: var(--vp-c-bg-mute);
+  }
+
+  .sort-btn:hover {
+    background: var(--vp-c-bg-soft);
+  }
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .sort-options {
+    padding: 0.4rem;
+    gap: 0.5rem;
+  }
+
+  .sort-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
   }
 }
 </style>
