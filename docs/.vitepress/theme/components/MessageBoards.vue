@@ -1018,6 +1018,12 @@ const togglePanel = () => {
 .like-btn:hover .like-icon {
   transform: scale(1.2) rotate(10deg);
 }
+.like-count{
+  transition: all 0.1s;
+}
+.like-btn:active .like-count{
+  transform: translateY(-3px);
+}
 
 /* 深色模式适配 */
 @media (prefers-color-scheme: dark) {
