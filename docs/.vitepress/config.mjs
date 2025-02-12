@@ -1,8 +1,12 @@
 import { defineConfig } from 'vitepress'
+import MarkdownPreview from 'vite-plugin-markdown-preview'
+
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   // base: "/docs/",
-
+  vite: {
+    plugins: [MarkdownPreview()],
+  },
   metaChunk: true, //当设置为 true 时，将页面元数据提取到单独的 JavaScript 块中，而不是内联在初始 HTML 中。这使每个页面的 HTML 负载更小，并使页面元数据可缓存，从而当站点中有很多页面时可以减少服务器带宽。
   markdown: {
     image: {
@@ -21,33 +25,6 @@ export default defineConfig({
     config: (md) => {
       md.options.frontmatter = true
     },
-    vite: {
-      optimizeDeps: {
-        exclude: ['vitepress']
-      },
-      server: {
-        fs: {
-          // 允许服务访问上级目录
-          allow: ['..']
-        }
-      },
-      plugins: [
-        {
-          name: 'markdown-frontmatter',
-          transform(code, id) {
-            if (id.endsWith('.md')) {
-              const match = code.match(/^---\n([\s\S]*?)\n---/)
-              if (match) {
-                const frontmatter = match[1]
-                return {
-                  code: `${code}\nexport const frontmatter = \`${frontmatter}\``
-                }
-              }
-            }
-          }
-        }
-      ]
-    }
   },
   // 重写内置组件
   // vite: {
@@ -239,4 +216,5 @@ export default defineConfig({
       message: '© 鱼梦江湖 2025 MIT',
     }
   }
+ 
 })
