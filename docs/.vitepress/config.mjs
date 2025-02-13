@@ -131,7 +131,7 @@ export default defineConfig({
       },
     },
     nav: [
-      { text: '导航', link: 'nav' },
+      { text: '工具导航', link: 'nav' },
       {
         text: 'Web', items: [
           {
