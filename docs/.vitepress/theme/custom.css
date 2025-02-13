@@ -103,7 +103,7 @@
 :root {
   --bear-bg-color1: #09ffca;
   --bear-bg-color2: #47caff;
-  --time-bg-color: #f6f6f7;
+  /* --time-bg-color: #f6f6f7; */
 
 
 }
@@ -111,7 +111,6 @@
 .dark {
   --bear-bg-color1: #bd34fe;
   --bear-bg-color2: #47caff;
-
-  --time-bg-color: #282829;
-
+  /* --time-bg-color: #282829; */
 }
+

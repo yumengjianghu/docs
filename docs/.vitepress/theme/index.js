@@ -10,7 +10,7 @@ import VueLazyloadNext  from 'vue-lazyload-next'   // 懒加载指令
 import MouseEvent from './components/MouseEvent.vue' // 鼠标跟随特效
 import bear from './components/bear.vue'  // 主页熊
 import TimeLine from './components/TimeLine.vue' // 测试
-// import ThemeSwitch from './components/ThemeSwitch.vue' // 主题切换过渡动画
+import ThemeSwitch from './components/ThemeSwitch.vue' // 主题切换过渡动画
 import Classification from './components/classification.vue'  // 分类
 import DocCard from './components/DocCard.vue'  // 分类小卡片
 import createDocs from './components/createDocs.vue'  // 创建文章
@@ -33,10 +33,10 @@ export default {
     return h(DefaultTheme.Layout, null, {
       // https://vitepress.dev/guide/extending-default-theme#layout-slots
       // 'doc-footer-before': () => h(Giscus), // 特点位置插入组件  
-      'home-hero-image': () => h(bear), // 特点位置插入组件  
+      // 'home-hero-image': () => h(bear), // 特点位置插入组件  
     })
   },
-  // Layout: ThemeSwitch,  // 浅暗切换动画
+  Layout: ThemeSwitch,  // 浅暗切换动画
   
   enhanceApp({ app, router, siteData }) {
     // ...

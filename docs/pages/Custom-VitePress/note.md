@@ -26,6 +26,14 @@ description: 自定义vitepress的一些速记
 
 ## markDown扩展
 
+```vue
+```vue preview
+
+
+```
+
+```
+
 ```markdown
 ::: danger stop
 危险区域
