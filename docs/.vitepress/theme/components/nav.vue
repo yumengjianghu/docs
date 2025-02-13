@@ -7,6 +7,7 @@
          target="_blank"
          rel="noopener"
          class="tool-card"
+         :class="tool.badge ? `badge-${tool.badgeType || 'default'}` : ''"
          v-motion
          :initial="{ opacity: 0, y: 50 }"
          :enter="{ opacity: 1, y: 0, delay: index * 50 }"
@@ -143,7 +144,7 @@ const handleImageError = (tool) => {
 .tool-title {
   margin: 0;
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: bold;
   color: var(--vp-c-text-1);
   white-space: nowrap;
   overflow: hidden;
@@ -191,7 +192,7 @@ const handleImageError = (tool) => {
   }
 }
 
-/* 添加角标样式 */
+/* 修改角标和卡片悬浮样式 */
 .tool-badge {
   position: absolute;
   top: -8px;
@@ -206,8 +207,28 @@ const handleImageError = (tool) => {
   transition: transform 0.3s ease;
 }
 
-.tool-card:hover .tool-badge {
-  transform: scale(1);
+/* 默认悬浮效果 */
+.tool-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--vp-c-brand);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 带角标卡片的悬浮效果 */
+.tool-card.badge-default:hover {
+  border-color: var(--vp-c-brand);
+}
+
+.tool-card.badge-new:hover {
+  border-color: #42b883;
+}
+
+.tool-card.badge-hot:hover {
+  border-color: #f56c6c;
+}
+
+.tool-card.badge-beta:hover {
+  border-color: #e6a23c;
 }
 
 /* 角标类型 */
