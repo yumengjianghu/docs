@@ -10,15 +10,15 @@ const tools1 = [
   {
     title: '开发者武器库',
     desc: '涵盖多种工具',
-    url: 'https://devtool.tech/'
+    url: 'https://devtool.tech/',
   }, {
     title: 'excalidraw',
     desc: '在线手绘风流程图绘制',
-    url: 'https://excalidraw.com/'
+    url: 'https://excalidraw.com/',
   }, {
     title: '文叔叔',
     desc: '在线快速分享文件',
-    url: 'https://www.wenshushu.cn/'
+    url: 'https://www.wenshushu.cn/',
   }, 
 
 ]
@@ -38,6 +38,36 @@ const tools2 = [
   }, 
 
 ]
+const tools3 =[
+  {
+    title:'',
+    desc:'',
+    url:'',
+    badge: 'Default',
+    badgeType: 'default'
+  },
+  {
+    title: '',
+    desc: '',
+    url: '',
+    badge: 'HOT',
+    badgeType: 'hot'
+  },
+  {
+    title:'',
+    desc:'',
+    url:'',
+    badge: 'NEW',
+    badgeType: 'new'
+  },
+  {
+    title:'',
+    desc:'',
+    url:'',
+    badge: 'BETA',
+    badgeType: 'beta'
+  }
+]
 </script>
 
 ## 常用工具
@@ -48,3 +78,6 @@ const tools2 = [
 
 <Nav :tools="tools2"/>
 
+## 标签测试
+
+<Nav :tools="tools3"/>

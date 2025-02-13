@@ -12,6 +12,10 @@
          :enter="{ opacity: 1, y: 0, delay: index * 50 }"
          :style="{ width: '250px', height: '100px' }"
       >
+        <span v-if="tool.badge" class="tool-badge" :class="tool.badgeType || 'default'">
+          {{ tool.badge }}
+        </span>
+
         <div class="tool-icon">
           <img 
             :src="getFavicon(tool.url)" 
@@ -97,6 +101,7 @@ const handleImageError = (tool) => {
   text-decoration: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
+  position: relative;
 }
 
 .tool-card:hover {
@@ -184,5 +189,41 @@ const handleImageError = (tool) => {
   .tools-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* 添加角标样式 */
+.tool-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 10px;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+}
+
+.tool-card:hover .tool-badge {
+  transform: scale(1);
+}
+
+/* 角标类型 */
+.tool-badge.default {
+  background: var(--vp-c-brand);
+}
+
+.tool-badge.new {
+  background: #42b883;
+}
+
+.tool-badge.hot {
+  background: #f56c6c;
+}
+
+.tool-badge.beta {
+  background: #e6a23c;
 }
 </style>
