@@ -177,6 +177,7 @@ export default defineConfig({
           { text: '图标', link: '/pages/emoji/note' },
           { text: '图床', link: 'other/imgbed/note' },
           { text: '工具', link: 'other/Download/note' },
+          { text: 'Cool_CSS', link: 'pages/CSS/CoolCss' },
         ]
       },
       {

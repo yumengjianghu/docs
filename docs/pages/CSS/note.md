@@ -19,5 +19,7 @@ description: CSS笔记
 # star: false                # 是否标星
 ---
 
+# CSS妙计 
 
-
+[预览效果](./CoolCss.md)
+<!--@include: ./CoolCss.md-->
