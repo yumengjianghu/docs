@@ -100,7 +100,7 @@ const handleImageError = (tool) => {
   border: 2px solid var(--vp-c-divider);
   border-radius: 8px;
   text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); */
   cursor: pointer;
   position: relative;
 }
