@@ -19,6 +19,30 @@
   --tag-gush-color: #e9792a;
   --tag-resource-color: #009438;
   --tag-other-color: #365d69;
+
+  /* 定义多组渐变色 */
+  --gradient-1-color1: #09ffca;
+  --gradient-1-color2: #47caff;
+  
+  --gradient-2-color1: #bd34fe;
+  --gradient-2-color2: #ff3670;
+  
+  --gradient-3-color1: #ffd166;
+  --gradient-3-color2: #ff6b6b;
+  
+  --gradient-4-color1: #4facfe;
+  --gradient-4-color2: #00f2fe;
+  
+  --gradient-5-color1: #43e97b;
+  --gradient-5-color2: #38f9d7;
+
+  /* 动态渐变背景 */
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(
+    120deg,
+    var(--bear-bg-color1),
+    var(--bear-bg-color2)
+  );
 }
 
 .dark {
@@ -32,6 +56,21 @@
   --item-shadow-color: #2c3639;
   --column-background-color: #1a1a1a;
 
+  /* 定义多组渐变色 */
+  --gradient-1-color1: #bd34fe;
+  --gradient-1-color2: #47caff;
+  
+  --gradient-2-color1: #ff3d87;
+  --gradient-2-color2: #ffa647;
+  
+  --gradient-3-color1: #7928ca;
+  --gradient-3-color2: #ff0080;
+  
+  --gradient-4-color1: #00dfd8;
+  --gradient-4-color2: #007cf0;
+  
+  --gradient-5-color1: #7928ca;
+  --gradient-5-color2: #00dfd8;
 }
 
 /* 自定义侧边栏在最左边，右边撑满宽度 */
@@ -100,17 +139,368 @@
   align-items: center;
 }
 
-:root {
-  --bear-bg-color1: #09ffca;
-  --bear-bg-color2: #47caff;
-  /* --time-bg-color: #f6f6f7; */
-
-
+@keyframes rainbow {
+  0% {
+    --bear-bg-color1: #00a98e;
+    --bear-bg-color2: #4ad1b4;
+  }
+  1.25% {
+    --bear-bg-color1: #00a996;
+    --bear-bg-color2: #4bd1bd;
+  }
+  2.5% {
+    --bear-bg-color1: #00a99f;
+    --bear-bg-color2: #4cd1c6;
+  }
+  3.75% {
+    --bear-bg-color1: #00a9a7;
+    --bear-bg-color2: #4dd1cf;
+  }
+  5% {
+    --bear-bg-color1: #00a9b0;
+    --bear-bg-color2: #4ed1d7;
+  }
+  6.25% {
+    --bear-bg-color1: #00a9b8;
+    --bear-bg-color2: #4fd1e0;
+  }
+  7.5% {
+    --bear-bg-color1: #00a9c0;
+    --bear-bg-color2: #50d0e8;
+  }
+  8.75% {
+    --bear-bg-color1: #00a8c7;
+    --bear-bg-color2: #51d0f0;
+  }
+  10% {
+    --bear-bg-color1: #00a8cf;
+    --bear-bg-color2: #52cff7;
+  }
+  11.25% {
+    --bear-bg-color1: #00a7d5;
+    --bear-bg-color2: #53cfff;
+  }
+  12.5% {
+    --bear-bg-color1: #00a6dc;
+    --bear-bg-color2: #55ceff;
+  }
+  13.75% {
+    --bear-bg-color1: #00a6e2;
+    --bear-bg-color2: #56cdff;
+  }
+  15% {
+    --bear-bg-color1: #00a4e7;
+    --bear-bg-color2: #57ccff;
+  }
+  16.25% {
+    --bear-bg-color1: #00a3ec;
+    --bear-bg-color2: #58caff;
+  }
+  17.5% {
+    --bear-bg-color1: #00a2f1;
+    --bear-bg-color2: #58c9ff;
+  }
+  18.75% {
+    --bear-bg-color1: #00a0f4;
+    --bear-bg-color2: #59c7ff;
+  }
+  20% {
+    --bear-bg-color1: #009ff7;
+    --bear-bg-color2: #5ac5ff;
+  }
+  21.25% {
+    --bear-bg-color1: #009dfa;
+    --bear-bg-color2: #5ac3ff;
+  }
+  22.5% {
+    --bear-bg-color1: #009bfc;
+    --bear-bg-color2: #5bc1ff;
+  }
+  23.75% {
+    --bear-bg-color1: #0098fd;
+    --bear-bg-color2: #5bbfff;
+  }
+  25% {
+    --bear-bg-color1: #0096fd;
+    --bear-bg-color2: #5bbcff;
+  }
+  26.25% {
+    --bear-bg-color1: #0093fd;
+    --bear-bg-color2: #5bb9ff;
+  }
+  27.5% {
+    --bear-bg-color1: #2e90fc;
+    --bear-bg-color2: #69b6ff;
+  }
+  28.75% {
+    --bear-bg-color1: #4d8dfa;
+    --bear-bg-color2: #7eb3ff;
+  }
+  30% {
+    --bear-bg-color1: #638af8;
+    --bear-bg-color2: #8fb0ff;
+  }
+  31.25% {
+    --bear-bg-color1: #7587f5;
+    --bear-bg-color2: #9fadff;
+  }
+  32.5% {
+    --bear-bg-color1: #8583f1;
+    --bear-bg-color2: #aea9ff;
+  }
+  33.75% {
+    --bear-bg-color1: #9280ed;
+    --bear-bg-color2: #bca6ff;
+  }
+  35% {
+    --bear-bg-color1: #9f7ce9;
+    --bear-bg-color2: #c8a2ff;
+  }
+  36.25% {
+    --bear-bg-color1: #aa78e3;
+    --bear-bg-color2: #d39eff;
+  }
+  37.5% {
+    --bear-bg-color1: #b574dd;
+    --bear-bg-color2: #de9bff;
+  }
+  38.75% {
+    --bear-bg-color1: #be71d7;
+    --bear-bg-color2: #e897ff;
+  }
+  40% {
+    --bear-bg-color1: #c76dd1;
+    --bear-bg-color2: #f194fa;
+  }
+  41.25% {
+    --bear-bg-color1: #cf69c9;
+    --bear-bg-color2: #f991f2;
+  }
+  42.5% {
+    --bear-bg-color1: #d566c2;
+    --bear-bg-color2: #ff8deb;
+  }
+  43.75% {
+    --bear-bg-color1: #dc63ba;
+    --bear-bg-color2: #ff8be3;
+  }
+  45% {
+    --bear-bg-color1: #e160b3;
+    --bear-bg-color2: #ff88db;
+  }
+  46.25% {
+    --bear-bg-color1: #e65eab;
+    --bear-bg-color2: #ff86d2;
+  }
+  47.5% {
+    --bear-bg-color1: #e95ca2;
+    --bear-bg-color2: #ff84ca;
+  }
+  48.75% {
+    --bear-bg-color1: #ed5a9a;
+    --bear-bg-color2: #ff83c1;
+  }
+  50% {
+    --bear-bg-color1: #ef5992;
+    --bear-bg-color2: #ff82b8;
+  }
+  51.25% {
+    --bear-bg-color1: #f15989;
+    --bear-bg-color2: #ff82af;
+  }
+  52.5% {
+    --bear-bg-color1: #f25981;
+    --bear-bg-color2: #ff82a7;
+  }
+  53.75% {
+    --bear-bg-color1: #f25a79;
+    --bear-bg-color2: #ff839e;
+  }
+  55% {
+    --bear-bg-color1: #f25c71;
+    --bear-bg-color2: #ff8496;
+  }
+  56.25% {
+    --bear-bg-color1: #f15e69;
+    --bear-bg-color2: #ff868d;
+  }
+  57.5% {
+    --bear-bg-color1: #ef6061;
+    --bear-bg-color2: #ff8885;
+  }
+  58.75% {
+    --bear-bg-color1: #ed635a;
+    --bear-bg-color2: #ff8a7d;
+  }
+  60% {
+    --bear-bg-color1: #eb6552;
+    --bear-bg-color2: #ff8d76;
+  }
+  61.25% {
+    --bear-bg-color1: #e8694b;
+    --bear-bg-color2: #ff8f6e;
+  }
+  62.5% {
+    --bear-bg-color1: #e46c44;
+    --bear-bg-color2: #ff9367;
+  }
+  63.75% {
+    --bear-bg-color1: #e06f3d;
+    --bear-bg-color2: #ff9661;
+  }
+  65% {
+    --bear-bg-color1: #db7336;
+    --bear-bg-color2: #ff995a;
+  }
+  66.25% {
+    --bear-bg-color1: #d77630;
+    --bear-bg-color2: #ff9c54;
+  }
+  67.5% {
+    --bear-bg-color1: #d17a2a;
+    --bear-bg-color2: #fea04f;
+  }
+  68.75% {
+    --bear-bg-color1: #cc7d24;
+    --bear-bg-color2: #f8a34a;
+  }
+  70% {
+    --bear-bg-color1: #c6811e;
+    --bear-bg-color2: #f2a646;
+  }
+  71.25% {
+    --bear-bg-color1: #bf8418;
+    --bear-bg-color2: #ebaa42;
+  }
+  72.5% {
+    --bear-bg-color1: #b98713;
+    --bear-bg-color2: #e4ad3f;
+  }
+  73.75% {
+    --bear-bg-color1: #b28a0f;
+    --bear-bg-color2: #ddb03d;
+  }
+  75% {
+    --bear-bg-color1: #ab8d0c;
+    --bear-bg-color2: #d5b33c;
+  }
+  76.25% {
+    --bear-bg-color1: #a3900b;
+    --bear-bg-color2: #cdb63c;
+  }
+  77.5% {
+    --bear-bg-color1: #9c920d;
+    --bear-bg-color2: #c5b83d;
+  }
+  78.75% {
+    --bear-bg-color1: #949510;
+    --bear-bg-color2: #bdbb3e;
+  }
+  80% {
+    --bear-bg-color1: #8b9715;
+    --bear-bg-color2: #b4bd41;
+  }
+  81.25% {
+    --bear-bg-color1: #83991b;
+    --bear-bg-color2: #abc045;
+  }
+  82.5% {
+    --bear-bg-color1: #7a9b21;
+    --bear-bg-color2: #a2c249;
+  }
+  83.75% {
+    --bear-bg-color1: #719d27;
+    --bear-bg-color2: #98c44e;
+  }
+  85% {
+    --bear-bg-color1: #679e2e;
+    --bear-bg-color2: #8ec654;
+  }
+  86.25% {
+    --bear-bg-color1: #5da035;
+    --bear-bg-color2: #84c75a;
+  }
+  87.5% {
+    --bear-bg-color1: #51a13c;
+    --bear-bg-color2: #79c961;
+  }
+  88.75% {
+    --bear-bg-color1: #44a244;
+    --bear-bg-color2: #6dca68;
+  }
+  90% {
+    --bear-bg-color1: #34a44b;
+    --bear-bg-color2: #60cc70;
+  }
+  91.25% {
+    --bear-bg-color1: #1ba553;
+    --bear-bg-color2: #51cd77;
+  }
+  92.5% {
+    --bear-bg-color1: #00a65b;
+    --bear-bg-color2: #48ce80;
+  }
+  93.75% {
+    --bear-bg-color1: #00a663;
+    --bear-bg-color2: #48cf88;
+  }
+  95% {
+    --bear-bg-color1: #00a76c;
+    --bear-bg-color2: #49cf91;
+  }
+  96.25% {
+    --bear-bg-color1: #00a874;
+    --bear-bg-color2: #49d099;
+  }
+  97.5% {
+    --bear-bg-color1: #00a87d;
+    --bear-bg-color2: #49d0a2;
+  }
+  98.75% {
+    --bear-bg-color1: #00a985;
+    --bear-bg-color2: #4ad1ab;
+  }
+  100% {
+    --bear-bg-color1: #00a98e;
+    --bear-bg-color2: #4ad1b4;
+  }
 }
 
+:root {
+  --bear-bg-color1: #00a98e;
+  --bear-bg-color2: #4ad1b4;
+  animation: rainbow 30s ease infinite;
+  transition: --bear-bg-color1 0.3s ease, --bear-bg-color2 0.3s ease;
+}
+
+/* 深色模式使用不同的初始颜色 */
 .dark {
   --bear-bg-color1: #bd34fe;
   --bear-bg-color2: #47caff;
-  /* --time-bg-color: #282829; */
+  transition: --bear-bg-color1 0.3s ease, --bear-bg-color2 0.3s ease;
+}
+
+/* 减少动画 */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    animation: none !important;
+  }
+}
+
+/* 应用渐变背景 */
+:root {
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(
+    120deg,
+    var(--bear-bg-color1),
+    var(--bear-bg-color2)
+  );
+  --vp-home-hero-image-background-image: linear-gradient(
+    -45deg, 
+    var(--bear-bg-color1) 50%, 
+    var(--bear-bg-color2) 50%
+  );
+  --vp-home-hero-image-filter: blur(44px);
+  transition: all 0.3s ease;
 }
 
