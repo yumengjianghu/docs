@@ -463,7 +463,7 @@ const toggleCategory = (category) => {
 // 添加折叠状态管理
 const openSections = ref({
   category: false,
-  tags: false,
+  tags: true,
   date: false
 })
 
