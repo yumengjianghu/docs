@@ -1,49 +1,265 @@
 ---
-layout: page
-sidebar: false
+title: 关于我
+layout: doc
 ---
-<script setup>
-import {
-  VPTeamPage,
-  VPTeamPageTitle,
-  VPTeamMembers,
-} from 'vitepress/theme'
 
-const members = [
+<script setup>
+import { VPTeamMembers } from 'vitepress/theme'
+import Nav from './.vitepress/theme/components/nav.vue'
+import SkillTag from './.vitepress/theme/components/SkillTag.vue'
+
+const skills = [
   {
-    avatar: 'https://s21.ax1x.com/2025/02/07/pEm9bQO.jpg',
-    name: 'Yumeng JH',
-    title: 'yumengjianghu@outlook.com',
-    links: [
-      { icon: {
-          svg: '<svg t="1735700599029" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3133" width="200" height="200"><path d="M998.4 352.256c-3.072-136.192-121.856-162.304-121.856-162.304s-92.672-0.512-212.992-1.536l87.552-84.48s13.824-17.408-9.728-36.864c-23.552-19.456-25.088-10.752-33.28-5.632-7.168 5.12-112.128 108.032-130.56 126.464-47.616 0-97.28-0.512-145.408-0.512h16.896S323.584 63.488 315.392 57.856s-9.216-13.824-33.28 5.632c-23.552 19.456-9.728 36.864-9.728 36.864l89.6 87.04c-97.28 0-181.248 0.512-220.16 2.048C15.872 225.792 25.6 352.256 25.6 352.256s1.536 271.36 0 408.576c13.824 137.216 119.296 159.232 119.296 159.232s41.984 1.024 73.216 1.024c3.072 8.704 5.632 51.712 53.76 51.712 47.616 0 53.76-51.712 53.76-51.712s350.72-1.536 379.904-1.536c1.536 14.848 8.704 54.272 56.832 53.76 47.616-1.024 51.2-56.832 51.2-56.832s16.384-1.536 65.024 0c113.664-20.992 120.32-154.112 120.32-154.112s-2.048-273.92-0.512-410.112z m-97.792 434.176c0 21.504-16.896 38.912-37.888 38.912h-691.2c-20.992 0-37.888-17.408-37.888-38.912V328.192c0-21.504 16.896-38.912 37.888-38.912h691.2c20.992 0 37.888 17.408 37.888 38.912v458.24z" fill="#1296DB" p-id="3134"></path><path d="M409.088 418.816l-203.264 38.912 17.408 76.288 201.216-38.912zM518.656 621.056c-49.664 106.496-94.208 26.112-94.208 26.112l-33.28 21.504s65.536 89.6 128 21.504c73.728 68.096 130.048-22.016 130.048-22.016l-30.208-19.456c0-0.512-52.736 75.776-100.352-27.648zM619.008 495.104l201.728 38.912 16.896-76.288-202.752-38.912z" fill="#1296DB" p-id="3135"></path></svg>'
-        }, link: 'https://space.bilibili.com/1162766914' },
-      { icon: {
-          svg: '<svg t="1735727905242" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="14987" width="200" height="200"><path d="M517.632 563.2L0.0512 189.44V153.6h1024v43.6224L517.632 563.2zM267.2128 255.6928l250.368 181.0944L768 256H267.2128z" fill="#74BCFF" p-id="14988"></path><path d="M102.4 256v563.2h819.2V256H102.4M0 153.6h1024v768H0z" fill="#1990FF" p-id="14989"></path></svg>'
-        },
-        link: '',target:'self' },
-      { icon: 'instagram', link: '' },
-    ]
+    title: 'HTML',
+    icon: 'https://api.iconify.design/logos:html-5.svg',
+    color: '#E34F26'
+  },
+  {
+    title: 'CSS',
+    icon: 'https://api.iconify.design/logos:css-3.svg',
+    color: '#1572B6'
+  },
+  {
+    title: 'JavaScript',
+    icon: 'https://api.iconify.design/logos:javascript.svg',
+    color: '#F7DF1E'
+  },
+  {
+    title: 'Vue',
+    icon: 'https://api.iconify.design/logos:vue.svg',
+    color: '#4FC08D'
+  }
+  ,
+  {
+    title: 'Git',
+    icon: 'https://api.iconify.design/logos:git-icon.svg',
+    color: '#dc4c31'
+  },
+  {
+    title:'Github',
+    icon:'https://api.iconify.design/logos:github-icon.svg',
+    color:'#b7c2b7',
+  },
+  {
+    title:'TypeScript',
+    icon:'https://api.iconify.design/logos:typescript-icon.svg',
+    color:'#3389fe',
+  },
+  {
+    title:'Node.js',
+    icon:'https://api.iconify.design/logos:nodejs-icon.svg',
+    color:'#379337'
+  },
+  {
+    title: 'Vite',
+    icon:'https://api.iconify.design/logos:vitejs.svg',
+    color:'#5e65e9'
+  },
+  {
+    title:'Markdown',
+    icon:'https://api.iconify.design/logos:markdown.svg',
+    color:'#6e7681'
+  },
+  {
+    title:'React',
+    icon:'https://api.iconify.design/logos:react.svg',
+    color:'#66d3f1'
+  },
+  {
+    title:'Next.js',
+    icon:'https://api.iconify.design/logos:nextjs-icon.svg',
+    color:''
+  },
+  {
+    title:'Ant Design',
+    icon:'https://api.iconify.design/logos:ant-design.svg',
+    color:'#176fe9'
+  },
+  {
+    title:'Npm',
+    icon:'https://api.iconify.design/logos:npm-icon.svg',
+    color:'#c74342'
+  },
+  {
+    title:'Pyhton',
+    icon:'https://api.iconify.design/logos:python.svg',
+    color:'#e0cb1d'
+  }
+]
+
+const projects = [
+  {
+    title: '代办事项',
+    desc: '基于Vue+TS的动态事件代办管理',
+    url: 'https://github.com/your-repo',
+    badge: 'Beta',
+    badgeType: 'beta'
   },
   // {
-  //   avatar: 'https://s21.ax1x.com/2025/02/07/pEmCL90.png',
-  //   name: 'Github-Actions[Bot]',
-  //   title: 'Assistant',
-  //   links: [
-  //     { icon: 'github', link: 'https://github.com/' },
-  //   ]
-  // },
+  //   title: '项目模板',
+  //   desc: 'Vue3 + TypeScript 项目模板',
+  //   url: 'https://github.com/your-repo',
+  //   badge: 'NEW',
+  //   badgeType: 'new'
+  // }
 ]
 </script>
 
-<VPTeamPage>
-  <VPTeamPageTitle>
-    <template #title>
-      Hello
-    </template>
-    <template #lead>
-Let's build a website together
-    </template>
-  </VPTeamPageTitle>
-  <VPTeamMembers :members="members"/>
-</VPTeamPage>
+<div class="profile-header">
+  <div class="avatar-wrapper">
+    <img src="https://s21.ax1x.com/2025/02/07/pEm9bQO.jpg" alt="头像" class="avatar">
+  </div>
+  <div class="profile-info">
+    <h1>Yu Meng</h1>
+    <p class="title">鱼梦江湖</p>
+    <p class="bio">热爱技术，专注于前端开发和全栈解决方案</p>
+    <div class="social-links">
+      <a href="https://github.com/myfishdream" target="_blank" class="social-link github">
+        <span class="link-text">GitHub</span>
+      </a>
+      <a href="mailto:your@email.com" class="social-link email">
+        <span class="link-text">Email</span>
+      </a>
+    </div>
+    
+  </div>
+</div>
+
+![Email](https://img.shields.io/badge/Email-yumengjianghu@outlook.com-blue?style=for-the-badge&logo=gmail&logoColor=white)
+
+## 🎯 技能特长
+
+<SkillTag :skills="skills"/>
+
+## 💼 项目经历
+
+<Nav :tools="projects"/>
+
+
+<style scoped>
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem;
+  background: var(--vp-c-bg-soft);
+  border-radius: 12px;
+  margin-bottom: 2rem;
+}
+
+.avatar-wrapper {
+  flex-shrink: 0;
+  width: 150px;
+  height: 150px;
+  border-radius: 75px;
+  overflow: hidden;
+  border: 4px solid var(--vp-c-brand);
+  background: var(--vp-c-bg);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.3s ease;
+  transform: scale(1.2);
+}
+
+.avatar-wrapper:hover .avatar {
+  transform: scale(1.3);
+}
+
+.profile-info {
+  flex: 1;
+}
+
+.profile-info h1 {
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1.2;
+  background: linear-gradient(120deg, var(--vp-c-brand) 0%, var(--vp-c-brand-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.title {
+  font-size: 1.2rem;
+  color: var(--vp-c-text-2);
+  margin: 0.5rem 0;
+}
+
+.bio {
+  color: var(--vp-c-text-1);
+  margin: 0.5rem 0;
+}
+
+.social-links {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  /* border-radius: 20px;  */
+  background: var(--vp-c-bg);
+  color: var(--vp-c-text-2);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: 1px solid var(--vp-c-divider);
+}
+
+.social-link:hover {
+  color: var(--vp-c-brand);
+  border-color: var(--vp-c-brand);
+  transform: translateY(-2px);
+}
+
+.link-text {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* 深色模式适配 */
+@media (prefers-color-scheme: dark) {
+  .social-link {
+    background: var(--vp-c-bg-soft);
+  }
+
+  .avatar-wrapper {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    border-width: 3px;
+  }
+  
+  .avatar-wrapper:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.5rem;
+  }
+
+  .social-links {
+    justify-content: center;
+  }
+
+  .avatar-wrapper {
+    width: 120px;
+    height: 120px;
+    border-radius: 60px;
+  }
+}
+</style>
