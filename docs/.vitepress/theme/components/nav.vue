@@ -8,9 +8,6 @@
          rel="noopener"
          class="tool-card"
          :class="tool.badge ? `badge-${tool.badgeType || 'default'}` : ''"
-         v-motion
-         :initial="{ opacity: 0, y: 50 }"
-         :enter="{ opacity: 1, y: 0, delay: index * 50 }"
          :style="{ width: '250px', height: '100px' }"
       >
         <span v-if="tool.badge" class="tool-badge" :class="tool.badgeType || 'default'">
@@ -19,7 +16,7 @@
 
         <div class="tool-icon">
           <img 
-            :src="getFavicon(tool.url)" 
+            :src="tool.icon || getFavicon(tool.url)" 
             :alt="tool.title"
             loading="lazy"
             @error="handleImageError(tool)"
@@ -53,11 +50,7 @@ const validTools = computed(() => {
 const getFavicon = (url) => {
   try {
     const domain = new URL(url).hostname
-    // 尝试多个favicon源
     return `https://favicon.yandex.net/favicon/${domain}?size=32`
-    // 备选方案：
-    // return `https://icon.horse/icon/${domain}`
-    // return `https://www.google.com/s2/favicons?domain=${domain}&sz=128`
   } catch (e) {
     return 'https://s21.ax1x.com/2025/01/31/pEZi6J0.png'
   }
@@ -65,8 +58,14 @@ const getFavicon = (url) => {
 
 // 图片加载失败处理
 const handleImageError = (tool) => {
-  const domain = new URL(tool.url).hostname
   const img = event.target
+  // 如果是自定义图标加载失败，尝试使用 favicon
+  if (tool.icon && img.src === tool.icon) {
+    img.src = getFavicon(tool.url)
+    return
+  }
+  
+  const domain = new URL(tool.url).hostname
   // 尝试其他源
   if (!img.src.includes('icon.horse')) {
     img.src = `https://icon.horse/icon/${domain}`

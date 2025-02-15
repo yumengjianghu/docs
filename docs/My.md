@@ -94,7 +94,8 @@ const projects = [
     desc: '基于Vue+TS的动态事件代办管理',
     url: 'https://github.com/your-repo',
     badge: 'Beta',
-    badgeType: 'beta'
+    badgeType: 'beta',
+    icon: 'https://api.iconify.design/logos:todoist.svg'
   },
   // {
   //   title: '项目模板',
