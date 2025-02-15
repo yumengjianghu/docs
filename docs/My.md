@@ -7,6 +7,7 @@ layout: doc
 import { VPTeamMembers } from 'vitepress/theme'
 import Nav from './.vitepress/theme/components/nav.vue'
 import SkillTag from './.vitepress/theme/components/SkillTag.vue'
+import TypeWriter from './.vitepress/theme/components/TypeWriter.vue'
 
 const skills = [
   {
@@ -103,25 +104,55 @@ const projects = [
   //   badgeType: 'new'
   // }
 ]
+
+const profile = {
+  name: 'Yu Meng',
+  title: '鱼梦江湖',
+  avatar: 'https://s21.ax1x.com/2025/02/07/pEm9bQO.jpg',
+  bio: '努力的意义就是，当好运来临的时候，我觉得我值得。',
+  contacts: [
+    {
+      icon: 'github',
+      name: 'GitHub',
+      link: 'https://github.com/myfishdream'
+    },
+    {
+      icon: 'email',
+      name: 'Email',
+      link: 'mailto:yumengjianghu@outlook.com'
+    }
+  ]
+}
 </script>
 
-<div class="profile-header">
-  <div class="avatar-wrapper">
-    <img src="https://s21.ax1x.com/2025/02/07/pEm9bQO.jpg" alt="头像" class="avatar">
-  </div>
-  <div class="profile-info">
-    <h1>Yu Meng</h1>
-    <p class="title">鱼梦江湖</p>
-    <p class="bio">热爱技术，专注于前端开发和全栈解决方案</p>
-    <div class="social-links">
-      <a href="https://github.com/myfishdream" target="_blank" class="social-link github">
-        <span class="link-text">GitHub</span>
-      </a>
-      <a href="mailto:your@email.com" class="social-link email">
-        <span class="link-text">Email</span>
+<div class="profile-container">
+  <div class="profile-card">
+    <div class="profile-header">
+      <div class="avatar-container">
+        <img :src="profile.avatar" alt="头像" class="avatar">
+      </div>
+      <div class="profile-info">
+        <h1 class="name">{{ profile.name }}</h1>
+        <p class="title">{{ profile.title }}</p>
+        <p class="bio">
+          <TypeWriter 
+            :text="profile.bio"
+            :speed="80"
+          />
+        </p>
+      </div>
+    </div>
+    <div class="contact-links">
+      <a v-for="contact in profile.contacts" 
+         :key="contact.link"
+         :href="contact.link"
+         class="contact-item"
+         :class="contact.icon"
+         target="_blank"
+         rel="noopener">
+        <span class="contact-name">{{ contact.name }}</span>
       </a>
     </div>
-    
   </div>
 </div>
 
@@ -137,129 +168,179 @@ const projects = [
 
 
 <style scoped>
-.profile-header {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-  padding: 2rem;
-  background: var(--vp-c-bg-soft);
-  border-radius: 12px;
-  margin-bottom: 2rem;
+.profile-container {
+  margin: 2rem 0;
 }
 
-.avatar-wrapper {
-  flex-shrink: 0;
-  width: 150px;
-  height: 150px;
-  border-radius: 75px;
-  overflow: hidden;
-  border: 4px solid var(--vp-c-brand);
-  background: var(--vp-c-bg);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+.profile-card {
+  background: var(--vp-c-bg-soft);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
+}
+
+.profile-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+}
+
+.profile-header {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.avatar-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 60px;
+  overflow: hidden;
+  background: var(--vp-c-bg);
+  border: 3px solid var(--vp-c-brand);
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .avatar {
-  width: 100%;
-  height: 100%;
+  width: 120%;
+  height: 120%;
   object-fit: cover;
   object-position: center;
+  transform-origin: center;
+  transform: scale(1);
   transition: transform 0.3s ease;
-  transform: scale(1.2);
 }
 
-.avatar-wrapper:hover .avatar {
-  transform: scale(1.3);
+.avatar-container:hover .avatar {
+  transform: scale(1.1);
 }
 
 .profile-info {
   flex: 1;
 }
 
-.profile-info h1 {
+.name {
   margin: 0;
   font-size: 2rem;
-  line-height: 1.2;
-  background: linear-gradient(120deg, var(--vp-c-brand) 0%, var(--vp-c-brand-light) 100%);
+  background: linear-gradient(120deg, var(--vp-c-brand), var(--vp-c-brand-light));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  line-height: 1.2;
 }
 
 .title {
-  font-size: 1.2rem;
-  color: var(--vp-c-text-2);
   margin: 0.5rem 0;
+  font-size: 2rem;
+  color: var(--vp-c-text-2);
+  font-weight: 1000;
 }
 
 .bio {
-  color: var(--vp-c-text-1);
   margin: 0.5rem 0;
+  color: var(--vp-c-text-1);
+  line-height: 1.6;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
 }
 
-.social-links {
+.contact-links {
   display: flex;
   gap: 1rem;
-  margin-top: 1rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--vp-c-divider);
 }
 
-.social-link {
+.contact-item {
   display: inline-flex;
   align-items: center;
   padding: 0.5rem 1rem;
-  /* border-radius: 20px;  */
+  border-radius: 8px;
   background: var(--vp-c-bg);
-  color: var(--vp-c-text-2);
+  color: var(--vp-c-text-1);
   text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
   transition: all 0.3s ease;
   border: 1px solid var(--vp-c-divider);
 }
 
-.social-link:hover {
-  color: var(--vp-c-brand);
+.contact-item:hover {
+  background: var(--vp-c-brand);
+  color: white;
   border-color: var(--vp-c-brand);
   transform: translateY(-2px);
 }
 
-.link-text {
-  font-size: 0.9rem;
-  font-weight: 500;
+.contact-item.github::before {
+  content: '🐱';
+  margin-right: 0.5rem;
+}
+
+.contact-item.email::before {
+  content: '📧';
+  margin-right: 0.5rem;
 }
 
 /* 深色模式适配 */
 @media (prefers-color-scheme: dark) {
-  .social-link {
-    background: var(--vp-c-bg-soft);
-  }
-
-  .avatar-wrapper {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    border-width: 3px;
+  .profile-card {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   }
   
-  .avatar-wrapper:hover {
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  .profile-card:hover {
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+  }
+  
+  .avatar-container {
+    border-width: 2px;
   }
 }
 
 /* 移动端适配 */
 @media (max-width: 768px) {
+  .profile-card {
+    padding: 1.5rem;
+  }
+  
   .profile-header {
     flex-direction: column;
     text-align: center;
-    padding: 1.5rem;
+    gap: 1rem;
   }
-
-  .social-links {
+  
+  .avatar-container {
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+    margin: 0 auto;
+  }
+  
+  .contact-links {
+    flex-wrap: wrap;
     justify-content: center;
   }
+  
+  .name {
+    font-size: 1.5rem;
+  }
+  
+  .title {
+    font-size: 1rem;
+  }
 
-  .avatar-wrapper {
-    width: 120px;
-    height: 120px;
-    border-radius: 60px;
+  .avatar {
+    width: 120%;
+    height: 120%;
+  }
+
+  .bio {
+    font-size: 0.9rem;
   }
 }
 </style>
