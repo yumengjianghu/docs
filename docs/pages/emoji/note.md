@@ -8,7 +8,7 @@ author: YuMeng    # 作者（可选）
 category: 娱乐分享  # 主分类，只能有一个
 tags: 
   - 笔记   # 标签列表，可以有多个   
-  - 图标
+  - 其他
 # 文档描述
 description: 汇集一些文档编写的表情/图标
 

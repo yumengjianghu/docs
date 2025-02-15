@@ -10,7 +10,6 @@ tags:
   - 笔记   # 标签列表，可以有多个
   - 教程   
   - Node.js
-  - 局域网
 # 文档描述
 description: 将服务器部署到局域网以便在WiFi环境下访问API
 
