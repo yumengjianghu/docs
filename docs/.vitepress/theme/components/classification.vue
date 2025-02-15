@@ -90,7 +90,7 @@
         </div>
       </div>
     </div>
-<hr>  
+    <div class="dividingLine"></div>
     <!-- 文档列表 -->
     <div class="documents-grid">
       <DocCard v-for="doc in paginatedDocs" :key="doc.path" :doc="doc" />
@@ -599,7 +599,11 @@ onMounted(() => {
 .filters {
   margin-bottom: 30px;
 }
-
+.dividingLine{
+  height: 1px;
+  border: 1px var(--vp-c-divider);
+  border-style: dashed;
+}
 .filter-section {
   background: var(--vp-c-bg-soft);
   border-radius: 12px;
