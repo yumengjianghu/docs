@@ -19,27 +19,7 @@
       </p>
     </div>
 
-    <!-- 在留言列表前添加排序选项 -->
-    <div class="sort-options">
-      <button 
-        class="sort-btn" 
-        :class="{ active: sortType === 'newest' }"
-        @click="sortType = 'newest'"
-      >
-        <span class="sort-icon">⏱️</span>
-        最新
-      </button>
-      <button 
-        class="sort-btn" 
-        :class="{ active: sortType === 'likes' }"
-        @click="sortType = 'likes'"
-      >
-        <span class="sort-icon">⚡</span>
-        最热
-      </button>
-    </div>
-
-    <!-- 折叠面板 -->
+    <!-- 修改留言表单部分 -->
     <div class="message-form-panel" :class="{ 'is-collapsed': isCollapsed }">
       <div class="panel-header" @click="togglePanel">
         <h3 class="panel-title">
@@ -49,83 +29,84 @@
         <span class="collapse-icon">{{ isCollapsed ? '展开' : '收起' }}</span>
       </div>
       
-      <!-- 留言表单区域 -->
       <div class="panel-content" v-show="!isCollapsed">
-        <!-- 留言表单 -->
-        <div class="message-form" v-motion :initial="{ opacity: 0, scale: 0.9 }" :enter="{ opacity: 1, scale: 1, delay: 300 }">
-          <div class="form-header">
-            <div class="author-info">
-              <div class="avatar-section">
-                <div class="avatar-upload" :class="{ 'is-anonymous': isAnonymous }">
-                  <img 
-                    :src="avatarPreview || defaultAvatar" 
-                    alt="头像"
-                    class="avatar-preview"
-                  >
-                  <div 
-                    class="avatar-overlay" 
-                    v-if="!isAnonymous"
-                    @click="triggerAvatarUpload"
-                  >
-                    <span class="upload-icon">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                        <circle cx="12" cy="13" r="4"/>
-                      </svg>
-                    </span>
-                    <span class="upload-text">更换头像</span>
-                  </div>
-                </div>
-                <input
-                  type="file"
-                  ref="avatarInput"
-                  @change="handleAvatarChange"
-                  accept="image/*"
-                  class="avatar-input"
-                  style="display: none;"
+        <div class="message-form">
+          <!-- 头像和输入框一行 -->
+          <div class="form-main">
+            <div class="avatar-section">
+              <div class="avatar-upload" :class="{ 'is-anonymous': isAnonymous }">
+                <img 
+                  :src="avatarPreview || defaultAvatar" 
+                  alt="头像"
+                  class="avatar-preview"
                 >
-              </div>
-              
-              <div class="user-info">
-                <div class="identity-switch">
-                  <button 
-                    class="identity-btn" 
-                    :class="{ active: !isAnonymous }"
-                    @click="setIdentity(false)"
-                  >
-                    <span class="identity-icon">👤</span>
-                    实名
-                  </button>
-                  <button 
-                    class="identity-btn" 
-                    :class="{ active: isAnonymous }"
-                    @click="setIdentity(true)"
-                  >
-                    <span class="identity-icon">🎭</span>
-                    匿名
-                  </button>
-                </div>
-                <input
+                <div 
+                  class="avatar-overlay" 
                   v-if="!isAnonymous"
-                  type="text"
-                  v-model="author"
-                  placeholder="请输入你的名字"
-                  class="author-input"
+                  @click.stop="triggerAvatarUpload"
                 >
+                  <span class="upload-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                      <circle cx="12" cy="13" r="4"/>
+                    </svg>
+                  </span>
+                  <span class="upload-text">更换头像</span>
+                </div>
               </div>
+              <input
+                type="file"
+                ref="avatarInput"
+                @change="handleAvatarChange"
+                accept="image/*"
+                class="avatar-input"
+                style="display: none;"
+              >
+            </div>
+
+            <div class="content-wrapper">
+              <textarea
+                v-model="content"
+                placeholder="说点什么吧"
+                class="content-input"
+                :class="{ 'has-content': content.length > 0 }"
+                @input="adjustHeight"
+                ref="contentInput"
+              ></textarea>
             </div>
           </div>
 
-          <div class="content-wrapper">
-            <textarea
-              v-model="content"
-              placeholder="说点什么吧..."
-              class="content-input"
-              :class="{ 'has-content': content.length > 0 }"
-              @input="adjustHeight"
-              ref="contentInput"
-            ></textarea>
-            <div class="form-footer">
+          <!-- 底部控制栏一行 -->
+          <div class="form-footer">
+            <div class="left-controls">
+              <div class="identity-switch">
+                <button 
+                  class="identity-btn" 
+                  :class="{ active: !isAnonymous }"
+                  @click="setIdentity(false)"
+                >
+                  <span class="identity-icon">👤</span>
+                  实名
+                </button>
+                <button 
+                  class="identity-btn" 
+                  :class="{ active: isAnonymous }"
+                  @click="setIdentity(true)"
+                >
+                  <span class="identity-icon">🎭</span>
+                  匿名
+                </button>
+              </div>
+              <input
+                v-if="!isAnonymous"
+                type="text"
+                v-model="author"
+                placeholder="你的名字"
+                class="author-input"
+              >
+            </div>
+            
+            <div class="right-controls">
               <span class="char-count" :class="{ 'near-limit': content.length > 450 }">
                 {{ content.length }}/500
               </span>
@@ -141,6 +122,25 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- 简化的排序选项 -->
+    <div class="sort-bar">
+      <button 
+        class="sort-option" 
+        :class="{ active: sortType === 'newest' }"
+        @click="sortType = 'newest'"
+      >
+        最新
+      </button>
+      <span class="sort-divider">|</span>
+      <button 
+        class="sort-option" 
+        :class="{ active: sortType === 'likes' }"
+        @click="sortType = 'likes'"
+      >
+        最热
+      </button>
     </div>
 
     <!-- 修改评论列表部分 -->
@@ -644,7 +644,7 @@ const togglePanel = () => {
   background: var(--vp-c-bg-soft);
   border-radius: 12px;
   padding: 2rem;
-  margin-bottom: 3rem;
+  margin-bottom: 0rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
   box-sizing: border-box;
@@ -654,35 +654,40 @@ const togglePanel = () => {
   transform: translateY(-2px);
 }
 
+.form-main {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  align-items: flex-start;
+}
+
 .avatar-section {
   position: relative;
-  margin-bottom: 1.5rem;
+  flex-shrink: 0;
+  width: 70px;
+  height: 70px;
 }
 
 .avatar-upload {
-  position: relative;
-  width: 120px;
-  height: 120px;
-  margin: 0 auto;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--vp-c-divider);
   transition: all 0.3s ease;
+  position: relative;
   cursor: pointer;
 }
 
-.avatar-upload.is-anonymous {
-  opacity: 0.7;
-  filter: grayscale(0.5);
+.avatar-upload:hover .avatar-overlay {
+  opacity: 1;
 }
 
 .avatar-preview {
   width: 100%;
   height: 100%;
-  border-radius: 50%;
   object-fit: cover;
-  border: 3px solid var(--vp-c-brand);
-  padding: 3px;
-  background: var(--vp-c-bg);
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
 .avatar-overlay {
@@ -691,176 +696,63 @@ const togglePanel = () => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
-  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   opacity: 0;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  gap: 0.5rem;
-  transform: scale(0.95);
-}
-
-.avatar-upload:hover .avatar-overlay {
-  opacity: 1;
-  transform: scale(1);
+  transition: opacity 0.3s ease;
+  color: white;
+  gap: 4px;
 }
 
 .upload-icon {
-  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  transform: translateY(5px);
-  transition: transform 0.3s ease;
-}
-
-.avatar-upload:hover .upload-icon {
-  transform: translateY(0);
 }
 
 .upload-text {
-  color: white;
-  font-size: 0.875rem;
+  font-size: 12px;
   font-weight: 500;
-  transform: translateY(5px);
-  transition: transform 0.3s ease;
-}
-
-.avatar-upload:hover .upload-text {
-  transform: translateY(0);
-}
-
-.avatar-input {
-  display: none;
-}
-
-.user-info {
   text-align: center;
-  margin-top: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  align-items: center;
-}
-
-/* 新的开关样式 */
-.anonymous-switch {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  cursor: pointer;
-}
-
-.anonymous-switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.switch-slider {
-  position: relative;
-  display: inline-block;
-  width: 48px;
-  height: 24px;
-  background-color: var(--vp-c-bg-mute);
-  border-radius: 24px;
-  transition: all 0.3s ease;
-}
-
-.switch-slider:before {
-  content: '';
-  position: absolute;
-  height: 20px;
-  width: 20px;
-  left: 2px;
-  bottom: 2px;
-  background-color: white;
-  border-radius: 50%;
-  transition: all 0.3s ease;
-}
-
-.anonymous-switch input:checked + .switch-slider {
-  background-color: var(--vp-c-brand);
-}
-
-.anonymous-switch input:checked + .switch-slider:before {
-  transform: translateX(24px);
-}
-
-.switch-text {
-  font-size: 0.9rem;
-  color: var(--vp-c-text-2);
-  transition: color 0.3s ease;
-}
-
-.author-input {
   width: 100%;
-  max-width: 200px;
-  padding: 0.75rem 1rem;
-  border: 2px solid var(--vp-c-divider);
-  border-radius: 8px;
-  background: var(--vp-c-bg);
-  color: var(--vp-c-text-1);
-  transition: all 0.3s ease;
-  text-align: center;
-  font-size: 0.9rem;
-  letter-spacing: 0.02em;
+  padding: 0 4px;
 }
 
-.author-input::placeholder {
-  color: var(--vp-c-text-3);
-  font-size: 0.9rem;
-  font-weight: normal;
-  letter-spacing: 0.02em;
+.avatar-upload.is-anonymous {
+  cursor: not-allowed;
   opacity: 0.7;
-  transition: all 0.3s ease;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-.author-input:focus::placeholder {
-  opacity: 0.4;
-  transform: translateX(5px);
+.avatar-upload.is-anonymous:hover .avatar-overlay {
+  opacity: 0;
 }
 
-.author-input:focus {
-  outline: none;
-  border-color: var(--vp-c-brand);
-  box-shadow: 0 0 0 3px var(--vp-c-brand-soft);
+.content-wrapper {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
 }
 
 .content-input {
   width: 100%;
-  min-height: 120px;
-  padding: 1.25rem;
+  min-height: 70px;
+  padding: 0.75rem;
   border: 2px solid var(--vp-c-divider);
   border-radius: 12px;
   background: var(--vp-c-bg);
-  color: var(--vp-c-text-1);
   resize: none;
   transition: all 0.3s ease;
   font-size: 0.95rem;
+  font-weight: bold;
   line-height: 1.6;
-  letter-spacing: 0.02em;
 }
 
-.content-input::placeholder {
-  color: var(--vp-c-text-3);
-  font-size: 0.95rem;
-  font-weight: normal;
-  letter-spacing: 0.02em;
-  opacity: 0.7;
-  transition: all 0.3s ease;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-}
-
-.content-input:focus::placeholder {
-  opacity: 0.4;
-  transform: translateX(5px);
+.content-input:hover {
+  border-color: var(--vp-c-brand-soft);
 }
 
 .content-input:focus {
@@ -869,254 +761,83 @@ const togglePanel = () => {
   box-shadow: 0 0 0 3px var(--vp-c-brand-soft);
 }
 
-.message-item {
-  background: #fff;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-  border-radius: 3px;
-  position: relative;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 
-    0 1px 3px rgba(0, 0, 0, 0.08),
-    0 1px 2px rgba(0, 0, 0, 0.12);
-  transform: rotate(-1deg);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-/* 随机旋转角度 */
-.message-item:nth-child(2n) {
-  transform: rotate(1deg);
-}
-
-.message-item:nth-child(3n) {
-  transform: rotate(-0.5deg);
-}
-
-.message-item:nth-child(5n) {
-  transform: rotate(0.5deg);
-}
-
-/* 便签悬浮效果 */
-.message-item:hover {
-  transform: translateY(-5px) rotate(0deg) !important;
-  box-shadow: 
-    0 10px 20px rgba(0, 0, 0, 0.1),
-    0 3px 6px rgba(0, 0, 0, 0.08);
-}
-
-/* 图钉效果 */
-.message-item::before {
-  content: '📌';
-  position: absolute;
-  top: -0.8rem;
-  left: 1rem;
-  font-size: 1.5rem;
-  opacity: 0.9;
-  transform: rotate(-15deg);
-  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.1));
-}
-
-/* 作者信息区域 */
-.message-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 1rem;
-  border-bottom: 1px dashed var(--vp-c-text-2);
-  margin-bottom: 1rem;
-}
-
-.message-author-info {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-/* 头像样式 */
-.avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border: 2px solid #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-}
-
-.message-item:hover .avatar {
-  transform: rotate(-8deg);
-}
-
-/* 作者信息 */
-.author-details {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-}
-
-.author-name {
-  font-weight: 600;
-  color: var(--vp-c-text-1);
-  font-size: 1.1rem;
-  /* font-family: "Comic Sans MS", cursive, sans-serif; */
-}
-
-.message-time {
-  font-size: 0.85rem;
-  color: var(--vp-c-text-2);
-  /* font-style: italic; */
-}
-
-/* 留言内容区域 */
-.message-content {
-  font-size: 1.05rem;
-  line-height: 1.8;
-  color: var(--vp-c-text-1);
-  padding: 0.5rem;
-  background: linear-gradient(
-    transparent 0%,
-    transparent 94%,
-    rgba(0, 0, 0, 0.1) 95%,
-    transparent 96%
-  ) 0 0 / 20px 20px;
-  /* font-family: "Comic Sans MS", cursive, sans-serif; */
-}
-
-/* 操作按钮 */
-.message-actions {
-  display: flex;
-  gap: 0.8rem;
-}
-
-/* 点赞按钮 */
-.like-btn {
-  padding: 0.4rem 0.8rem;
-  border: none;
-  background: transparent;
-  color: var(--vp-c-text-2);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  /* font-family: "Comic Sans MS", cursive, sans-serif; */
-}
-
-.like-btn:hover {
-  transform: scale(1.1);
-  color: var(--vp-c-brand);
-}
-
-.like-btn.liked {
-  color: var(--vp-c-brand);
-}
-
-.like-icon {
-  font-size: 1.2rem;
-  transition: transform 0.3s ease;
-}
-
-.like-btn:hover .like-icon {
-  transform: scale(1.2) rotate(10deg);
-}
-.like-count{
-  transition: all 0.1s;
-}
-.like-btn:active .like-count{
-  transform: translateY(-3px);
-}
-
-/* 深色模式适配 */
-@media (prefers-color-scheme: dark) {
-  .message-item {
-    background: var(--vp-c-bg-soft);
-    border: 1px solid var(--vp-c-divider);
-  }
-
-  .message-content {
-    background: linear-gradient(
-      transparent 0%,
-      transparent 94%,
-      rgba(255, 255, 255, 0.1) 95%,
-      transparent 96%
-    ) 0 0 / 20px 20px;
-  }
-
-  .avatar {
-    border-color: var(--vp-c-bg-soft);
-  }
-}
-
-/* 移动端适配 */
-@media (max-width: 768px) {
-  .message-item {
-    padding: 1.2rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .message-item::before {
-    font-size: 1.2rem;
-    top: -0.6rem;
-  }
-
-  .avatar {
-    width: 40px;
-    height: 40px;
-  }
-
-  .author-name {
-    font-size: 1rem;
-  }
-
-  .message-time {
-    font-size: 0.8rem;
-  }
-
-  .message-content {
-    font-size: 1rem;
-    line-height: 1.6;
-  }
-}
-
-/* 输入框样式优化 */
-.content-wrapper {
-  position: relative;
-  margin-top: 1.5rem;
-}
-
+/* 表单底部控制栏布局 */
 .form-footer {
   display: flex;
+  flex-direction: row; /* 电脑端保持水平布局 */
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
   margin-top: 1rem;
 }
 
+.left-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.identity-switch {
+  flex: 0 0 auto;
+}
+
+.author-input {
+  width: 120px;
+  min-width: 120px;
+  padding: 0.5rem 0.75rem;
+  border: 2px solid var(--vp-c-divider);
+  border-radius: 8px;
+  background: var(--vp-c-bg);
+  color: var(--vp-c-text-1);
+  font-size: 0.9rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.author-input:hover {
+  border-color: var(--vp-c-brand-soft);
+}
+
+.author-input:focus {
+  outline: none;
+  border-color: var(--vp-c-brand);
+  box-shadow: 0 0 0 3px var(--vp-c-brand-soft);
+}
+
+.right-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
 .char-count {
-  color: var(--vp-c-text-2);
   font-size: 0.875rem;
-  transition: color 0.3s ease;
+  color: var(--vp-c-text-2);
+  transition: all 0.3s ease;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  background: var(--vp-c-bg-soft);
 }
 
 .char-count.near-limit {
   color: var(--vp-c-danger);
+  background: var(--vp-c-danger-soft);
 }
 
 .submit-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 2rem;
-  background: var(--vp-c-brand);
-  color: white;
+  padding: 0.5rem 1.5rem;
   border: none;
   border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  background: var(--vp-c-brand);
+  color: white;
   font-weight: 500;
-}
-
-.submit-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-width: 90px;
 }
 
 .submit-btn:disabled {
@@ -1170,7 +891,7 @@ const togglePanel = () => {
   }
 
   .message-content-wrapper {
-    padding: 1rem;
+    padding: 0rem;
     margin-top: 0.75rem;
   }
 
@@ -1183,9 +904,9 @@ const togglePanel = () => {
   }
 
   /* 调整移动端头像大小 */
-  .avatar-upload {
-    width: 100px;
-    height: 100px;
+  .avatar-section {
+    width: 50px;
+    height: 50px;
   }
 
   /* 调整移动端输入框样式 */
@@ -1201,19 +922,44 @@ const togglePanel = () => {
 
   /* 调整移动端身份切换按钮 */
   .identity-btn {
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
   }
 
   /* 调整移动端作者输入框 */
   .author-input {
-    max-width: 100%;
+    width: 120px;
   }
 
   /* 调整移动端加载容器 */
   .comments-loading-container {
     min-height: 150px;
     margin: 1rem 0;
+  }
+
+  .form-footer {
+    flex-direction: column; /* 移动端改为列布局 */
+    gap: 1rem;
+  }
+
+  .left-controls {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .right-controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .upload-text {
+    font-size: 10px; /* 移动端字体稍微小一点 */
+    line-height: 1.2;
+  }
+
+  .avatar-overlay {
+    padding: 4px; /* 移动端增加一点内边距 */
   }
 }
 
@@ -1225,7 +971,7 @@ const togglePanel = () => {
 
   .message-form,
   .message-item {
-    padding: 2rem; /* 减少 20% (从 2.5rem 减少到 2rem) */
+    padding: 1rem; /* 减少 20% (从 2.5rem 减少到 2rem) */
   }
 }
 
@@ -1510,137 +1256,325 @@ const togglePanel = () => {
 }
 
 .panel-content {
-  padding: 1.5rem;
+  padding: 0rem;
   border-top: 1px dashed var(--vp-c-divider);
 }
 
-/* 留言卡片主题适配优化 */
+/* 修改评论项样式 */
 .message-item {
-  background: var(--vp-c-bg-soft);
+  background: var(--vp-c-bg);
+  padding: 1.2rem 1.2rem 0rem 1.2rem;
+  margin-bottom: 1.5rem;
+  border-radius: 12px;
   border: 1px solid var(--vp-c-divider);
-  box-shadow: 
-    0 1px 3px rgba(0, 0, 0, 0.04),
-    0 1px 2px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .message-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   border-color: var(--vp-c-brand-soft);
-  box-shadow: 
-    0 10px 20px rgba(0, 0, 0, 0.06),
-    0 3px 6px rgba(0, 0, 0, 0.04);
 }
 
-/* 深色模式优化 */
-@media (prefers-color-scheme: dark) {
-  .message-item {
-    background: var(--vp-c-bg-mute);
-    border-color: var(--vp-c-divider);
-  }
-
-  .message-item:hover {
-    box-shadow: 
-      0 10px 20px rgba(0, 0, 0, 0.2),
-      0 3px 6px rgba(0, 0, 0, 0.15);
-  }
-
-  .panel-header:hover {
-    background: var(--vp-c-bg-soft);
-  }
-
-  .collapse-icon {
-    background: var(--vp-c-bg-mute);
-  }
-
-  .message-content {
-    background: linear-gradient(
-      transparent 0%,
-      transparent 94%,
-      rgba(255, 255, 255, 0.06) 95%,
-      transparent 96%
-    ) 0 0 / 20px 20px;
-  }
-}
-
-/* 移动端适配补充 */
-@media (max-width: 768px) {
-  .panel-header {
-    padding: 0.8rem 1rem;
-  }
-
-  .panel-content {
-    padding: 1rem;
-  }
-
-  .panel-title {
-    font-size: 1rem;
-  }
-
-  .collapse-icon {
-    padding: 0.3rem 0.6rem;
-    font-size: 0.8rem;
-  }
-}
-
-/* 排序选项样式 */
-.sort-options {
+/* 作者信息区域 */
+.message-header {
   display: flex;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-  padding: 0.5rem;
-  background: var(--vp-c-bg-soft);
-  border-radius: 8px;
-  border: 1px solid var(--vp-c-divider);
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
-.sort-btn {
+.message-author-info {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  border: none;
-  background: transparent;
+  gap: 0.8rem;
+}
+
+/* 头像样式 */
+.message-item .avatar {
+  width: 60px;  /* 增大头像尺寸 */
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid var(--vp-c-bg);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.message-item:hover .avatar {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* 作者信息 */
+.author-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.author-name {
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+  font-size: 1rem;
+}
+
+.message-time {
+  font-size: 0.8rem;
   color: var(--vp-c-text-2);
+}
+
+/* 留言内容区域 */
+.message-content {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--vp-c-text-1);
+  padding: 1rem;
+  background: var(--vp-c-bg-soft);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+/* 操作区域 */
+.message-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.5rem;
+}
+
+/* 点赞按钮 */
+.like-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 20px;
+  background: var(--vp-c-bg);
+  color: var(--vp-c-text-2);
+  font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  border-radius: 6px;
-  font-size: 0.9rem;
 }
 
-.sort-btn:hover {
-  background: var(--vp-c-bg-mute);
-  color: var(--vp-c-text-1);
-}
-
-.sort-btn.active {
+.like-btn:hover {
   background: var(--vp-c-brand-soft);
   color: var(--vp-c-brand);
+  border-color: var(--vp-c-brand);
+  transform: translateY(-1px);
 }
 
-.sort-icon {
-  font-size: 1.1rem;
+.like-btn.liked {
+  background: var(--vp-c-brand-soft);
+  color: var(--vp-c-brand);
+  border-color: var(--vp-c-brand);
+}
+
+/* 删除按钮 */
+.delete-btn {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--vp-c-danger-soft);
+  border-radius: 20px;
+  background: transparent;
+  color: var(--vp-c-danger);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.delete-btn:hover {
+  background: var(--vp-c-danger-soft);
+  transform: translateY(-1px);
 }
 
 /* 深色模式适配 */
 @media (prefers-color-scheme: dark) {
-  .sort-options {
+  .message-item {
+    background: var(--vp-c-bg-soft);
+  }
+
+  .message-content {
     background: var(--vp-c-bg-mute);
   }
 
-  .sort-btn:hover {
-    background: var(--vp-c-bg-soft);
+  .like-btn,
+  .delete-btn {
+    background: var(--vp-c-bg-mute);
   }
 }
 
 /* 移动端适配 */
 @media (max-width: 768px) {
-  .sort-options {
-    padding: 0.4rem;
-    gap: 0.5rem;
+  .message-item {
+    padding: 1.2rem;
   }
 
-  .sort-btn {
-    padding: 0.4rem 0.8rem;
+  .message-content {
+    padding: 0.9rem;
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  .like-btn,
+  .delete-btn {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .author-name {
+    font-size: 0.95rem;
+  }
+
+  .message-time {
+    font-size: 0.75rem;
+  }
+}
+
+/* 简化的排序栏样式 */
+.sort-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 0;
+  font-size: 0.9rem;
+}
+
+.sort-option {
+  background: none;
+  border: none;
+  padding: 0.25rem 0.5rem;
+  color: var(--vp-c-text-2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.sort-option:hover {
+  color: var(--vp-c-brand);
+}
+
+.sort-option.active {
+  color: var(--vp-c-brand);
+  font-weight: 600;
+}
+
+.sort-divider {
+  color: var(--vp-c-divider);
+  font-weight: 300;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .sort-bar {
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+  
+  .sort-option {
     font-size: 0.85rem;
+  }
+}
+
+/* 表单底部控制栏布局 */
+.form-footer {
+  display: flex;
+  flex-direction: row; /* 电脑端保持水平布局 */
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.left-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.identity-switch {
+  flex: 0 0 auto;
+}
+
+.author-input {
+  width: 120px; /* 固定适中的宽度 */
+  min-width: 120px;
+}
+
+.right-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .form-footer {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .left-controls {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .author-input {
+    flex: 1;
+    min-width: 150px;
+    max-width: 100%;
+    font-size: 0.85rem;
+  }
+
+  .right-controls {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .submit-btn {
+    width: auto;
+    min-width: 80px;
+    padding: 0.4rem 1rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* 超小屏幕适配 */
+@media (max-width: 480px) {
+  .left-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .identity-switch {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .author-input {
+    width: 100%;
+    text-align: center;
+  }
+
+  .right-controls {
+    flex-direction: column;
+    gap: 0.8rem;
+    align-items: center;
+  }
+
+  .submit-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .char-count {
+    width: 100%;
+    text-align: center;
   }
 }
 </style>
