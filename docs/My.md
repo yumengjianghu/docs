@@ -109,7 +109,11 @@ const profile = {
   name: 'Yu Meng',
   title: '鱼梦江湖',
   avatar: 'https://s21.ax1x.com/2025/02/07/pEm9bQO.jpg',
-  bio: '努力的意义就是，当好运来临的时候，我觉得我值得。',
+  bio: [
+    '努力的意义就是，当好运来临的时候，我觉得我值得。           —— YuMeng',
+    '成长是一场与自己的较量，你只需要比昨天的自己更好。',
+    '路虽远，行则将至；事虽难，做则必成。'
+  ],
   contacts: [
     {
       icon: 'github',
@@ -120,7 +124,8 @@ const profile = {
       icon: 'email',
       name: 'Email',
       link: 'mailto:yumengjianghu@outlook.com'
-    }
+    },
+    // 图标由样式匹配，新增项需添加图标
   ]
 }
 </script>
@@ -136,8 +141,10 @@ const profile = {
         <p class="title">{{ profile.title }}</p>
         <p class="bio">
           <TypeWriter 
-            :text="profile.bio"
-            :speed="80"
+            :texts="profile.bio"
+            :typeSpeed="80"
+            :deleteSpeed="40"
+            :delayBetween="2000"
           />
         </p>
       </div>
@@ -243,7 +250,7 @@ const profile = {
   margin: 0.5rem 0;
   color: var(--vp-c-text-1);
   line-height: 1.6;
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   display: flex;
   align-items: center;
 }
@@ -276,7 +283,7 @@ const profile = {
   border-color: var(--vp-c-brand);
   transform: translateY(-2px);
 }
-
+/* 其他图标在此添加 */
 .contact-item.github::before {
   content: '🐱';
   margin-right: 0.5rem;
@@ -286,7 +293,10 @@ const profile = {
   content: '📧';
   margin-right: 0.5rem;
 }
-
+.contact-item.other::before {
+  content: '📦';
+  margin-right: 0.5rem;
+}
 /* 深色模式适配 */
 @media (prefers-color-scheme: dark) {
   .profile-card {
