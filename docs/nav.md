@@ -19,7 +19,15 @@ const tools1 = [
     title: '文叔叔',
     desc: '在线快速分享文件',
     url: 'https://www.wenshushu.cn/',
-  }, 
+  }, {
+    title:'Carbon',
+    desc:'代码图片生成',
+    url:'https://carbon.now.sh/?bg=rgba%2874%2C144%2C226%2C1%29&t=material&wt=none&l=auto&width=680&ds=false&dsyoff=20px&dsblur=68px&wc=true&wa=true&pv=56px&ph=56px&ln=false&fl=1&fm=Fira+Code&fs=14px&lh=152%25&si=false&es=2x&wm=false'
+  }, {
+    title: '在线工具',
+    desc: '在线代码压缩,二维码生成...',
+    url: 'https://tool.lu/',
+  },
 
 ]
 const tools2 = [
@@ -31,11 +39,12 @@ const tools2 = [
     title: '菜鸟教程',
     desc: '学的不仅是技术，更是梦想！',
     url: 'https://www.runoob.com/'
-  }, {
-    title: '',
-    desc: '',
-    url: ''
   }, 
+  // {
+  //   title: '',
+  //   desc: '',
+  //   url: ''
+  // }, 
 
 ]
 const tools3 =[
