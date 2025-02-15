@@ -8,7 +8,7 @@ hero:
   text: "Yu Meng 的成长之路"
   tagline: 你的潜力超乎你的想象，勇敢去尝试吧！
   image:
-    src: "logo2.png"
+    src: "https://s21.ax1x.com/2025/02/15/pEKJAwF.png"
     alt: '背景图片'
   actions:
     - theme: alt

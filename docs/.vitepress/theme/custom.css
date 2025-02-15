@@ -509,7 +509,7 @@
     var(--bear-bg-color1) 50%, 
     var(--bear-bg-color2) 50%
   );
-  --vp-home-hero-image-filter: blur(44px);
+  --vp-home-hero-image-filter: blur(80px);
   transition: all 0.3s ease;
 }
 
