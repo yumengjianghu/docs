@@ -1,12 +1,13 @@
 <template>
-  <div class="doc-card-wrapper">
-    <a :href="doc.path" class="doc-card-link">
-      <div class="doc-card-content">
-        <div class="doc-header">
-          <h3 class="doc-title">{{ doc.title }}</h3>
-          <span v-if="doc.star" class="doc-star">⭐</span>
-        </div>
+  <div class="doc-card-wrapper" :class="{ expanded: isExpanded }">
+    <div class="doc-header" @click.prevent="toggleExpand">
+      <h3 class="doc-title">{{ doc.title }}</h3>
+      <span v-if="doc.star" class="doc-star">⭐</span>
+      <span v-if="isMobile" class="expand-indicator">▼</span>
+    </div>
 
+    <div v-show="!isMobile || isExpanded" class="doc-content">
+      <a :href="doc.path" class="doc-card-link">
         <div class="doc-meta">
           <div class="doc-info">
             <span v-if="doc.date" class="doc-date">
@@ -32,18 +33,37 @@
             </span>
           </div>
         </div>
-      </div>
-    </a>
+      </a>
+    </div>
   </div>
 </template>
 
 <script setup>
-defineProps({
+import { ref, onMounted } from 'vue'
+
+const props = defineProps({
   doc: {
     type: Object,
     required: true
   }
 })
+
+const isExpanded = ref(false)
+const isMobile = ref(false)
+
+onMounted(() => {
+  const checkMobile = () => {
+    isMobile.value = window.innerWidth <= 768
+  }
+  checkMobile()
+  window.addEventListener('resize', checkMobile)
+})
+
+const toggleExpand = () => {
+  if (isMobile.value) {
+    isExpanded.value = !isExpanded.value
+  }
+}
 
 // 格式化创建日期
 const formatDate = (date) => {
@@ -66,6 +86,7 @@ const formatLastUpdated = (timestamp) => {
 
 <style scoped>
 .doc-card-wrapper {
+  padding: 16px;
   height: 100%;
   border: 2px solid var(--vp-c-divider);
   border-radius: 12px;
@@ -84,13 +105,6 @@ const formatLastUpdated = (timestamp) => {
   color: inherit;
   display: block;
   height: 100%;
-}
-
-.doc-card-content {
-  padding: 16px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
 }
 
 .doc-header {
@@ -149,5 +163,52 @@ const formatLastUpdated = (timestamp) => {
   background: var(--vp-c-brand-soft);
   border-radius: 12px;
   color: var(--vp-c-text-1);
+}
+
+/* 在 <style scoped> 中添加/修改移动端样式 */
+@media (max-width: 768px) {
+  .doc-card-wrapper {
+    border-width: 1px;
+  }
+
+  .doc-header {
+    cursor: pointer;
+    padding: 0px 12px;
+    position: relative;
+  }
+
+  .doc-content {
+    padding: 0 12px 12px;
+  }
+
+  /* 默认隐藏内容 */
+  .doc-meta,
+  .doc-description,
+  .doc-footer {
+    display: block;
+  }
+
+  /* 标题样式调整 */
+  .doc-title {
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .expand-indicator {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    color: var(--vp-c-text-2);
+    opacity: 0.5;
+    transition: transform 0.3s;
+  }
+
+  .doc-card-wrapper.expanded .expand-indicator {
+    transform: translateY(-50%) rotate(180deg);
+  }
 }
 </style> 

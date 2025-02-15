@@ -90,7 +90,7 @@
         </div>
       </div>
     </div>
-
+<hr>  
     <!-- 文档列表 -->
     <div class="documents-grid">
       <DocCard v-for="doc in paginatedDocs" :key="doc.path" :doc="doc" />
@@ -463,7 +463,7 @@ const toggleCategory = (category) => {
 // 添加折叠状态管理
 const openSections = ref({
   category: false,
-  tags: true,
+  tags: false,
   date: false
 })
 
@@ -1068,58 +1068,50 @@ onMounted(() => {
 /* 移动端优化 */
 @media (max-width: 768px) {
   .classification-container {
-    padding: 10px;
+    padding: 8px;
   }
 
-  .sort-btn {
-    font-size: 12px;
-  }
-
+  /* 搜索框压缩 */
   .search-wrapper {
-    padding: 15px 10px;
+    padding: 8px 0;
   }
 
   .search-box {
-    margin: 0 5px;
+    max-width: 100%;
+    margin: 0;
   }
 
+  .search-input {
+    height: 36px;
+    font-size: 14px;
+  }
+
+  /* 调试信息简化 */
+  .debug-info {
+    font-size: 12px;
+    padding: 4px 8px;
+    margin-bottom: 8px;
+    opacity: 0.8;
+  }
+
+  /* 排序按钮组压缩 */
   .sort-wrapper {
-    padding: 0 5px;
+    padding: 4px 0;
   }
 
-  .filter-section {
-    padding: 16px;
-    margin: 10px 5px;
+  .sort-buttons {
+    gap: 8px;
   }
 
-  .filter-header {
-    padding: 6px 10px;
-    margin: -6px -10px;
+  .sort-btn {
+    padding: 4px 8px;
+    font-size: 12px;
   }
 
-  .filter-content {
-    margin-top: 10px;
-    padding: 10px;
-  }
-
+  /* 文档网格布局调整 */
   .documents-grid {
-    gap: 10px;
-    margin: 10px 5px;
-  }
-
-  .tag-btn,
-  .category-btn,
-  .year-btn,
-  .month-btn {
-    padding: 4px 12px;
-    font-size: 0.85em;
-  }
-
-  .tags-filter,
-  .categories-filter,
-  .year-filter,
-  .month-filter {
-    gap: 6px;
+    gap: 8px;
+    margin: 8px 0;
   }
 }
 
