@@ -141,10 +141,13 @@ const profile = {
         <h1 class="name">{{ profile.name }}</h1>
         <p class="title">{{ profile.title }}</p>
         <p class="bio">
+        <!--:typeSpeed="80"
+            :deleteSpeed="40"
+            :delayBetween="2000" -->
           <TypeWriter 
             :texts="profile.bio"
-            :typeSpeed="80"
-            :deleteSpeed="40"
+            :typeSpeed="30"
+            :deleteSpeed="30"
             :delayBetween="2000"
           />
         </p>
