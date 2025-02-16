@@ -31,7 +31,7 @@ export default {
             default: 'true'
         },
         size: {
-            type: Number,
+            type: String,
             required: false,
             default: 15
         },

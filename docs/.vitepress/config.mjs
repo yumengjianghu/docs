@@ -7,7 +7,6 @@ export default defineConfig({
   vite: {
     plugins: [MarkdownPreview()],
   },
-  // metaChunk: true, //当设置为 true 时，将页面元数据提取到单独的 JavaScript 块中，而不是内联在初始 HTML 中。这使每个页面的 HTML 负载更小，并使页面元数据可缓存，从而当站点中有很多页面时可以减少服务器带宽。
   markdown: {
     image: {
       lazyLoading: true
@@ -19,26 +18,7 @@ export default defineConfig({
       infoLabel: '信息',
       detailsLabel: '详细信息'
     },
-    lineNumbers: true,
-    frontmatter: true,
-    toc: { level: [1, 2, 3] },
-    config: (md) => {
-      md.options.frontmatter = true
-    },
   },
-  // 重写内置组件
-  // vite: {
-  //   resolve: {
-  //     alias: [
-  //       {
-  //         find: /^.*\/VPNavBar\.vue$/,
-  //         replacement: fileURLToPath(
-  //           new URL('./components/CustomNavBar.vue', import.meta.url)
-  //         )
-  //       }
-  //     ]
-  //   }
-  // },
   lastUpdated: true,
   head: [
     [
@@ -69,15 +49,6 @@ export default defineConfig({
         timeStyle: 'short'
       }
     },
-    // editLink: {
-    //   pattern: ({ filePath }) => {
-    //     if (filePath.startsWith('packages/')) {
-    //       return `https://github.com/myfishdream/docs/tree/main/docs/${filePath}`
-    //     } else {
-    //       return `https://github.com/myfishdream/docs/tree/main/docs/${filePath}`
-    //     }
-    //   },
-    // },
     logo: '/logo3.png',
     sidebar: false, // 关闭侧边栏
     aside: 'left', // 设置右侧侧边栏在左侧显示
@@ -192,7 +163,7 @@ export default defineConfig({
 
     ],
     footer: {
-      copyright: '<span id="busuanzi_container_page_pv" data-page-id="age-01">📡：<span id="busuanzi_value_page_pv"></span> 次</span>',
+      copyright: '<span id="busuanzi_container_page_pv" data-page-id="age-01">⚡：<span id="busuanzi_value_page_pv"></span> 次</span>',
       message: 'Copyright © 鱼梦江湖 2025 MIT',
     }
   }
