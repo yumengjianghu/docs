@@ -7,6 +7,39 @@ const presets = require('./config/presets');
 const util = require('util');
 const execPromise = util.promisify(exec);
 
+// 加载动画类
+class LoadingAnimation {
+    constructor(text = '加载中') {
+        this.frames = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
+        this.interval = null;
+        this.currentFrame = 0;
+        this.text = text;
+        this.isRunning = false;
+    }
+
+    start() {
+        if (this.isRunning) return;
+        this.isRunning = true;
+        process.stdout.write('\x1B[?25l'); // 隐藏光标
+        this.interval = setInterval(() => {
+            process.stdout.write(`\r${colors.cyan(this.frames[this.currentFrame])} ${this.text}`);
+            this.currentFrame = (this.currentFrame + 1) % this.frames.length;
+        }, 80);
+    }
+
+    stop() {
+        if (!this.isRunning) return;
+        clearInterval(this.interval);
+        process.stdout.write('\r\x1B[K'); // 清除当前行
+        process.stdout.write('\x1B[?25h'); // 显示光标
+        this.isRunning = false;
+    }
+
+    setText(text) {
+        this.text = text;
+    }
+}
+
 // 查找 pages 目录
 function findPagesDir(startPath) {
     let currentPath = startPath;
@@ -204,6 +237,7 @@ function findGitRoot(startPath) {
 
 // 执行 Git 命令
 async function executeGitCommand(command) {
+    const loading = new LoadingAnimation('执行命令中...');
     try {
         // 保存当前目录
         const currentDir = process.cwd();
@@ -212,8 +246,15 @@ async function executeGitCommand(command) {
         const gitRoot = findGitRoot(__dirname);
         process.chdir(gitRoot);
         
+        // 开始加载动画
+        loading.start();
+        
         // 执行命令
         const { stdout, stderr } = await execPromise(command);
+        
+        // 停止加载动画
+        loading.stop();
+        
         if (stdout) console.log(colors.green(stdout));
         if (stderr) console.log(colors.yellow(stderr));
         
@@ -222,6 +263,9 @@ async function executeGitCommand(command) {
         
         return true;
     } catch (error) {
+        // 停止加载动画
+        loading.stop();
+        
         console.error(colors.red(`执行命令失败：${error.message}`));
         // 确保即使出错也切回原目录
         try {
