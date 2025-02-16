@@ -35,7 +35,14 @@ function formatDate() {
 }
 
 // 创建 Frontmatter
-function createFrontmatter(title, author, overview, category, tags) {
+function createFrontmatter(title, author, overview, category, tags, options = {}) {
+    const defaultOptions = {
+        sticky: 0,        // 默认不置顶
+        star: false,      // 默认不标星
+    };
+
+    const finalOptions = { ...defaultOptions, ...options };
+
     return `---
 # 文档基本信息
 title: ${title}
@@ -49,10 +56,9 @@ tags: ${tags}
 # 文档描述
 description: ${overview}
 
-# 额外信息（可选）
-# image: /path/to/cover.jpg
-# sticky: 0
-# star: false
+# 额外信息
+sticky: ${finalOptions.sticky}        # 置顶顺序（0表示不置顶）
+star: ${finalOptions.star}           # 是否标星
 ---
 
 # ${title}
@@ -247,6 +253,17 @@ async function main() {
                     if (continueAdding.toLowerCase() !== 'y') break;
                 }
 
+                // 添加额外选项配置
+                console.log(colors.yellow('\n配置额外选项'));
+                
+                // 是否置顶
+                const stickyInput = await question('是否置顶？输入数字(0-99)表示置顶顺序，直接回车表示不置顶：');
+                const sticky = parseInt(stickyInput) || 0;
+                
+                // 是否标星
+                const starInput = await question('是否标星？(y/N)：');
+                const star = starInput.toLowerCase() === 'y';
+
                 // 创建文件
                 const pagesDir = findPagesDir(__dirname);
                 const articleDir = path.join(pagesDir, title);
@@ -262,7 +279,11 @@ async function main() {
                     author,
                     overview,
                     category,
-                    Array.from(selectedTags).map(tag => `\n  - ${tag}`).join('')
+                    Array.from(selectedTags).map(tag => `\n  - ${tag}`).join(''),
+                    {
+                        sticky,
+                        star,
+                    }
                 );
 
                 if (!fs.existsSync(notePath)) {

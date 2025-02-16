@@ -1,8 +1,10 @@
 <template>
   <div class="doc-card-wrapper" :class="{ expanded: isExpanded }">
     <div class="doc-header" @click.prevent="toggleExpand">
-      <h3 class="doc-title">{{ doc.title }}</h3>
-      <span v-if="doc.star" class="doc-star">⭐</span>
+      <div class="doc-title-wrapper">
+        <h3 class="doc-title">{{ doc.title }}</h3>
+      </div>
+      <span v-if="doc.star" class="star-badge">⭐</span>
       <span v-if="isMobile" class="expand-indicator">▼</span>
     </div>
 
@@ -15,6 +17,9 @@
             </span>
             <span v-if="doc.author" class="doc-author">
               👤 {{ doc.author }}
+            </span>
+            <span v-if="doc.sticky > 0" class="doc-sticky">
+              📌 {{ doc.sticky }}
             </span>
           </div>
         </div>
@@ -112,6 +117,20 @@ const formatLastUpdated = (timestamp) => {
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.doc-content {
+  position: relative;
+  z-index: 1;
+}
+
+.doc-title-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1;
 }
 
 .doc-title {
@@ -165,8 +184,30 @@ const formatLastUpdated = (timestamp) => {
   color: var(--vp-c-text-1);
 }
 
+.star-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  font-size: 1.2em;
+  color: #FFD700;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+  z-index: 2;
+}
+
+.doc-sticky {
+  font-size: 0.9em;
+  color: var(--vp-c-brand);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
 /* 在 <style scoped> 中添加/修改移动端样式 */
 @media (max-width: 768px) {
+  .star-badge{
+    top: -1px;
+    right: 30px;
+  }
   .doc-card-wrapper {
     border-width: 1px;
   }

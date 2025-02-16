@@ -153,7 +153,7 @@ const fetchDocuments = async () => {
     for (const path in modules) {
       try {
         const mod = modules[path]
-        console.log('Raw module:', mod)
+        //console.log('Raw 模块:', mod)
 
         // 从路径中获取文档标题（文件夹名称）
         const folderName = path.split('/').slice(-2, -1)[0]
@@ -223,7 +223,7 @@ const fetchDocuments = async () => {
           }
         }
 
-        console.log('Processed frontmatter:', frontmatter)
+        //console.log('已处理的 frontmatter:', frontmatter)
 
         // 确保 tags 是数组
         if (frontmatter.tags && !Array.isArray(frontmatter.tags)) {
@@ -244,17 +244,17 @@ const fetchDocuments = async () => {
         }
 
         docs.push(docInfo)
-        console.log('Added document:', docInfo)
+        //console.log('新增文档：', docInfo)
       } catch (error) {
-        console.error(`Error processing document ${path}:`, error)
+        console.error(`处理文档时出错: ${path}:`, error)
       }
     }
 
     documents.value = docs
-    console.log('Total documents loaded:', docs.length)
-    console.log('Available tags:', allTags.value)
+    //console.log('加载的文档总数:', docs.length)
+    //console.log('可用标记:', allTags.value)
   } catch (error) {
-    console.error('Failed to fetch documents:', error)
+    console.error('无法获取文档:', error)
   }
 }
 
@@ -385,46 +385,57 @@ const parseDate = (dateStr) => {
     // 创建日期对象 (月份需要减1因为 JavaScript 月份从0开始)
     return new Date(parseInt(year), parseInt(month) - 1, parseInt(day))
   } catch (e) {
-    console.warn('Invalid date format:', dateStr)
+    console.warn('日期格式无效：', dateStr)
     return new Date(0)
   }
 }
 
 // 修改文档排序逻辑
-const sortedDocs = computed(() => {
+const sortedDocuments = computed(() => {
   let docs = [...filteredDocs.value]
-
-  if (sortType.value === 'newest') {
-    docs.sort((a, b) => {
-      if (a.sticky !== b.sticky) return b.sticky - a.sticky
-      const dateA = parseDate(a.date)
-      const dateB = parseDate(b.date)
-      if (dateA.getTime() === dateB.getTime()) {
-        return a.title.localeCompare(b.title, 'zh-CN')
-      }
-      return dateB.getTime() - dateA.getTime()
-    })
-  } else {
-    docs.sort((a, b) => {
-      if (a.sticky !== b.sticky) return b.sticky - a.sticky
-      if (a.category !== b.category) {
-        return a.category?.localeCompare(b.category, 'zh-CN') || 0
-      }
-      return a.title.localeCompare(b.title, 'zh-CN')
-    })
+  
+  switch (sortType.value) {
+    case 'newest':
+      // 只按日期排序，不考虑置顶
+      return docs.sort((a, b) => {
+        const dateA = parseDate(a.date)
+        const dateB = parseDate(b.date)
+        if (dateA.getTime() === dateB.getTime()) {
+          return a.title.localeCompare(b.title, 'zh-CN')
+        }
+        return dateB.getTime() - dateA.getTime()
+      })
+    case 'default':
+      // 首先按置顶顺序排序（数字大的在前），然后按日期排序
+      return docs.sort((a, b) => {
+        // 如果都有置顶顺序，按顺序排
+        if (a.sticky && b.sticky) {
+          return b.sticky - a.sticky
+        }
+        // 有置顶的排在前面
+        if (a.sticky) return -1
+        if (b.sticky) return 1
+        // 否则按日期排序
+        const dateA = parseDate(a.date)
+        const dateB = parseDate(b.date)
+        if (dateA.getTime() === dateB.getTime()) {
+          return a.title.localeCompare(b.title, 'zh-CN')
+        }
+        return dateB.getTime() - dateA.getTime()
+      })
+    default:
+      return docs
   }
-
-  return docs
 })
 
 // 置顶文档
 const stickyDocs = computed(() => {
-  return sortedDocs.value.filter(doc => doc.sticky)
+  return sortedDocuments.value.filter(doc => doc.sticky)
 })
 
 // 普通文档（非置顶）
 const normalDocs = computed(() => {
-  return sortedDocs.value.filter(doc => !doc.sticky)
+  return sortedDocuments.value.filter(doc => !doc.sticky)
 })
 
 // 分页
@@ -436,7 +447,7 @@ const totalPages = computed(() =>
 const paginatedDocs = computed(() => {
   const start = (currentPage.value - 1) * pageSize
   const end = start + pageSize
-  return sortedDocs.value.slice(start, end)
+  return sortedDocuments.value.slice(start, end)
 })
 
 // 标签操作
