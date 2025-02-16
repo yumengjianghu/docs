@@ -8,7 +8,7 @@ import CopyBlock from './components/CopyBlock.vue' // 可复制模块
 import VueLazyloadNext  from 'vue-lazyload-next'   // 懒加载指令
 import MouseEvent from './components/MouseEvent.vue' // 鼠标跟随特效
 import ThemeSwitch from './components/ThemeSwitch.vue' // 主题切换过渡动画
-
+import Classification from './components/classification.vue'  // 分类
 // 引入懒加载图片
 import loadingIMG from '../../src/status/xhj.gif'
 import errorIMG from '../../src/status/loseimg.png'
@@ -30,6 +30,7 @@ export default {
   
   enhanceApp({ app, router, siteData }) {
     // ...
+    app.component('Classification', Classification);
     app.component('Giscus', Giscus);
     app.component('CopyBlock', CopyBlock);
     app.component('MouseEvent', MouseEvent);
