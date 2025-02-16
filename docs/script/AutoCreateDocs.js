@@ -189,15 +189,46 @@ async function deleteDoc(docPath) {
     });
 }
 
+// 查找项目根目录（包含.git的目录）
+function findGitRoot(startPath) {
+    let currentPath = startPath;
+    while (currentPath !== path.parse(currentPath).root) {
+        const gitPath = path.join(currentPath, '.git');
+        if (fs.existsSync(gitPath)) {
+            return currentPath;
+        }
+        currentPath = path.dirname(currentPath);
+    }
+    throw new Error('未找到 .git 目录！请确保在 Git 项目目录下执行此脚本。');
+}
+
 // 执行 Git 命令
 async function executeGitCommand(command) {
     try {
+        // 保存当前目录
+        const currentDir = process.cwd();
+        
+        // 切换到项目根目录
+        const gitRoot = findGitRoot(__dirname);
+        process.chdir(gitRoot);
+        
+        // 执行命令
         const { stdout, stderr } = await execPromise(command);
         if (stdout) console.log(colors.green(stdout));
         if (stderr) console.log(colors.yellow(stderr));
+        
+        // 切回原目录
+        process.chdir(currentDir);
+        
         return true;
     } catch (error) {
         console.error(colors.red(`执行命令失败：${error.message}`));
+        // 确保即使出错也切回原目录
+        try {
+            process.chdir(currentDir);
+        } catch (e) {
+            // 忽略切换目录失败的错误
+        }
         return false;
     }
 }

@@ -130,6 +130,7 @@ export default defineConfig({
               { text: 'Github 快速入门', link: 'pages/Github+Git/note' },
               { text: 'Git 快速入门', link: 'pages/Git/note' },
               { text: 'Vite 理论知识', link: 'pages/Vite/note' },
+              { text: 'Cursor 基础使用', link: 'pages/Cursor基础使用/note'},
             ],
           },
         ]
@@ -149,6 +150,7 @@ export default defineConfig({
           { text: '图床', link: 'other/imgbed/note' },
           { text: '工具', link: 'other/Download/note' },
           { text: 'Cool_CSS', link: 'pages/CSS/CoolCss' },
+          { text: '前端杂谈', link: 'pages/前端杂谈/note' },
         ]
       },
       {
