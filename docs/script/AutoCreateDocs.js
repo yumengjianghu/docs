@@ -312,6 +312,7 @@ async function main() {
             // 选择操作
             const operations = [
                 '创建文档',
+                '编辑文档',
                 '删除文档',
                 '同步云端',
                 '退出程序'
@@ -325,7 +326,34 @@ async function main() {
                 process.exit(0);
             }
             
-            if (operation === '创建文档') {
+            if (operation === '编辑文档') {
+                const pagesDir = findPagesDir(__dirname);
+                const docs = scanDocs(pagesDir);
+                
+                if (docs.length === 0) {
+                    console.log(colors.yellow('\n没有找到任何文档！'));
+                    await question(colors.gray('\n按回车键返回主菜单...'));
+                    continue;
+                }
+                
+                // 显示文档列表
+                console.log(colors.yellow('\n使用上下箭头选择要编辑的文档，回车确认，Esc返回'));
+                const docTitles = docs.map(doc => doc.title);
+                const selectedTitle = await handleSelection(docTitles, '选择要编辑的文档：');
+                
+                if (selectedTitle === '返回上级') {
+                    continue;
+                }
+                
+                const selectedDoc = docs.find(doc => doc.title === selectedTitle);
+                if (selectedDoc) {
+                    const notePath = path.join(selectedDoc.path, 'note.md');
+                    console.log(colors.cyan('\n🚀 准备打开文件...\n'));
+                    openFile(notePath);
+                    console.log(`⚡ ${colors.bgGreen('文件已打开，可以开始编辑了！')}\n`);
+                    await question(colors.gray('按回车键返回主菜单...'));
+                }
+            } else if (operation === '创建文档') {
                 // 获取文档标题（必填）
                 let title = '';
                 while (!title) {
