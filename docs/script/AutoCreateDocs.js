@@ -237,7 +237,20 @@ function findGitRoot(startPath) {
 
 // 执行 Git 命令
 async function executeGitCommand(command) {
-    const loading = new LoadingAnimation('执行命令中...');
+    // 根据命令设置合适的加载提示
+    let loadingText = '执行命令中...';
+    if (command.includes('add')) {
+        loadingText = '正在添加文件...';
+    } else if (command.includes('commit')) {
+        loadingText = '正在提交更改...';
+    } else if (command.includes('push')) {
+        loadingText = '正在推送到远程仓库...';
+    }
+
+    const loading = new LoadingAnimation(loadingText);
+    let output = '';
+    let errorOutput = '';
+
     try {
         // 保存当前目录
         const currentDir = process.cwd();
@@ -251,12 +264,15 @@ async function executeGitCommand(command) {
         
         // 执行命令
         const { stdout, stderr } = await execPromise(command);
+        output = stdout;
+        errorOutput = stderr;
         
         // 停止加载动画
         loading.stop();
         
-        if (stdout) console.log(colors.green(stdout));
-        if (stderr) console.log(colors.yellow(stderr));
+        // 命令执行完成后再显示输出
+        if (output) console.log(colors.green(output));
+        if (errorOutput) console.log(colors.yellow(errorOutput));
         
         // 切回原目录
         process.chdir(currentDir);
@@ -429,35 +445,33 @@ async function main() {
 
                 switch(syncOperation) {
                     case '提交':
-                        console.log(colors.cyan('执行提交操作...'));
+                        console.log(colors.cyan('\n开始提交操作...'));
                         const commitMsg = await question('请输入提交信息（直接回车使用默认信息"自动推送"）：');
                         const message = commitMsg || '自动推送';
                         
-                        await executeGitCommand('git add .');
-                        await executeGitCommand(`git commit -m "${message}"`);
-                        console.log(colors.green('✅ 提交完成！'));
+                        if (await executeGitCommand('git add .')) {
+                            if (await executeGitCommand(`git commit -m "${message}"`)) {
+                                console.log(colors.green('\n✅ 提交完成！'));
+                            }
+                        }
                         break;
                         
                     case '推送':
-                        console.log(colors.cyan('执行推送操作...'));
-                        const pushResult = await executeGitCommand('git push');
-                        if (pushResult) {
-                            console.log(colors.green('✅ 推送完成！'));
+                        console.log(colors.cyan('\n开始推送操作...'));
+                        if (await executeGitCommand('git push')) {
+                            console.log(colors.green('\n✅ 推送完成！'));
                         }
                         break;
                         
                     case '提交+推送':
-                        console.log(colors.cyan('执行提交+推送操作...'));
+                        console.log(colors.cyan('\n开始提交和推送操作...'));
                         const commitMessage = await question('请输入提交信息（直接回车使用默认信息"自动推送"）：');
                         const finalMessage = commitMessage || '自动推送';
                         
-                        const addResult = await executeGitCommand('git add .');
-                        if (addResult) {
-                            const commitResult = await executeGitCommand(`git commit -m "${finalMessage}"`);
-                            if (commitResult) {
-                                const finalPushResult = await executeGitCommand('git push');
-                                if (finalPushResult) {
-                                    console.log(colors.green('✅ 提交并推送完成！'));
+                        if (await executeGitCommand('git add .')) {
+                            if (await executeGitCommand(`git commit -m "${finalMessage}"`)) {
+                                if (await executeGitCommand('git push')) {
+                                    console.log(colors.green('\n✅ 提交并推送完成！'));
                                 }
                             }
                         }
