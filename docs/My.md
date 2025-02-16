@@ -177,6 +177,7 @@ const profile = {
 
 <Nav :tools="projects"/>
 
+<Giscus/>
 
 <style scoped>
 .profile-container {
