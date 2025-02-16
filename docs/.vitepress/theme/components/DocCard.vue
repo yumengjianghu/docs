@@ -19,7 +19,7 @@
               👤 {{ doc.author }}
             </span>
             <span v-if="doc.sticky > 0" class="doc-sticky">
-              📌 {{ doc.sticky }}
+              🔥 {{ doc.sticky }}
             </span>
           </div>
         </div>

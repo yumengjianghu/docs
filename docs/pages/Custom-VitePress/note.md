@@ -7,7 +7,7 @@ author: YuMeng    # 作者（可选）
 # 分类和标签
 category: 技术文档  # 主分类，只能有一个
 tags: 
-  - Vitepress   # 标签列表，可以有多个
+  - Vue   # 标签列表，可以有多个
   - 教程   
 # 文档描述
 description: 自定义vitepress的一些速记

@@ -9,7 +9,7 @@ category: 技术文档  # 主分类，只能有一个
 tags: 
   - 笔记   # 标签列表，可以有多个
   - 教程   
-  - Github
+  - 其他
 # 文档描述
 description: 工作流模版文件
 

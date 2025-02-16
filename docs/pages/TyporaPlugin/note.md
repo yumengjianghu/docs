@@ -9,7 +9,7 @@ category: 技术文档  # 主分类，只能有一个
 tags: 
   - 笔记   # 标签列表，可以有多个
   - 教程   
-  - Typora
+  - 开发工具
 # 文档描述
 description: 增强Typora，一键执行命令行，思维导图...
 

@@ -5,9 +5,8 @@ date: 2025-1-10-    # 创建日期，格式：YYYY-MM-DD
 author: YuMeng    # 作者（可选）
 
 # 分类和标签
-category: 娱乐分享  # 主分类，只能有一个
+category: 生活随笔  # 主分类，只能有一个
 tags: 
-  - 娱乐   # 标签列表，可以有多个
   - 教程   
 # 文档描述
 description: 评价你的代码

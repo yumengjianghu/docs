@@ -9,7 +9,7 @@ category: 技术文档  # 主分类，只能有一个
 tags: 
   - 笔记   # 标签列表，可以有多个
   - 教程   
-  - Git
+  - 开发工具
 # 文档描述
 description: 快速入门Git
 
