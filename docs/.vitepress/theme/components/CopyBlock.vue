@@ -9,7 +9,6 @@
 
         </div>
     </div>
-    <GlobalToast ref="toast" :duration="500" />
 </template>
 
 <script>
@@ -32,7 +31,7 @@ export default {
             default: 'true'
         },
         size: {
-            type: String,
+            type: Number,
             required: false,
             default: 15
         },
@@ -53,27 +52,18 @@ export default {
             navigator.clipboard
                 .writeText(props.text)
                 .then(() => {
-                    // showToast('复制成功', 'true')
                     PromptText.value.innerHTML='Success'
                 })
                 .catch(() => {
-                    // showToast('复制失败', 'false')
                     PromptText.value.innerHTML='Error'
-                    //  shareBtn.value.innerHTML = '分享'
                 });
                 setTimeout(() => {
                     PromptText.value.innerHTML='CopyBlock'
                 }, 1000);
         };
-        const toast = ref(null);
-        const showToast = (message, status) => {
-            toast.value.show(message, status); // 调用子组件的 show 方法
-        };
         return {
             copyText,
-            showToast,
             CodedText,
-            toast,
             PromptText,
             content
         };

@@ -18,17 +18,10 @@
 
     <!-- 排序按钮组 -->
     <div class="sort-wrapper">
-      <div class="sort-buttons">
-        <button :class="['sort-btn', sortType === 'default' ? 'active' : '']" @click="sortType = 'default'">
-          默认排序
-        </button>
-        <button :class="['sort-btn', sortType === 'newest' ? 'active' : '']" @click="sortType = 'newest'">
-          最新优先
-        </button>
-        <button class="sort-btn WebDocs" @click="getWebDocs()">
-          云端文档
-        </button>
-      </div>
+      <button class="cloud-btn" @click="getWebDocs()" title="查看云端文档">
+        <span class="cloud-icon">☁️</span>
+        <span class="cloud-text">云端</span>
+      </button>
     </div>
 
     <!-- 筛选器组 -->
@@ -372,6 +365,40 @@ const filteredDocs = computed(() => {
   }
 })
 
+// 修改文档排序逻辑
+const sortedDocuments = computed(() => {
+  let docs = [...filteredDocs.value]
+  
+  switch (sortType.value) {
+    case 'newest':
+      // 只按日期排序，不考虑置顶
+      return docs.sort((a, b) => {
+        const dateA = parseDate(a.date)
+        const dateB = parseDate(b.date)
+        if (dateA.getTime() === dateB.getTime()) {
+          return a.title.localeCompare(b.title, 'zh-CN')
+        }
+        return dateB.getTime() - dateA.getTime()
+      })
+    case 'default':
+    default:  // 添加默认情况
+      // 首先按置顶排序，然后按日期排序
+      return docs.sort((a, b) => {
+        // 首先按置顶排序
+        if ((a.sticky || 0) !== (b.sticky || 0)) {
+          return (b.sticky || 0) - (a.sticky || 0)
+        }
+        // 然后按日期排序
+        const dateA = parseDate(a.date)
+        const dateB = parseDate(b.date)
+        if (dateA.getTime() === dateB.getTime()) {
+          return a.title.localeCompare(b.title, 'zh-CN')
+        }
+        return dateB.getTime() - dateA.getTime()
+      })
+  }
+})
+
 // 添加日期解析函数
 const parseDate = (dateStr) => {
   if (!dateStr) return new Date(0)
@@ -389,44 +416,6 @@ const parseDate = (dateStr) => {
     return new Date(0)
   }
 }
-
-// 修改文档排序逻辑
-const sortedDocuments = computed(() => {
-  let docs = [...filteredDocs.value]
-  
-  switch (sortType.value) {
-    case 'newest':
-      // 只按日期排序，不考虑置顶
-      return docs.sort((a, b) => {
-        const dateA = parseDate(a.date)
-        const dateB = parseDate(b.date)
-        if (dateA.getTime() === dateB.getTime()) {
-          return a.title.localeCompare(b.title, 'zh-CN')
-        }
-        return dateB.getTime() - dateA.getTime()
-      })
-    case 'default':
-      // 首先按置顶顺序排序（数字大的在前），然后按日期排序
-      return docs.sort((a, b) => {
-        // 如果都有置顶顺序，按顺序排
-        if (a.sticky && b.sticky) {
-          return b.sticky - a.sticky
-        }
-        // 有置顶的排在前面
-        if (a.sticky) return -1
-        if (b.sticky) return 1
-        // 否则按日期排序
-        const dateA = parseDate(a.date)
-        const dateB = parseDate(b.date)
-        if (dateA.getTime() === dateB.getTime()) {
-          return a.title.localeCompare(b.title, 'zh-CN')
-        }
-        return dateB.getTime() - dateA.getTime()
-      })
-    default:
-      return docs
-  }
-})
 
 // 置顶文档
 const stickyDocs = computed(() => {
@@ -568,43 +557,88 @@ onMounted(() => {
 }
 
 .sort-wrapper {
-  margin-bottom: 20px;
-  display: flex;
-  justify-content: left;
-  /* padding: 20px 0 10px 0; */
-  /* border-top: 1px solid var(--vp-c-divider); */
-
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 100;
 }
 
-.sort-buttons {
-  display: flex;
-  gap: 10px;
-  padding: 10px;
-  background: var(--vp-c-bg-soft);
-  border-radius: 8px;
-}
-
-.sort-btn {
-  padding: 8px 16px;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 6px;
-  background: var(--vp-c-bg);
-  color: var(--vp-c-text-2);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 0.9em;
-}
-
-.sort-btn:hover {
-  background: var(--vp-c-bg-mute);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.sort-btn.active {
-  background: var(--vp-c-brand);
+.cloud-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #42b983 0%, #3aa876 100%);
   color: white;
-  border-color: var(--vp-c-brand);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9em;
+  gap: 2px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.cloud-icon {
+  font-size: 1.4em;
+  transition: transform 0.3s ease;
+}
+
+.cloud-text {
+  font-size: 0.8em;
+  opacity: 0.9;
+  transform: translateY(0);
+  transition: transform 0.3s ease;
+}
+
+.cloud-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, #3aa876 0%, #42b983 100%);
+}
+
+.cloud-btn:hover .cloud-icon {
+  transform: translateY(-2px) scale(1.1);
+}
+
+.cloud-btn:hover .cloud-text {
+  transform: translateY(2px);
+}
+
+.cloud-btn:active {
+  transform: translateY(-2px) scale(0.98);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 添加光晕效果 */
+.cloud-btn::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.cloud-btn:hover::before {
+  opacity: 1;
+  animation: rotate 4s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .filters {
@@ -1111,16 +1145,20 @@ onMounted(() => {
 
   /* 排序按钮组压缩 */
   .sort-wrapper {
-    padding: 4px 0;
+    bottom: 20px;
+    right: 20px;
   }
 
-  .sort-buttons {
-    gap: 8px;
-  }
-
-  .sort-btn {
-    padding: 4px 8px;
-    font-size: 12px;
+  .cloud-btn {
+    width: 50px;
+    height: 50px;
+    .cloud-icon {
+      font-size: 1.2em;
+    }
+    
+    .cloud-text {
+      font-size: 0.7em;
+    }
   }
 
   /* 文档网格布局调整 */
@@ -1162,16 +1200,5 @@ onMounted(() => {
   .filter-content {
     background: var(--vp-c-bg-soft);
   }
-}
-
-.WebDocs {
-  background-color: #42b983;
-  color: white;
-}
-
-.WebDocs:hover {
-  background-color: #3aa876;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(66, 185, 131, 0.2);
 }
 </style>
