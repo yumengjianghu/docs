@@ -4,6 +4,8 @@ const { exec } = require('child_process');
 const colors = require('ansi-colors');
 const clear = require('clear');
 const presets = require('./config/presets');
+const util = require('util');
+const execPromise = util.promisify(exec);
 
 // 查找 pages 目录
 function findPagesDir(startPath) {
@@ -187,6 +189,19 @@ async function deleteDoc(docPath) {
     });
 }
 
+// 执行 Git 命令
+async function executeGitCommand(command) {
+    try {
+        const { stdout, stderr } = await execPromise(command);
+        if (stdout) console.log(colors.green(stdout));
+        if (stderr) console.log(colors.yellow(stderr));
+        return true;
+    } catch (error) {
+        console.error(colors.red(`执行命令失败：${error.message}`));
+        return false;
+    }
+}
+
 // 主函数
 async function main() {
     while (true) {
@@ -197,6 +212,7 @@ async function main() {
             const operations = [
                 '创建文档',
                 '删除文档',
+                '同步云端',
                 '退出程序'
             ];
             
@@ -327,6 +343,54 @@ async function main() {
                     // 等待用户确认后返回主菜单
                     await question(colors.gray('\n按回车键返回主菜单...'));
                 }
+            } else if (operation === '同步云端') {
+                const syncOptions = [
+                    '提交',
+                    '推送',
+                    '提交+推送'
+                ];
+                console.log(colors.yellow('\n使用上下箭头选择同步操作，回车确认'));
+                const syncOperation = await handleSelection(syncOptions, '选择同步操作：');
+
+                switch(syncOperation) {
+                    case '提交':
+                        console.log(colors.cyan('执行提交操作...'));
+                        const commitMsg = await question('请输入提交信息（直接回车使用默认信息"自动推送"）：');
+                        const message = commitMsg || '自动推送';
+                        
+                        await executeGitCommand('git add .');
+                        await executeGitCommand(`git commit -m "${message}"`);
+                        console.log(colors.green('✅ 提交完成！'));
+                        break;
+                        
+                    case '推送':
+                        console.log(colors.cyan('执行推送操作...'));
+                        const pushResult = await executeGitCommand('git push');
+                        if (pushResult) {
+                            console.log(colors.green('✅ 推送完成！'));
+                        }
+                        break;
+                        
+                    case '提交+推送':
+                        console.log(colors.cyan('执行提交+推送操作...'));
+                        const commitMessage = await question('请输入提交信息（直接回车使用默认信息"自动推送"）：');
+                        const finalMessage = commitMessage || '自动推送';
+                        
+                        const addResult = await executeGitCommand('git add .');
+                        if (addResult) {
+                            const commitResult = await executeGitCommand(`git commit -m "${finalMessage}"`);
+                            if (commitResult) {
+                                const finalPushResult = await executeGitCommand('git push');
+                                if (finalPushResult) {
+                                    console.log(colors.green('✅ 提交并推送完成！'));
+                                }
+                            }
+                        }
+                        break;
+                }
+
+                // 等待用户确认后返回主菜单
+                await question(colors.gray('按回车键返回主菜单...'));
             }
             
         } catch (error) {
