@@ -47,7 +47,7 @@
   /* 按钮背景跟随动态渐变 */
   --vp-c-indigo-3:var(--bear-bg-color1);
   --vp-c-indigo-2:var(--bear-bg-color2);
-
+  /* --vp-c-indigo-1:var(--bear-bg-color1); */
 }
 
 .dark {
@@ -59,6 +59,7 @@
   /* 按钮背景跟随动态渐变 */
   --vp-c-indigo-3:var(--bear-bg-color1);
   --vp-c-indigo-2:var(--bear-bg-color2);
+  /* --vp-c-indigo-1:var(--bear-bg-color1); */
 
   /* 自定义变量 */
   --item-border-color: #302f2f;
