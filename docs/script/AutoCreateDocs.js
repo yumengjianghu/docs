@@ -183,126 +183,135 @@ async function deleteDoc(docPath) {
 
 // 主函数
 async function main() {
-    try {
-        clear();
-        
-        // 选择操作
-        const operations = [
-            '创建文档',
-            '删除文档',
-            '退出程序'
-        ];
-        
-        console.log(colors.cyan('📝 文档管理工具\n'));
-        const operation = await handleSelection(operations, '请选择操作：');
-        
-        if (operation === '退出程序') {
-            console.log(colors.gray('\n已退出程序'));
-            process.exit(0);
-        }
-        
-        if (operation === '创建文档') {
-            // 获取文档标题（必填）
-            let title = '';
-            while (!title) {
-                title = await question('请输入文档标题：');
-                if (!title) {
-                    console.log(colors.red('❌ 标题不能为空！'));
-                }
-            }
+    while (true) {
+        try {
+            clear();
             
-            // 获取作者（可选，有默认值）
-            const authorInput = await question('请输入作者（直接回车使用默认值 YuMeng）：');
-            const author = authorInput || 'YuMeng';
-
-            console.log(colors.cyan('📝 开始创建文档...\n'));
-            console.log(colors.gray(`作者: ${author}\n`));
-
-            // 获取文档概述
-            const overview = await question('请输入文档概述：');
-
-            // 选择主题
-            console.log(colors.yellow('\n使用上下箭头选择主题，回车确认'));
-            const category = await handleSelection(presets.categories, '选择主题：');
-
-            // 选择标签
-            const selectedTags = new Set();
-            while (true) {
-                const availableTags = presets.tags.filter(t => !selectedTags.has(t));
-                const tag = await handleSelection(
-                    availableTags,
-                    '选择标签：',
-                    Array.from(selectedTags)
-                );
-
-                if (tag === '自定义') {
-                    const customTag = await question('\n请输入自定义标签：');
-                    if (customTag) selectedTags.add(customTag);
-                } else {
-                    selectedTags.add(tag);
-                }
-
-                const continueAdding = await question('\n是否继续添加标签？(y/N)：');
-                if (continueAdding.toLowerCase() !== 'y') break;
-            }
-
-            // 创建文件
-            const pagesDir = findPagesDir(__dirname);
-            const articleDir = path.join(pagesDir, title);
+            // 选择操作
+            const operations = [
+                '创建文档',
+                '删除文档',
+                '退出程序'
+            ];
             
-            if (!fs.existsSync(articleDir)) {
-                fs.mkdirSync(articleDir, { recursive: true });
-                console.log(`\n✅ ${colors.green('成功创建目录：')}${articleDir}`);
-            }
-
-            const notePath = path.join(articleDir, 'note.md');
-            const frontmatter = createFrontmatter(
-                title,
-                author,
-                overview,
-                category,
-                Array.from(selectedTags).map(tag => `\n  - ${tag}`).join('')
-            );
-
-            if (!fs.existsSync(notePath)) {
-                fs.writeFileSync(notePath, frontmatter);
-                console.log(`📝 ${colors.green('已创建笔记文件：')}${notePath}`);
-            }
-
-            console.log(colors.cyan('\n🚀 准备打开文件...\n'));
-            openFile(notePath);
-            console.log(`⚡ ${colors.bgGreen('文件已打开，可以开始编辑了！')}\n`);
-        } else if (operation === '删除文档') {
-            const pagesDir = findPagesDir(__dirname);
-            const docs = scanDocs(pagesDir);
+            console.log(colors.cyan('📝 文档管理工具\n'));
+            const operation = await handleSelection(operations, '请选择操作：');
             
-            if (docs.length === 0) {
-                console.log(colors.yellow('\n没有找到任何文档！'));
+            if (operation === '退出程序') {
+                console.log(colors.gray('\n已退出程序'));
                 process.exit(0);
             }
             
-            console.log(colors.yellow('\n使用上下箭头选择要删除的文档，回车确认'));
-            const docTitles = docs.map(doc => doc.title);
-            const selectedTitle = await handleSelection(docTitles, '选择要删除的文档：');
-            
-            const selectedDoc = docs.find(doc => doc.title === selectedTitle);
-            if (selectedDoc) {
-                const confirm = await question(
-                    colors.red(`\n确定要删除文档 "${selectedTitle}" 吗？此操作不可恢复！(y/N)：`)
-                );
+            if (operation === '创建文档') {
+                // 获取文档标题（必填）
+                let title = '';
+                while (!title) {
+                    title = await question('请输入文档标题：');
+                    if (!title) {
+                        console.log(colors.red('❌ 标题不能为空！'));
+                    }
+                }
                 
-                if (confirm.toLowerCase() === 'y') {
-                    await deleteDoc(selectedDoc.path);
-                    console.log(colors.green(`\n✅ 文档 "${selectedTitle}" 已删除！`));
-                } else {
-                    console.log(colors.gray('\n已取消删除操作'));
+                // 获取作者（可选，有默认值）
+                const authorInput = await question('请输入作者（直接回车使用默认值 YuMeng）：');
+                const author = authorInput || 'YuMeng';
+
+                console.log(colors.cyan('📝 开始创建文档...\n'));
+                console.log(colors.gray(`作者: ${author}\n`));
+
+                // 获取文档概述
+                const overview = await question('请输入文档概述：');
+
+                // 选择主题
+                console.log(colors.yellow('\n使用上下箭头选择主题，回车确认'));
+                const category = await handleSelection(presets.categories, '选择主题：');
+
+                // 选择标签
+                const selectedTags = new Set();
+                while (true) {
+                    const availableTags = presets.tags.filter(t => !selectedTags.has(t));
+                    const tag = await handleSelection(
+                        availableTags,
+                        '选择标签：',
+                        Array.from(selectedTags)
+                    );
+
+                    if (tag === '自定义') {
+                        const customTag = await question('\n请输入自定义标签：');
+                        if (customTag) selectedTags.add(customTag);
+                    } else {
+                        selectedTags.add(tag);
+                    }
+
+                    const continueAdding = await question('\n是否继续添加标签？(y/N)：');
+                    if (continueAdding.toLowerCase() !== 'y') break;
+                }
+
+                // 创建文件
+                const pagesDir = findPagesDir(__dirname);
+                const articleDir = path.join(pagesDir, title);
+                
+                if (!fs.existsSync(articleDir)) {
+                    fs.mkdirSync(articleDir, { recursive: true });
+                    console.log(`\n✅ ${colors.green('成功创建目录：')}${articleDir}`);
+                }
+
+                const notePath = path.join(articleDir, 'note.md');
+                const frontmatter = createFrontmatter(
+                    title,
+                    author,
+                    overview,
+                    category,
+                    Array.from(selectedTags).map(tag => `\n  - ${tag}`).join('')
+                );
+
+                if (!fs.existsSync(notePath)) {
+                    fs.writeFileSync(notePath, frontmatter);
+                    console.log(`📝 ${colors.green('已创建笔记文件：')}${notePath}`);
+                }
+
+                console.log(colors.cyan('\n🚀 准备打开文件...\n'));
+                openFile(notePath);
+                console.log(`⚡ ${colors.bgGreen('文件已打开，可以开始编辑了！')}\n`);
+                
+                // 等待用户确认后返回主菜单
+                await question(colors.gray('按回车键返回主菜单...'));
+                
+            } else if (operation === '删除文档') {
+                const pagesDir = findPagesDir(__dirname);
+                const docs = scanDocs(pagesDir);
+                
+                if (docs.length === 0) {
+                    console.log(colors.yellow('\n没有找到任何文档！'));
+                    process.exit(0);
+                }
+                
+                console.log(colors.yellow('\n使用上下箭头选择要删除的文档，回车确认'));
+                const docTitles = docs.map(doc => doc.title);
+                const selectedTitle = await handleSelection(docTitles, '选择要删除的文档：');
+                
+                const selectedDoc = docs.find(doc => doc.title === selectedTitle);
+                if (selectedDoc) {
+                    const confirm = await question(
+                        colors.red(`\n确定要删除文档 "${selectedTitle}" 吗？此操作不可恢复！(y/N)：`)
+                    );
+                    
+                    if (confirm.toLowerCase() === 'y') {
+                        await deleteDoc(selectedDoc.path);
+                        console.log(colors.green(`\n✅ 文档 "${selectedTitle}" 已删除！`));
+                    } else {
+                        console.log(colors.gray('\n已取消删除操作'));
+                    }
+                    
+                    // 等待用户确认后返回主菜单
+                    await question(colors.gray('\n按回车键返回主菜单...'));
                 }
             }
+            
+        } catch (error) {
+            console.error(colors.red(`\n❌ 错误：${error.message}\n`));
+            await question(colors.gray('按回车键返回主菜单...'));
         }
-        
-    } catch (error) {
-        console.error(colors.red(`\n❌ 错误：${error.message}\n`));
-        process.exit(1);
     }
 }
 
