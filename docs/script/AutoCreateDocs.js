@@ -10,28 +10,54 @@ const execPromise = util.promisify(exec);
 // 加载动画类
 class LoadingAnimation {
     constructor(text = '加载中') {
-        this.frames = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
+        // 检测是否在 Windows CMD 环境中
+        const isWindowsCmd = process.platform === 'win32' && 
+                            process.env.TERM_PROGRAM !== 'vscode' && 
+                            !process.env.WT_SESSION; // 不是 Windows Terminal
+
+        // 为不同环境选择不同的动画帧
+        this.frames = isWindowsCmd 
+            ? ['-', '\\', '|', '/'] // CMD 友好的简单字符
+            : ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏']; // Unicode 字符
+        
         this.interval = null;
         this.currentFrame = 0;
         this.text = text;
         this.isRunning = false;
+        this.isWindowsCmd = isWindowsCmd;
     }
 
     start() {
         if (this.isRunning) return;
         this.isRunning = true;
-        process.stdout.write('\x1B[?25l'); // 隐藏光标
+        
+        // 在非 CMD 环境下隐藏光标
+        if (!this.isWindowsCmd) {
+            process.stdout.write('\x1B[?25l');
+        }
+        
         this.interval = setInterval(() => {
-            process.stdout.write(`\r${colors.cyan(this.frames[this.currentFrame])} ${this.text}`);
+            // 在 Windows CMD 中使用 process.stdout.write 可能会有问题
+            // 所以使用 console.log 并清除之前的行
+            if (this.isWindowsCmd) {
+                process.stdout.write(`\r${colors.cyan(this.frames[this.currentFrame])} ${this.text}`);
+            } else {
+                process.stdout.write(`\r${colors.cyan(this.frames[this.currentFrame])} ${this.text}`);
+            }
             this.currentFrame = (this.currentFrame + 1) % this.frames.length;
-        }, 80);
+        }, this.isWindowsCmd ? 250 : 80); // CMD 中使用较慢的速度
     }
 
     stop() {
         if (!this.isRunning) return;
         clearInterval(this.interval);
         process.stdout.write('\r\x1B[K'); // 清除当前行
-        process.stdout.write('\x1B[?25h'); // 显示光标
+        
+        // 在非 CMD 环境下恢复光标
+        if (!this.isWindowsCmd) {
+            process.stdout.write('\x1B[?25h');
+        }
+        
         this.isRunning = false;
     }
 
