@@ -1,26 +1,15 @@
 <template>
   <div class="tools-container">
     <div class="tools-grid">
-      <a v-for="(tool, index) in tools" 
-         :key="tool.url + index"
-         :href="tool.url"
-         target="_blank"
-         rel="noopener"
-         class="tool-card"
-         :class="tool.badge ? `badge-${tool.badgeType || 'default'}` : ''"
-         :style="{ width: '250px', height: '100px' }"
-      >
+      <a v-for="(tool, index) in tools" :key="tool.url + index" :href="tool.url" target="_blank" rel="noopener"
+        class="tool-card" :class="tool.badge ? `badge-${tool.badgeType || 'default'}` : ''">
         <span v-if="tool.badge" class="tool-badge" :class="tool.badgeType || 'default'">
           {{ tool.badge }}
         </span>
 
         <div class="tool-icon">
-          <img 
-            :src="tool.icon || getFavicon(tool.url)" 
-            :alt="tool.title"
-            loading="lazy"
-            @error="handleImageError(tool)"
-          >
+          <img :src="tool.icon || getFavicon(tool.url)" :alt="tool.title" loading="lazy"
+            @error="handleImageError(tool)">
         </div>
         <div class="tool-content">
           <h3 class="tool-title">{{ tool.title || '待添加' }}</h3>
@@ -64,7 +53,7 @@ const handleImageError = (tool) => {
     img.src = getFavicon(tool.url)
     return
   }
-  
+
   const domain = new URL(tool.url).hostname
   // 尝试其他源
   if (!img.src.includes('icon.horse')) {
@@ -86,11 +75,13 @@ const handleImageError = (tool) => {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
-  justify-content: flex-start;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
 .tool-card {
-  flex: 0 0 auto;
+  width: 250px;
+  height: 100px;
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -102,6 +93,8 @@ const handleImageError = (tool) => {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   position: relative;
+  box-sizing: border-box;
+  flex-grow: 1 !important;
 }
 
 .tool-card:hover {
@@ -172,22 +165,40 @@ const handleImageError = (tool) => {
   }
 }
 
-/* 移动端适配 */
+/* 修改响应式布局 */
+@media (max-width: 1200px) {
+  .tool-card {
+    width: 250px;
+  }
+}
+
 @media (max-width: 768px) {
   .tools-grid {
-    justify-content: center;
+    justify-content: stretch;
+    gap: 15px;
+  }
+
+  .tool-card {
+    width: 100%;
+    max-width: none;
+    margin: 0;
   }
   
-  .tool-card {
-    width: 100% !important;
-    max-width: 300px;
+  .tool-content {
+    flex: 1;
+    padding-right: 8px;
   }
 }
 
 /* 超小屏幕适配 */
 @media (max-width: 480px) {
-  .tools-grid {
-    grid-template-columns: 1fr;
+  .tool-card {
+    height: auto;
+    min-height: 100px;
+  }
+  
+  .tool-desc {
+    -webkit-line-clamp: 3;
   }
 }
 
